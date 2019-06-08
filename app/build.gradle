@@ -1,0 +1,80 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+
+ext {
+    supportLibraryVersion = '1.0.0-beta01'
+    mosbyVersion = "3.1.0"
+    rxBindingVersion = "2.1.1"
+    rxJavaVersion = "2.2.7"
+    rxAndroidVersion = "2.1.0"
+    timberVersion = "4.6.0"
+    retrofitVersion = "2.5.0"
+    gsonConverterVersion = "2.4.0"
+}
+
+android {
+    compileSdkVersion 28
+    defaultConfig {
+        applicationId "com.harvard.art.museums"
+        minSdkVersion 19
+        targetSdkVersion 28
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+
+    androidExtensions {
+        experimental = true
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+    implementation "androidx.appcompat:appcompat:$supportLibraryVersion"
+
+    // RxJava and RxAndroid
+    implementation "io.reactivex.rxjava2:rxjava:$rxJavaVersion"
+    implementation "io.reactivex.rxjava2:rxandroid:$rxAndroidVersion"
+
+    //Retrofit 2
+    implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
+    implementation "com.squareup.retrofit2:adapter-rxjava2:$retrofitVersion"
+    implementation "com.squareup.retrofit2:converter-gson:$gsonConverterVersion"
+    //    implementation "com.squareup.retrofit2:converter-moshi:2.5.0"
+
+
+    // Dagger 2
+    implementation "com.google.dagger:dagger:2.15"
+    kapt "com.google.dagger:dagger-compiler:2.15"
+    kapt "com.google.dagger:dagger-android-processor:2.15"
+    compileOnly "org.glassfish:javax.annotation:3.1.1"
+
+    // Mosby
+    implementation "com.hannesdorfmann.mosby3:mvi:$mosbyVersion"
+
+
+    // RxBinding
+    implementation "com.jakewharton.rxbinding2:rxbinding-kotlin:$rxBindingVersion"
+    implementation "com.jakewharton.rxbinding2:rxbinding-support-v4-kotlin:$rxBindingVersion"
+    implementation "com.jakewharton.rxbinding2:rxbinding-appcompat-v7-kotlin:$rxBindingVersion"
+
+    // Timber
+    implementation "com.jakewharton.timber:timber:$timberVersion"
+
+    testImplementation 'junit:junit:4.12'
+}
