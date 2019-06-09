@@ -1,6 +1,7 @@
 package com.harvard.art.museums.base
 
 import com.hannesdorfmann.mosby3.mvi.MviBasePresenter
+import com.harvard.art.museums.features.main.ExhibitionsPresenter
 import com.harvard.art.museums.injection.component.DaggerPresenterInjector
 import com.harvard.art.museums.injection.component.PresenterInjector
 import com.harvard.art.museums.injection.module.ContextModule
@@ -42,7 +43,7 @@ abstract class BasePresenter<V : BaseView, VS>(protected val view: V) : MviBaseP
 
     private fun inject() {
         when (this) {
-//            is RecipesListPresenter -> injector.inject(this)
+            is ExhibitionsPresenter -> injector.inject(this)
 //            is RecipeDetailsPresenter -> injector.inject(this)
         }
     }

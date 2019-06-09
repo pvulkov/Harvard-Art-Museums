@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.harvard.art.museums">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
+
     <application
         android:name="com.harvard.art.museums.features.main.HelloWorldApp"
         android:allowBackup="true"
@@ -10,9 +13,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="com.harvard.art.museums.features.main.MainActivity">
+        <activity android:name="com.harvard.art.museums.features.main.ExhibitionsActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.VIEW" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>

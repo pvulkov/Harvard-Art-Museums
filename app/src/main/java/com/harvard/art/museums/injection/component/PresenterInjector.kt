@@ -1,7 +1,7 @@
 package com.harvard.art.museums.injection.component
 
 import com.harvard.art.museums.base.BaseView
-import com.harvard.art.museums.features.main.HelloWorldPresenter
+import com.harvard.art.museums.features.main.ExhibitionsPresenter
 import com.harvard.art.museums.injection.module.ContextModule
 import com.harvard.art.museums.injection.module.NetworkModule
 import dagger.BindsInstance
@@ -20,7 +20,7 @@ interface PresenterInjector {
      * Injects required dependencies into the specified Presenter.
      * @param presenter Presenter into which to inject the dependencies
      */
-    fun inject(presenter: HelloWorldPresenter)
+    fun inject(presenter: ExhibitionsPresenter)
 
 //    fun inject(presenter: RecipeDetailsPresenter)
 

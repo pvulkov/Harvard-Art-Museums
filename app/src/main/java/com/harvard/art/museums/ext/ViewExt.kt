@@ -1,4 +1,4 @@
-package com.harvard.art.museums.features.main
+package com.harvard.art.museums.ext
 
 import android.view.View
 

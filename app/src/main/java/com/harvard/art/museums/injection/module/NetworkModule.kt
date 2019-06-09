@@ -2,12 +2,14 @@ package com.harvard.art.museums.injection.module
 
 import android.content.Context
 import com.harvard.art.museums.BASE_URL
+import com.harvard.art.museums.BuildConfig
 import com.harvard.art.museums.network.HamApi
 import dagger.Module
 import dagger.Provides
 import dagger.Reusable
 import io.reactivex.schedulers.Schedulers
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
@@ -43,11 +45,11 @@ object NetworkModule {
     @JvmStatic
     internal fun provideRetrofitInterface(okHttpClient: OkHttpClient): Retrofit {
         return Retrofit.Builder()
-            .baseUrl(BASE_URL)
-            .client(okHttpClient)
-            .addConverterFactory(GsonConverterFactory.create())
-            .addCallAdapterFactory(RxJava2CallAdapterFactory.createWithScheduler(Schedulers.io()))
-            .build()
+                .baseUrl(BASE_URL)
+                .client(okHttpClient)
+                .addConverterFactory(GsonConverterFactory.create())
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.createWithScheduler(Schedulers.io()))
+                .build()
     }
 
 
@@ -63,13 +65,19 @@ object NetworkModule {
     @JvmStatic
     @Singleton
     internal fun provideOkHttpClient(context: Context): OkHttpClient {
-        return OkHttpClient.Builder()
+        val httpClient = OkHttpClient.Builder()
 //            .addInterceptor { chain ->
 //                var request = chain.request()
 //                request = request.newBuilder().header("Cache-Control", "public, max-age=$SESSION_CACHE_TIME").build()
 //                chain.proceed(request)
 //            }
-            .build()
+
+
+        if (BuildConfig.DEBUG)
+            httpClient.addInterceptor(HttpLoggingInterceptor().apply { level = HttpLoggingInterceptor.Level.BODY })
+
+
+        return httpClient.build()
     }
 
 }
