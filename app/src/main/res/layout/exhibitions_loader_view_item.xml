@@ -1,19 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:card_view="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginStart="1dp"
     android:layout_marginTop="5dp"
-    android:layout_marginEnd="1dp"
-    card_view:cardCornerRadius="5dp"
-    card_view:cardElevation="5dp"
-    card_view:cardPreventCornerOverlap="false"
-    card_view:cardUseCompatPadding="true"
-    tools:context="com.harvard.art.museums.features.exhibitions.ExhibitionsActivity">
+    android:background="@android:color/transparent"
+    android:layout_marginEnd="1dp">
 
-    <!-- TODO (pvalkov) Customize progress bar -->
 
     <ProgressBar
         android:layout_width="40dp"
@@ -21,6 +14,7 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="10dp"
         android:indeterminate="true"
-        android:indeterminateTint="#FF00FF" />
+        android:indeterminateDrawable="@drawable/image_progress_animation"
+        android:indeterminateTint="@color/colorPrimary" />
 
-</androidx.cardview.widget.CardView>
+</FrameLayout>

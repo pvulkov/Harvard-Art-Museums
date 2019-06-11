@@ -51,22 +51,25 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingEnd="16dp"
-            android:weightSum="5">
+            android:weightSum="3">
 
             <ImageButton
+                android:id="@+id/menuExhibitions"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:tint="@color/colorPrimary"
-                app:srcCompat="@drawable/baseline_file_copy_black_24dp" />
+                android:scaleType="centerInside"
+                android:adjustViewBounds="true"
+                android:src="@drawable/ic_menu_event" />
 
-            <ImageButton
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                app:srcCompat="@drawable/baseline_file_copy_black_24dp" />
+            <!--<ImageButton-->
+                <!--android:layout_width="0dp"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_weight="1"-->
+                <!--android:background="?attr/selectableItemBackgroundBorderless"-->
+                <!--app:srcCompat="@drawable/baseline_file_copy_black_24dp" />-->
 
             <ImageButton
                 android:layout_width="0dp"
@@ -74,19 +77,23 @@
                 android:layout_weight="1"
                 android:background="@android:color/transparent" />
 
-            <ImageButton
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                app:srcCompat="@drawable/baseline_file_copy_black_24dp" />
+            <!--<ImageButton-->
+                <!--android:layout_width="0dp"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_weight="1"-->
+                <!--android:background="?attr/selectableItemBackgroundBorderless"-->
+                <!--app:srcCompat="@drawable/baseline_file_copy_black_24dp" />-->
 
             <ImageButton
+                android:id="@+id/menuObjects"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="?attr/selectableItemBackgroundBorderless"
-                app:srcCompat="@drawable/baseline_file_copy_black_24dp" />
+                android:tint="@color/colorPrimary"
+                android:scaleType="centerInside"
+                android:adjustViewBounds="true"
+                android:src="@drawable/ic_menu_object" />
         </LinearLayout>
 
     </com.google.android.material.bottomappbar.BottomAppBar>

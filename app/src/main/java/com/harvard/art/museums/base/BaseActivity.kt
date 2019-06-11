@@ -5,6 +5,7 @@ import android.os.Bundle
 import com.hannesdorfmann.mosby3.mvi.MviActivity
 import com.hannesdorfmann.mosby3.mvi.MviPresenter
 import com.hannesdorfmann.mosby3.mvp.MvpView
+import io.reactivex.disposables.CompositeDisposable
 
 /**
  * BaseActivity providing required methods and presenter instantiation and calls.
@@ -14,14 +15,13 @@ abstract class BaseActivity<V : MvpView, P : MviPresenter<V, *>> : MviActivity<V
 
     protected lateinit var presenter: P
 
-    private var creationTimeDelta = 0L
+    protected val disposable by lazy { CompositeDisposable() }
 
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        creationTimeDelta = System.currentTimeMillis()
+//    override fun onCreate(savedInstanceState: Bundle?) {
+//        super.onCreate(savedInstanceState)
 //        presenter = instantiatePresenter()
-    }
+//    }
 
 
     /**
@@ -31,6 +31,18 @@ abstract class BaseActivity<V : MvpView, P : MviPresenter<V, *>> : MviActivity<V
 
     override fun getContext(): Context {
         return this
+    }
+
+    override fun onStop() {
+        super.onStop()
+        if (!disposable.isDisposed)
+            disposable.clear()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        if (!disposable.isDisposed)
+            disposable.dispose()
     }
 
 

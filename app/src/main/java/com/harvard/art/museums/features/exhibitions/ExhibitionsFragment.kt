@@ -10,28 +10,19 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.harvard.art.museums.R
 import com.harvard.art.museums.base.BaseFragment
-import com.harvard.art.museums.ext.visible
-import com.harvard.art.museums.features.exhibitions.ExhibitionsViewState.*
 import com.harvard.art.museums.features.exhibitions.ExhibitionsViewState.State.*
 
 import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.PublishSubject
-import kotlinx.android.synthetic.main.activity_exibitions.*
+import kotlinx.android.synthetic.main.fragment_exibitions.*
 import com.harvard.art.museums.features.exhibitions.ExhibitionsPresenter.ExhibitionsView as ExhView
 
 
-class ExhibitionsActivity : BaseFragment<ExhView, ExhibitionsPresenter>(), ExhView {
+class ExhibitionsFragment : BaseFragment<ExhView, ExhibitionsPresenter>(), ExhView {
 
     private val trigger: PublishSubject<Boolean> = PublishSubject.create<Boolean>()
     private val exhibitionsAdapter = ExhibitionsAdapter()
-
-//    override fun onCreate(savedInstanceState: Bundle?) {
-//        super.onCreate(savedInstanceState)
-//        setContentView(R.layout.activity_exibitions)
-//        initUI()
-//
-//    }
 
     override fun onResume() {
         super.onResume()
@@ -40,7 +31,7 @@ class ExhibitionsActivity : BaseFragment<ExhView, ExhibitionsPresenter>(), ExhVi
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         super.onCreateView(inflater, container, savedInstanceState)
-        return inflater.inflate(R.layout.activity_exibitions, container, false)
+        return inflater.inflate(R.layout.fragment_exibitions, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) = super.onViewCreated(view, savedInstanceState).also { initUI() }

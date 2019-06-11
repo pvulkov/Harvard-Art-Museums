@@ -5,6 +5,7 @@ import com.harvard.art.museums.base.BasePresenter
 import com.harvard.art.museums.base.BaseView
 import com.harvard.art.museums.data.pojo.Exhibitions
 import com.harvard.art.museums.ext.isValidUrl
+import com.harvard.art.museums.ext.setData
 import com.harvard.art.museums.ext.toExhibitionViewItem
 import com.harvard.art.museums.ext.trimLoaders
 import com.harvard.art.museums.features.exhibitions.ExhibitionsPresenter.ExhibitionsView
@@ -91,8 +92,7 @@ class ExhibitionsPresenter(view: ExhibitionsView) : BasePresenter<ExhibitionsVie
 
                 val curList = previousState.exhibitionItems.trimLoaders()
                 val newList = mutableListOf<ExhibitionViewItem>()
-                newList.addAll(curList)
-                newList.addAll(currentState.exhibitionsList)
+                newList.setData(curList.plus(currentState.exhibitionsList))
 
                 Log.d("DEBUG", "DataState  items size -->  ${newList.size}")
                 previousState
