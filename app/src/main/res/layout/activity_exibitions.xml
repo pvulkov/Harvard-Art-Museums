@@ -1,45 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_content"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context="com.harvard.art.museums.features.main.ExhibitionsActivity">
+    tools:context="com.harvard.art.museums.features.exhibitions.ExhibitionsActivity">
 
-    <Button
-        android:id="@+id/helloWorldButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:layout_marginBottom="10dp"
-        android:text="Show Greeting"/>
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/helloWorldTextview"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:textSize="18dp"
-            android:layout_gravity="center_horizontal" />
 
-        <ProgressBar
-            android:id="@+id/loadingIndicator"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:visibility="gone" />
+    <!--<FrameLayout-->
+        <!--android:id="@+id/testView"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_below="@+id/helloWorldButton">-->
 
-    </FrameLayout>
+        <!--<TextView-->
+            <!--android:id="@+id/helloWorldTextview"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_gravity="center_horizontal"-->
+            <!--android:layout_marginTop="10dp"-->
+            <!--android:textSize="18dp" />-->
+
+        <!--<ProgressBar-->
+            <!--android:id="@+id/loadingIndicator"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_gravity="center_horizontal"-->
+            <!--android:visibility="gone" />-->
+
+    <!--</FrameLayout>-->
 
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/exhibitionsView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:dividerHeight="0dp"/>
+        android:layout_below="@+id/testView"
+        android:dividerHeight="0dp" />
 
-</LinearLayout>
+
+
+</FrameLayout>

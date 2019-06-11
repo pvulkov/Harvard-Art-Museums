@@ -20,8 +20,22 @@ interface HamApi {
     @GET("exhibition")
     fun getExhibitions(
         @Query("venue") venue: String = "HAM",
+        @Query("sort") sort: String = "chronological",
+        @Query("sortorder") sortorder: String = "desc",
+        @Query("status") status: String = "upcoming,current,upcoming",
         @Query("apikey") apikey: String = API_KEY
     ): Observable<Exhibitions>
 
+
+    @GET
+    fun getNextExhibitionsPage(
+            @Url url: String
+//            ,
+//            @Query("venue") venue: String = "HAM",
+//            @Query("sort") sort: String = "chronological",
+//            @Query("sortorder") sortorder: String = "desc",
+//            @Query("status") status: String = "upcoming,current,upcoming",
+//            @Query("apikey") apikey: String = API_KEY
+    ): Observable<Exhibitions>
 
 }

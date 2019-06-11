@@ -1,7 +1,7 @@
 package com.harvard.art.museums.injection.component
 
 import com.harvard.art.museums.base.BaseView
-import com.harvard.art.museums.features.main.ExhibitionsPresenter
+import com.harvard.art.museums.features.exhibitions.ExhibitionsPresenter
 import com.harvard.art.museums.injection.module.ContextModule
 import com.harvard.art.museums.injection.module.NetworkModule
 import dagger.BindsInstance

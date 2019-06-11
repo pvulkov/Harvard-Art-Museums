@@ -1,0 +1,6 @@
+<resources>
+
+    <dimen name="topNavigationBarSite">48dp</dimen>
+    <dimen name="bottomNavigationBarSite">48dp</dimen>
+
+</resources>
