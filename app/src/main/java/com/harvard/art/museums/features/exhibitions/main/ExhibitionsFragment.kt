@@ -1,4 +1,4 @@
-package com.harvard.art.museums.features.exhibitions
+package com.harvard.art.museums.features.exhibitions.main
 
 import android.content.Intent
 import android.os.Bundle
@@ -11,21 +11,17 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.harvard.art.museums.R
 import com.harvard.art.museums.base.BaseFragment
-import com.harvard.art.museums.ext.generateShareIntent
-import com.harvard.art.museums.ext.generateViewIntent
-import com.harvard.art.museums.ext.hide
-import com.harvard.art.museums.ext.show
-import com.harvard.art.museums.features.exhibitions.ExhibitionsViewState.State.*
-import com.harvard.art.museums.features.exhibitions.data.ExhibitionViewItem
+import com.harvard.art.museums.ext.*
+import com.harvard.art.museums.features.exhibitions.main.ExhibitionsViewState.State.*
 import com.harvard.art.museums.features.exhibitions.data.ViewAction
 import com.harvard.art.museums.features.exhibitions.data.ViewItemAction
-import io.reactivex.Observable
+import com.harvard.art.museums.features.exhibitions.details.ExhibitionsDetailsActivity
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.PublishSubject
 import kotlinx.android.synthetic.main.fragment_exibitions.*
 import java.util.concurrent.TimeUnit
-import com.harvard.art.museums.features.exhibitions.ExhibitionsPresenter.ExhibitionsView as ExhView
+import com.harvard.art.museums.features.exhibitions.main.ExhibitionsPresenter.ExhibitionsView as ExhView
 
 
 class ExhibitionsFragment : BaseFragment<ExhView, ExhibitionsPresenter>(), ExhView {
@@ -74,6 +70,7 @@ class ExhibitionsFragment : BaseFragment<ExhView, ExhibitionsPresenter>(), ExhVi
 
     private fun renderErrorState(state: ExhibitionsViewState) {
         Log.d("DEBUG", "error")
+        state.error?.printStackTrace()
 //        loadingIndicator.visible = false
 //        helloWorldTextview.visible = false
         //Toast.makeText(this, "error ${errorState.error}", Toast.LENGTH_LONG).show()
@@ -90,7 +87,7 @@ class ExhibitionsFragment : BaseFragment<ExhView, ExhibitionsPresenter>(), ExhVi
                     .also { startActivity(it) }
 
 
-            ViewAction.DETAILS -> throw Exception("Unhandled view action state")
+            ViewAction.DETAILS -> startActivityByClass(ExhibitionsDetailsActivity::class.java)
             else -> throw Exception("Unhandled view action state")
         }
 

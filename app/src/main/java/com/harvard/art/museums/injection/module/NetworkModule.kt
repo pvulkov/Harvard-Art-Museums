@@ -3,7 +3,7 @@ package com.harvard.art.museums.injection.module
 import android.content.Context
 import com.harvard.art.museums.BASE_URL
 import com.harvard.art.museums.BuildConfig
-import com.harvard.art.museums.network.HamApi
+import com.harvard.art.museums.data.network.HamApi
 import dagger.Module
 import dagger.Provides
 import dagger.Reusable
@@ -24,9 +24,9 @@ object NetworkModule {
 
 
     /**
-     * Provides the ASOS service implementation.
+     * Provides the HAM service implementation.
      * @param retrofit the Retrofit object used to instantiate the service
-     * @return the ASOS service implementation.
+     * @return the HAM service implementation.
      */
     @Provides
     @Reusable

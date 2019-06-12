@@ -1,4 +1,4 @@
-package com.harvard.art.museums.network
+package com.harvard.art.museums.data.network
 
 import com.harvard.art.museums.API_KEY
 import com.harvard.art.museums.data.pojo.Exhibitions

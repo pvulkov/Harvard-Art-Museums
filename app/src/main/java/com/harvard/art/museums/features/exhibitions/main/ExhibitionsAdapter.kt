@@ -1,4 +1,4 @@
-package com.harvard.art.museums.features.exhibitions
+package com.harvard.art.museums.features.exhibitions.main
 
 import android.view.LayoutInflater
 import android.view.View

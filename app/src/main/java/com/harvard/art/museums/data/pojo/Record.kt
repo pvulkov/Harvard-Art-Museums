@@ -3,7 +3,7 @@ package com.harvard.art.museums.data.pojo
 data class Record(
         val begindate: String,
         val color: Any,
-        val description: Any,
+        val description: String,
         val enddate: String,
         val exhibitionid: Int,
         val id: Int,
@@ -12,7 +12,7 @@ data class Record(
         val lastupdate: String,
         val poster: Poster,
         val primaryimageurl: String? = null,
-        val shortdescription: Any,
+        val shortdescription: String,
         val temporalorder: Int,
         val title: String,
         val venues: List<Venue>,

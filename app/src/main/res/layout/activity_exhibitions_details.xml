@@ -6,7 +6,7 @@
     android:fitsSystemWindows="true"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.harvard.art.museums.features.main.MainActivity">
+    tools:context="com.harvard.art.museums.features.home.HomeActivity">
 
 
     <com.google.android.material.appbar.AppBarLayout

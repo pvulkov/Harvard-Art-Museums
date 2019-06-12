@@ -1,4 +1,4 @@
-package com.harvard.art.museums.features.exhibitions
+package com.harvard.art.museums.features.exhibitions.main
 
 import android.util.Log
 import com.harvard.art.museums.base.BasePresenter
@@ -8,7 +8,7 @@ import com.harvard.art.museums.ext.isValidUrl
 import com.harvard.art.museums.ext.setData
 import com.harvard.art.museums.ext.toExhibitionViewItem
 import com.harvard.art.museums.ext.trimLoaders
-import com.harvard.art.museums.features.exhibitions.ExhibitionsPresenter.ExhibitionsView
+import com.harvard.art.museums.features.exhibitions.main.ExhibitionsPresenter.ExhibitionsView
 import com.harvard.art.museums.features.exhibitions.data.ExhibitionViewItem
 import com.harvard.art.museums.features.exhibitions.data.ViewItemAction
 import com.harvard.art.museums.features.exhibitions.data.ViewItemType
@@ -16,8 +16,8 @@ import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import java.util.concurrent.TimeUnit
-import com.harvard.art.museums.features.exhibitions.ExhibitionsActionState as ExActionState
-import com.harvard.art.museums.features.exhibitions.ExhibitionsViewState as ExViewState
+import com.harvard.art.museums.features.exhibitions.main.ExhibitionsActionState as ExActionState
+import com.harvard.art.museums.features.exhibitions.main.ExhibitionsViewState as ExViewState
 
 
 class ExhibitionsPresenter(view: ExhibitionsView) : BasePresenter<ExhibitionsView, ExViewState>(view) {

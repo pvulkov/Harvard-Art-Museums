@@ -1,9 +1,9 @@
-package com.harvard.art.museums.features.main
+package com.harvard.art.museums.features.home
 
 import androidx.fragment.app.Fragment
 
 
-data class MainViewState(
+data class HomeViewState(
         val state: State = State.INIT,
         val data: Fragment? = null,
         val tag: String? = null,
@@ -17,7 +17,7 @@ data class MainViewState(
         return Builder(this)
     }
 
-    class Builder(mainViewState: MainViewState) {
+    class Builder(mainViewState: HomeViewState) {
 
         private var state: State = mainViewState.state
         private var data: Fragment? = mainViewState.data
@@ -41,8 +41,8 @@ data class MainViewState(
         }
 
 
-        fun build(): MainViewState =
-                MainViewState(state, data, tag, error)
+        fun build(): HomeViewState =
+                HomeViewState(state, data, tag, error)
     }
 }
 

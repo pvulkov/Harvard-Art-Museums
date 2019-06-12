@@ -5,13 +5,14 @@ apply plugin: 'kotlin-kapt'
 
 ext {
     supportLibraryVersion = '1.0.0-beta01'
-    mosbyVersion = "3.1.0"
+    mosbyVersion = "3.1.1"
     rxBindingVersion = "2.1.1"
     rxJavaVersion = "2.2.7"
     rxAndroidVersion = "2.1.0"
     timberVersion = "4.6.0"
     retrofitVersion = "2.5.0"
     gsonConverterVersion = "2.4.0"
+    roomVersion = "2.0.0-alpha1"
 }
 
 android {
@@ -23,6 +24,13 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = ["room.schemaLocation": "$projectDir/schemas".toString()]
+            }
+        }
+
     }
 
     buildTypes {
@@ -63,14 +71,20 @@ dependencies {
     //    implementation "com.squareup.retrofit2:converter-moshi:2.5.0"
 
     // Dagger 2
-    implementation "com.google.dagger:dagger:2.15"
+    implementation "com.google.dagger:dagger:2.16"
     kapt "com.google.dagger:dagger-compiler:2.15"
-    kapt "com.google.dagger:dagger-android-processor:2.15"
+    kapt "com.google.dagger:dagger-android-processor:2.16"
     compileOnly "org.glassfish:javax.annotation:3.1.1"
 
     // Mosby
     implementation "com.hannesdorfmann.mosby3:mvi:$mosbyVersion"
 
+    // Room components
+    implementation "android.arch.persistence.room:runtime:$roomVersion"
+    implementation "android.arch.persistence.room:rxjava2:$roomVersion"
+    kapt "androidx.room:room-compiler:$roomVersion"
+        implementation 'androidx.appcompat:appcompat:1.1.0-alpha1'
+//    androidTestImplementation "android.arch.persistence.room:testing:$rootProject.roomVersion"
 
     // RxBinding
     implementation "com.jakewharton.rxbinding2:rxbinding-kotlin:$rxBindingVersion"

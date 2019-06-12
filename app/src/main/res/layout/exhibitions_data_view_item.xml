@@ -11,7 +11,7 @@
     card_view:cardElevation="5dp"
     card_view:cardPreventCornerOverlap="false"
     card_view:cardUseCompatPadding="true"
-    tools:context="com.harvard.art.museums.features.exhibitions.ExhibitionsFragment">
+    tools:context="com.harvard.art.museums.features.exhibitions.main.ExhibitionsFragment">
 
     <LinearLayout
         android:layout_width="match_parent"

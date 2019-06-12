@@ -1,18 +1,18 @@
-package com.harvard.art.museums.features.main
+package com.harvard.art.museums.features.home
 
 import android.util.Log
 import com.harvard.art.museums.base.BasePresenter
 import com.harvard.art.museums.base.BaseView
-import com.harvard.art.museums.features.exhibitions.ExhibitionsFragment
-import com.harvard.art.museums.features.main.MainPresenter.MainView
-import com.harvard.art.museums.features.main.data.NavigationAction
+import com.harvard.art.museums.features.exhibitions.main.ExhibitionsFragment
+import com.harvard.art.museums.features.home.HomePresenter.HomeView
+import com.harvard.art.museums.features.home.data.NavigationAction
 import com.harvard.art.museums.features.objects.ObjectsFragment
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import java.util.concurrent.TimeUnit
 
-class MainPresenter(view: MainView) : BasePresenter<MainView, MainViewState>(view) {
+class HomePresenter(view: HomeView) : BasePresenter<HomeView, HomeViewState>(view) {
 
 
     override fun bindIntents() {
@@ -26,7 +26,7 @@ class MainPresenter(view: MainView) : BasePresenter<MainView, MainViewState>(vie
 //                .observeOn(AndroidSchedulers.mainThread())
 
 
-        val navigationState: Observable<MainViewState> = intent(MainView::navigationEvent)
+        val navigationState: Observable<HomeViewState> = intent(HomeView::navigationEvent)
                 .subscribeOn(Schedulers.io())
                 .debounce(400, TimeUnit.MILLISECONDS)
                 .switchMap { toActionState(it) }
@@ -39,8 +39,8 @@ class MainPresenter(view: MainView) : BasePresenter<MainView, MainViewState>(vie
 //                navigationState
 //        )
 
-        val initState = MainViewState(
-                MainViewState.State.INIT,
+        val initState = HomeViewState(
+                HomeViewState.State.INIT,
                 ExhibitionsFragment(),
                 NavigationAction.EXHIBITIONS.tag
         )
@@ -57,33 +57,33 @@ class MainPresenter(view: MainView) : BasePresenter<MainView, MainViewState>(vie
 //        subscribeViewState(stateObservable, ExhibitionsPresenter.ExhibitionsView::render)
 
 
-        subscribeViewState(stateObservable, MainView::render)
+        subscribeViewState(stateObservable, HomeView::render)
     }
 
 
-    private fun viewStateReducer(previousState: MainViewState, currentState: MainViewState): MainViewState {
+    private fun viewStateReducer(previousState: HomeViewState, currentState: HomeViewState): HomeViewState {
 
         //Nothing to do here
         return currentState
     }
 
 
-    private fun toActionState(action: NavigationAction): Observable<MainViewState> {
+    private fun toActionState(action: NavigationAction): Observable<HomeViewState> {
 
         val state = when (action) {
-            NavigationAction.EXHIBITIONS -> MainViewState(MainViewState.State.NAVIGATION, ExhibitionsFragment(), action.tag, null)
-            NavigationAction.OBJECTS -> MainViewState(MainViewState.State.NAVIGATION, ObjectsFragment(), action.tag, null)
+            NavigationAction.EXHIBITIONS -> HomeViewState(HomeViewState.State.NAVIGATION, ExhibitionsFragment(), action.tag, null)
+            NavigationAction.OBJECTS -> HomeViewState(HomeViewState.State.NAVIGATION, ObjectsFragment(), action.tag, null)
         }
 
         Log.d("DEBUG", "action >> " + action)
         return Observable.just(state)
     }
 
-    interface MainView : BaseView {
+    interface HomeView : BaseView {
 
         fun navigationEvent(): Observable<NavigationAction>
 
-        fun render(state: MainViewState)
+        fun render(state: HomeViewState)
     }
 
 }

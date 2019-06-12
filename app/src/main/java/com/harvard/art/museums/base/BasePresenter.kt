@@ -1,12 +1,13 @@
 package com.harvard.art.museums.base
 
 import com.hannesdorfmann.mosby3.mvi.MviBasePresenter
-import com.harvard.art.museums.features.exhibitions.ExhibitionsPresenter
+import com.harvard.art.museums.features.exhibitions.main.ExhibitionsPresenter
 import com.harvard.art.museums.injection.component.DaggerPresenterInjector
 import com.harvard.art.museums.injection.component.PresenterInjector
 import com.harvard.art.museums.injection.module.ContextModule
 import com.harvard.art.museums.injection.module.NetworkModule
-import com.harvard.art.museums.network.HamApi
+import com.harvard.art.museums.data.network.HamApi
+import com.harvard.art.museums.injection.module.DatabaseModule
 import javax.inject.Inject
 
 /**
@@ -22,6 +23,7 @@ abstract class BasePresenter<V : BaseView, VS>(protected val view: V) : MviBaseP
             .baseView(view)
             .contextModule(ContextModule)
             .networkModule(NetworkModule)
+            .databaseModule(DatabaseModule)
             .build()
 
     init {
