@@ -9,12 +9,16 @@ import com.harvard.art.museums.ext.setData
 import com.harvard.art.museums.ext.toExhibitionViewItem
 import com.harvard.art.museums.ext.trimLoaders
 import com.harvard.art.museums.features.exhibitions.ExhibitionsPresenter.ExhibitionsView
+import com.harvard.art.museums.features.exhibitions.data.ExhibitionViewItem
+import com.harvard.art.museums.features.exhibitions.data.ViewItemAction
+import com.harvard.art.museums.features.exhibitions.data.ViewItemType
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import java.util.concurrent.TimeUnit
 import com.harvard.art.museums.features.exhibitions.ExhibitionsActionState as ExActionState
 import com.harvard.art.museums.features.exhibitions.ExhibitionsViewState as ExViewState
+
 
 class ExhibitionsPresenter(view: ExhibitionsView) : BasePresenter<ExhibitionsView, ExViewState>(view) {
 
@@ -33,6 +37,7 @@ class ExhibitionsPresenter(view: ExhibitionsView) : BasePresenter<ExhibitionsVie
         val loadMoreState: Observable<ExActionState> = intent(ExhibitionsView::loadMoreEvent)
                 .subscribeOn(Schedulers.io())
                 .debounce(200, TimeUnit.MILLISECONDS)
+                .map { it.item }
                 .filter { it.next.isValidUrl() }
                 .switchMap { loadMoreData(it.next!!) }
                 .observeOn(AndroidSchedulers.mainThread())
@@ -70,7 +75,9 @@ class ExhibitionsPresenter(view: ExhibitionsView) : BasePresenter<ExhibitionsVie
 
     private fun loadMoreData(url: String): Observable<ExActionState> {
         Log.d("DEBUG", "Load MORE.. " + url)
-        return getNextCollection(url)
+        return Observable.just(url)
+                .filter { it.isValidUrl() }
+                .flatMap { getNextCollection(it) }
                 .map { toExhibitionItems(it) }
                 .map<ExActionState> { ExActionState.DataState(it) }
                 .startWith(ExActionState.LoadingState)
@@ -84,7 +91,7 @@ class ExhibitionsPresenter(view: ExhibitionsView) : BasePresenter<ExhibitionsVie
             ExActionState.LoadingState -> {
                 previousState
                         .copy()
-                        .state(ExViewState.State.INIT_DATA)
+                        .state(ExViewState.State.LOADING)
                         .error(null)
                         .build()
             }
@@ -109,6 +116,22 @@ class ExhibitionsPresenter(view: ExhibitionsView) : BasePresenter<ExhibitionsVie
                         .error(currentState.error)
                         .build()
             }
+
+            is ExActionState.ShareState -> {
+                previousState
+                        .copy()
+                        .state(ExViewState.State.SHARE)
+                        .intent(currentState.intent)
+                        .build()
+            }
+
+            is ExActionState.OpenLinkState -> {
+                previousState
+                        .copy()
+                        .state(ExViewState.State.OPEN_LINK)
+                        .intent(currentState.intent)
+                        .build()
+            }
         }
     }
 
@@ -131,7 +154,7 @@ class ExhibitionsPresenter(view: ExhibitionsView) : BasePresenter<ExhibitionsVie
 
         fun initDataEvent(): Observable<Boolean>
 
-        fun loadMoreEvent(): Observable<ExhibitionViewItem>
+        fun loadMoreEvent(): Observable<ViewItemAction>
 
         fun render(state: ExViewState)
 

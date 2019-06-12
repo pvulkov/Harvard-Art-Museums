@@ -7,7 +7,7 @@
     android:layout_marginStart="1dp"
     android:layout_marginTop="5dp"
     android:layout_marginEnd="1dp"
-    card_view:cardCornerRadius="5dp"
+    card_view:cardCornerRadius="2dp"
     card_view:cardElevation="5dp"
     card_view:cardPreventCornerOverlap="false"
     card_view:cardUseCompatPadding="true"
@@ -41,7 +41,6 @@
                 android:paddingEnd="10dp"
                 android:paddingBottom="4dp"
                 android:singleLine="true"
-                android:text="asdjhalksdhalksdalksjdlkajsdkl aksdhakjsdh kjhakj sha asd akjdhsjk a"
                 android:textColor="#FFFFFF"
                 android:textSize="14sp" />
 
@@ -68,12 +67,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
+            android:maxLines="3"
             android:ellipsize="end"
             android:paddingStart="10dp"
             android:paddingTop="4dp"
             android:paddingEnd="10dp"
             android:paddingBottom="4dp"
-            android:singleLine="true"
             android:textColor="#AA222222"
             android:textSize="14sp" />
 
@@ -82,7 +81,6 @@
             android:id="@+id/ahExpandedLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/ahPriceComparisonLayout"
             android:orientation="vertical"
             android:visibility="visible">
 
@@ -92,7 +90,7 @@
                 android:layout_marginStart="2dp"
                 android:layout_marginTop="7dp"
                 android:layout_marginEnd="2dp"
-                android:background="@color/blue" />
+                android:background="@color/colorPrimary" />
 
 
             <LinearLayout
@@ -103,20 +101,20 @@
                 android:weightSum="3">
 
                 <Button
-                    android:id="@+id/ahHistoryActionCopy"
+                    android:id="@+id/actionShare"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
                     android:layout_weight="1"
                     android:background="#FFFFFFFF"
                     android:drawableEnd="@drawable/baseline_file_copy_black_24dp"
-                    android:drawableTint="@color/blue"
+                    android:drawableTint="@color/colorPrimary"
                     android:padding="2dp"
-                    android:text="open in Web"
-                    android:textColor="@color/blue"
-                    android:textStyle="bold" />
+                    android:text="@string/share_text"
+                    android:textColor="@color/colorPrimary"
+                    android:textStyle="normal" />
 
                 <Button
-                    android:id="@+id/ahHistoryActionEdit"
+                    android:id="@+id/actionOpenWeb"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
                     android:layout_marginStart="1dp"
@@ -125,13 +123,13 @@
                     android:background="#FFFFFFFF"
                     android:drawableEnd="@drawable/baseline_file_copy_black_24dp"
                     android:drawableTint="@color/blue"
-                    android:text="Bookmark"
+                    android:text="@string/open_web_text"
                     android:textColor="@color/blue"
                     android:textStyle="bold" />
 
 
                 <Button
-                    android:id="@+id/ahHistoryActionDelete"
+                    android:id="@+id/actionDetails"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
                     android:layout_marginEnd="1dp"
@@ -141,7 +139,7 @@
                     android:drawableTint="@color/blue"
                     android:paddingStart="1dp"
                     android:paddingEnd="4dp"
-                    android:text="Details"
+                    android:text="@string/details_text"
                     android:textColor="@color/blue"
                     android:textStyle="bold" />
             </LinearLayout>

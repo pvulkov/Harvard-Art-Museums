@@ -8,11 +8,13 @@ data class Record(
         val exhibitionid: Int,
         val id: Int,
         val images: List<Image>,
+        val url: String,
         val lastupdate: String,
         val poster: Poster,
-        val primaryimageurl: String,
+        val primaryimageurl: String? = null,
         val shortdescription: Any,
         val temporalorder: Int,
         val title: String,
-        val venues: List<Venue>
+        val venues: List<Venue>,
+        val people: List<People>
 )

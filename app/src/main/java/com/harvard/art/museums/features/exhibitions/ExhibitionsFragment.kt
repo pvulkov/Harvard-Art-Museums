@@ -1,5 +1,6 @@
 package com.harvard.art.museums.features.exhibitions
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -10,12 +11,20 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.harvard.art.museums.R
 import com.harvard.art.museums.base.BaseFragment
+import com.harvard.art.museums.ext.generateShareIntent
+import com.harvard.art.museums.ext.generateViewIntent
+import com.harvard.art.museums.ext.hide
+import com.harvard.art.museums.ext.show
 import com.harvard.art.museums.features.exhibitions.ExhibitionsViewState.State.*
-
+import com.harvard.art.museums.features.exhibitions.data.ExhibitionViewItem
+import com.harvard.art.museums.features.exhibitions.data.ViewAction
+import com.harvard.art.museums.features.exhibitions.data.ViewItemAction
 import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.PublishSubject
 import kotlinx.android.synthetic.main.fragment_exibitions.*
+import java.util.concurrent.TimeUnit
 import com.harvard.art.museums.features.exhibitions.ExhibitionsPresenter.ExhibitionsView as ExhView
 
 
@@ -40,25 +49,26 @@ class ExhibitionsFragment : BaseFragment<ExhView, ExhibitionsPresenter>(), ExhVi
 
     override fun initDataEvent() = trigger.subscribeOn(Schedulers.io())
 
-    override fun loadMoreEvent(): Observable<ExhibitionViewItem> {
-        return exhibitionsAdapter.loadMoreEvent()
-    }
+    override fun loadMoreEvent() = exhibitionsAdapter.loadMoreEvent()
+
 
     override fun render(state: ExhibitionsViewState) {
         when (state.state) {
-            LOADING -> renderLoadingState()
+            INIT_DATA -> renderLoadingState()
             DATA -> renderDataState(state)
             ERROR -> renderErrorState(state)
         }
     }
 
     private fun renderLoadingState() {
-//        loadingIndicator.visible = true
-//        helloWorldTextview.visible = false
+        progressView.show()
+        exhibitionsView.hide()
     }
 
+
     private fun renderDataState(state: ExhibitionsViewState) {
-//        loadingIndicator.visible = false
+        progressView.hide()
+        exhibitionsView.show()
         exhibitionsAdapter.updateData(state.exhibitionItems)
     }
 
@@ -70,11 +80,34 @@ class ExhibitionsFragment : BaseFragment<ExhView, ExhibitionsPresenter>(), ExhVi
     }
 
 
+    private fun onEventReceived(action: ViewItemAction) {
+
+        when (action.action) {
+            ViewAction.SHARE -> generateShareIntent(action.item.exhibitionUrl!!)
+                    .also { startActivity(Intent.createChooser(it, "Share images to..")) }
+
+            ViewAction.WEB -> generateViewIntent(action.item.exhibitionUrl!!)
+                    .also { startActivity(it) }
+
+
+            ViewAction.DETAILS -> throw Exception("Unhandled view action state")
+            else -> throw Exception("Unhandled view action state")
+        }
+
+    }
+
     private fun initUI() {
         exhibitionsView.let {
             it.layoutManager = LinearLayoutManager(this.context)
             it.adapter = exhibitionsAdapter
             it.addItemDecoration(DividerItemDecoration(this.context, RecyclerView.HORIZONTAL))
         }
+
+        exhibitionsAdapter.viewEvents()
+                .subscribeOn(AndroidSchedulers.mainThread())
+                .throttleLatest(200, TimeUnit.MILLISECONDS)
+                .subscribe { onEventReceived(it) }
     }
+
+
 }

@@ -13,4 +13,15 @@
         android:layout_height="wrap_content"
         android:dividerHeight="0dp" />
 
+    <ProgressBar
+        android:id="@+id/progressView"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"
+        android:indeterminate="true"
+        android:indeterminateDrawable="@drawable/image_progress_animation"
+        android:indeterminateTint="@color/colorPrimary"
+        android:visibility="gone" />
+
 </FrameLayout>

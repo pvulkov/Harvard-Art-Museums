@@ -1,7 +1,7 @@
 package com.harvard.art.museums.ext
 
-import com.harvard.art.museums.features.exhibitions.ExhibitionViewItem
-import com.harvard.art.museums.features.exhibitions.ViewItemType
+import com.harvard.art.museums.features.exhibitions.data.ExhibitionViewItem
+import com.harvard.art.museums.features.exhibitions.data.ViewItemType
 
 
 fun <T> MutableList<T>.setData(data: List<T>) {

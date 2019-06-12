@@ -1,4 +1,9 @@
 <resources>
     <string name="app_name">Harvard Art Museums World</string>
-    <string name="greeting_loading_error">Error loading greeting</string>
+
+    <string name="details_text">Details</string>
+    <string name="open_web_text">Open Web</string>
+    <string name="share_text">Share</string>
+
+
 </resources>

@@ -2,8 +2,11 @@ package com.harvard.art.museums.ext
 
 import android.view.View
 
-var View.visible: Boolean
-    get() = visibility == View.VISIBLE
-    set(value) {
-        visibility = if(value) View.VISIBLE else View.GONE
-    }
+fun View.show() {
+    this.visibility = View.VISIBLE
+}
+
+
+fun View.hide() {
+    this.visibility = View.GONE
+}

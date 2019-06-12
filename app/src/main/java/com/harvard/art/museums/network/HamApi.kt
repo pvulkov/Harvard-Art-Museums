@@ -28,14 +28,19 @@ interface HamApi {
 
 
     @GET
-    fun getNextExhibitionsPage(
-            @Url url: String
-//            ,
-//            @Query("venue") venue: String = "HAM",
-//            @Query("sort") sort: String = "chronological",
-//            @Query("sortorder") sortorder: String = "desc",
-//            @Query("status") status: String = "upcoming,current,upcoming",
-//            @Query("apikey") apikey: String = API_KEY
+    fun getNextExhibitionsPage(@Url url: String): Observable<Exhibitions>
+
+
+
+    //https://github.com/harvardartmuseums/api-docs/blob/master/sections/image.md
+    @GET("exhibition")
+    fun getImages(
+            @Query("venue") venue: String = "HAM",
+            @Query("sort") sort: String = "chronological",
+            @Query("sortorder") sortorder: String = "desc",
+            @Query("status") status: String = "upcoming,current,upcoming",
+            @Query("apikey") apikey: String = API_KEY
     ): Observable<Exhibitions>
+
 
 }
