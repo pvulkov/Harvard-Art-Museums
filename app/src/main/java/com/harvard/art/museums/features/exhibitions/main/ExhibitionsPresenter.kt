@@ -13,6 +13,7 @@ import com.harvard.art.museums.features.exhibitions.main.ExhibitionsPresenter.Ex
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import java.lang.Exception
 import java.util.concurrent.TimeUnit
 import com.harvard.art.museums.features.exhibitions.main.ExhibitionsActionState as ExActionState
 import com.harvard.art.museums.features.exhibitions.main.ExhibitionsViewState as ExViewState
@@ -32,7 +33,6 @@ class ExhibitionsPresenter(view: ExhibitionsView) : BasePresenter<ExhibitionsVie
                 .observeOn(AndroidSchedulers.mainThread())
 
 
-        // Load more restaurants
         val loadMoreState: Observable<ExActionState> = intent(ExhibitionsView::loadMoreEvent)
                 .subscribeOn(Schedulers.io())
                 .debounce(200, TimeUnit.MILLISECONDS)
@@ -82,7 +82,6 @@ class ExhibitionsPresenter(view: ExhibitionsView) : BasePresenter<ExhibitionsVie
     }
 
 
-
     private fun viewStateReducer(previousState: ExViewState, currentState: ExActionState): ExViewState {
 
         return when (currentState) {
@@ -116,21 +115,7 @@ class ExhibitionsPresenter(view: ExhibitionsView) : BasePresenter<ExhibitionsVie
                         .build()
             }
 
-            is ExActionState.ShareState -> {
-                previousState
-                        .copy()
-                        .state(ExViewState.State.SHARE)
-                        .intent(currentState.intent)
-                        .build()
-            }
-
-            is ExActionState.OpenLinkState -> {
-                previousState
-                        .copy()
-                        .state(ExViewState.State.OPEN_LINK)
-                        .intent(currentState.intent)
-                        .build()
-            }
+            else -> throw  Exception("Unhabdled case instate reducer")
         }
     }
 
@@ -141,7 +126,7 @@ class ExhibitionsPresenter(view: ExhibitionsView) : BasePresenter<ExhibitionsVie
                 .also {
                     exhibitions.last().apply {
                         if (info.next.isValidUrl())
-                            it.add(ExhibitionViewItem(ViewItemType.LOADER, next = info.next))
+                            it.add(ExhibitionViewItem(ViewItemType.LOADER, exhibitionId = -1, next = info.next))
 
                     }
                 }

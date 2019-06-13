@@ -6,6 +6,7 @@ data class Record(
         val description: String,
         val enddate: String,
         val exhibitionid: Int,
+        val textiledescription: String? = null,
         val id: Int,
         val images: List<Image>? = null,
         val url: String,

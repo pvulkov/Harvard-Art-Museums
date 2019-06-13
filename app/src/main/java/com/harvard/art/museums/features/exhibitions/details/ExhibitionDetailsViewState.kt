@@ -1,16 +1,16 @@
 package com.harvard.art.museums.features.exhibitions.details
 
-import androidx.fragment.app.Fragment
+import com.harvard.art.museums.ext.setData
+import com.harvard.art.museums.features.exhibitions.data.ExhibitionDetailsViewItem
 
 
 data class ExhibitionDetailsViewState(
         val state: State = State.INIT,
-        val data: Fragment? = null,
-        val tag: String? = null,
+        val exhibitionsList: List<ExhibitionDetailsViewItem> = listOf(),
         val error: Throwable? = null
 ) {
 
-    enum class State { INIT, LOAD_MORE, DATA,  ERROR }
+    enum class State { INIT, LOAD_MORE, DATA, ERROR }
 
 
     fun copy(): Builder {
@@ -20,13 +20,12 @@ data class ExhibitionDetailsViewState(
     class Builder(mainViewState: ExhibitionDetailsViewState) {
 
         private var state: State = mainViewState.state
-        private var data: Fragment? = mainViewState.data
-        private var tag: String? = mainViewState.tag
+        private var exhibitionsList = mutableListOf<ExhibitionDetailsViewItem>()
         private var error: Throwable? = mainViewState.error
 
 
-        fun exhibitionsData(data: Fragment?): Builder {
-            this.data = data
+        fun exhibitionsData(data: List<ExhibitionDetailsViewItem>): Builder {
+            this.exhibitionsList.setData(data)
             return this
         }
 
@@ -42,7 +41,7 @@ data class ExhibitionDetailsViewState(
 
 
         fun build(): ExhibitionDetailsViewState =
-                ExhibitionDetailsViewState(state, data, tag, error)
+                ExhibitionDetailsViewState(state, exhibitionsList, error)
     }
 }
 

@@ -69,25 +69,32 @@ class ExhibitionsFragment : BaseFragment<ExhView, ExhibitionsPresenter>(), ExhVi
     }
 
     private fun renderErrorState(state: ExhibitionsViewState) {
-        Log.d("DEBUG", "error")
+        Log.d("DEBUG", "error.....")
         state.error?.printStackTrace()
 //        loadingIndicator.visible = false
-//        helloWorldTextview.visible = false
         //Toast.makeText(this, "error ${errorState.error}", Toast.LENGTH_LONG).show()
     }
 
 
+    //NOTE (pvalkov) handle click events that doesn't generate new state
     private fun onEventReceived(action: ViewItemAction) {
 
         when (action.action) {
             ViewAction.SHARE -> generateShareIntent(action.item.exhibitionUrl!!)
+                    //TODO (pvalkov) externalize text
                     .also { startActivity(Intent.createChooser(it, "Share images to..")) }
 
             ViewAction.WEB -> generateViewIntent(action.item.exhibitionUrl!!)
                     .also { startActivity(it) }
 
+            ViewAction.DETAILS -> {
 
-            ViewAction.DETAILS -> startActivityByClass(ExhibitionDetailsActivity::class.java)
+                val extras = Bundle()
+                extras.putInt("exhibitionId", action.item.exhibitionId)
+                generateActivityIntent(ExhibitionDetailsActivity::class.java, extras)
+                        .also { startActivity(it) }
+            }
+
             else -> throw Exception("Unhandled view action state")
         }
 

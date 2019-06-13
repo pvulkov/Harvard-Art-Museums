@@ -18,13 +18,6 @@ class HomePresenter(view: HomeView) : BasePresenter<HomeView, HomeViewState>(vie
     override fun bindIntents() {
 
 
-//        val helloWorldState: Observable<ExhibitionsViewState> = intent(ExhibitionsView::sayHelloWorldIntent)
-//                .subscribeOn(Schedulers.io())
-//                .debounce(400, TimeUnit.MILLISECONDS)
-//                .switchMap { ExhibitionsUseCase.loadInitialData(hamApi) }
-//                .doOnNext { Timber.d("Received new state: " + it) }
-//                .observeOn(AndroidSchedulers.mainThread())
-
 
         val navigationState: Observable<HomeViewState> = intent(HomeView::navigationEvent)
                 .subscribeOn(Schedulers.io())
@@ -52,9 +45,6 @@ class HomePresenter(view: HomeView) : BasePresenter<HomeView, HomeViewState>(vie
                     //TODO (pvalkov) implement crashlytics
                     it.printStackTrace()
                 }
-
-
-//        subscribeViewState(stateObservable, ExhibitionsPresenter.ExhibitionsView::render)
 
 
         subscribeViewState(stateObservable, HomeView::render)

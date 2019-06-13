@@ -2,6 +2,9 @@ package com.harvard.art.museums.ext
 
 import com.harvard.art.museums.data.pojo.ExhibitionRecord
 import com.harvard.art.museums.data.pojo.Exhibitions
+import com.harvard.art.museums.data.pojo.Info
+import com.harvard.art.museums.data.pojo.Record
+import com.harvard.art.museums.features.exhibitions.data.ExhibitionDetailsViewItem
 import com.harvard.art.museums.features.exhibitions.data.ExhibitionViewItem
 import com.harvard.art.museums.features.exhibitions.data.ViewItemType
 
@@ -21,6 +24,7 @@ fun ExhibitionRecord.toExhibitionViewItem(type: ViewItemType = ViewItemType.DATA
     return ExhibitionViewItem(
             type,
             title,
+            id,
             //TODO (pvalkov) provide default image url
             primaryimageurl ?: EMPTY,
             url,
@@ -28,6 +32,46 @@ fun ExhibitionRecord.toExhibitionViewItem(type: ViewItemType = ViewItemType.DATA
             getPeople()
     )
 }
+
+fun ExhibitionRecord.toExhibitionDetailsViewItem(type: ViewItemType = ViewItemType.DATA) : ExhibitionDetailsViewItem {
+    return ExhibitionDetailsViewItem(
+            type,
+            title,
+            id,
+            //TODO (pvalkov) provide default image url
+            primaryimageurl ?: EMPTY,
+            url,
+            textiledescription,
+            formatFromToDate(),
+            getPeople()
+    )
+}
+
+
+fun Record.toExhibitionRecord(info: Info): ExhibitionRecord {
+
+    return ExhibitionRecord(
+            id = this.id,
+            begindate = begindate,
+            color = color,
+            description = description,
+            enddate = enddate,
+            exhibitionid = exhibitionid,
+            textiledescription = textiledescription,
+            images = images?: listOf(),
+            url = url,
+            lastupdate = lastupdate,
+            poster = poster,
+            primaryimageurl = primaryimageurl,
+            shortdescription = shortdescription,
+            temporalorder = temporalorder,
+            title = title,
+            venues = venues?: listOf(),
+            people = people?: listOf(),
+            info = info
+    )
+}
+
 
 private fun ExhibitionRecord.formatFromToDate(): String {
 

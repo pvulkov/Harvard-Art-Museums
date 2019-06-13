@@ -5,6 +5,7 @@ import com.harvard.art.museums.ext.EMPTY
 data class ExhibitionViewItem(
         val type: ViewItemType = ViewItemType.DATA,
         val title: String? = EMPTY,
+        val exhibitionId: Int,
         val imageUrl: String = EMPTY,
         val exhibitionUrl: String? = EMPTY,
         val exhibitionFromTo: String? = EMPTY,
