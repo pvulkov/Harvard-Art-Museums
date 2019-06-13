@@ -1,6 +1,6 @@
 package com.harvard.art.museums.ext
 
-import com.harvard.art.museums.data.pojo.Record
+import com.harvard.art.museums.data.pojo.*
 import com.harvard.art.museums.features.exhibitions.data.ExhibitionViewItem
 import com.harvard.art.museums.features.exhibitions.data.ViewItemType
 
@@ -15,6 +15,30 @@ fun Record.toExhibitionViewItem(type: ViewItemType = ViewItemType.DATA): Exhibit
             url,
             formatFromToDate(),
             getPeople()
+    )
+}
+
+
+fun Record.toExhibitionRecord(info: Info): ExhibitionRecord {
+
+    return ExhibitionRecord(
+            id = this.id,
+            begindate = begindate,
+            color = color,
+            description = description,
+            enddate = enddate,
+            exhibitionid = exhibitionid,
+            images = images?: listOf(),
+            url = url,
+            lastupdate = lastupdate,
+            poster = poster,
+            primaryimageurl = primaryimageurl,
+            shortdescription = shortdescription,
+            temporalorder = temporalorder,
+            title = title,
+            venues = venues?: listOf(),
+            people = people?: listOf(),
+            info = info
     )
 }
 

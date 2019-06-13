@@ -2,12 +2,12 @@ package com.harvard.art.museums.data.pojo
 
 data class Record(
         val begindate: String,
-        val color: Any,
+        val color: String? = null,
         val description: String,
         val enddate: String,
         val exhibitionid: Int,
         val id: Int,
-        val images: List<Image>,
+        val images: List<Image>? = null,
         val url: String,
         val lastupdate: String,
         val poster: Poster,
@@ -15,6 +15,6 @@ data class Record(
         val shortdescription: String,
         val temporalorder: Int,
         val title: String,
-        val venues: List<Venue>,
-        val people: List<People>
+        val venues: List<Venue>? = null,
+        val people: List<People>? = null
 )

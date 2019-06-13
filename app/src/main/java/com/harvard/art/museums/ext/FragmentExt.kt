@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import androidx.fragment.app.Fragment
-import com.harvard.art.museums.features.exhibitions.details.ExhibitionsDetailsActivity
 
 
 fun Fragment.generateShareIntent(url: String) = Intent().apply {

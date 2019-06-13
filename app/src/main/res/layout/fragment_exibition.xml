@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_content"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorLightGray"
+    android:orientation="vertical"
+    tools:context="com.harvard.art.museums.features.exhibitions.main.ExhibitionsFragment">
+
+
+    <TextView
+        android:id="@+id/exhDetailsTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="alksjdalksjlkdjalsa jlsadk" />
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:background="@color/blue"
+        android:layout_height="400dp">
+
+        <ImageView
+            android:id="@+id/exhDetailsPoster"
+            android:layout_width="match_parent"
+            android:layout_height="400dp" />
+
+        <TextView
+            android:id="@+id/exhDetailsCaption"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentBottom="true"
+            android:text="alksjdalksjlkdjalsa jlsadk" />
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/exhDetailsFromTo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="alksjdalksjlkdjalsa jlsadk" />
+
+
+    <TextView
+        android:id="@+id/exhDetailsVenue"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="alksjdalksjlkdjalsa jlsadk" />
+
+
+    <TextView
+        android:id="@+id/exhDetailsDescription"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="alksjdalksjlkdjalsa jlsadk" />
+
+
+    <!--<androidx.recyclerview.widget.RecyclerView-->
+    <!--android:id="@+id/exhibitionsView"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:dividerHeight="0dp" />-->
+
+    <!--<ProgressBar-->
+    <!--android:id="@+id/progressView"-->
+    <!--android:layout_width="100dp"-->
+    <!--android:layout_height="100dp"-->
+    <!--android:layout_gravity="center"-->
+    <!--android:layout_marginTop="10dp"-->
+    <!--android:indeterminate="true"-->
+    <!--android:indeterminateDrawable="@drawable/image_progress_animation"-->
+    <!--android:indeterminateTint="@color/colorPrimary"-->
+    <!--android:visibility="gone" />-->
+
+</LinearLayout>

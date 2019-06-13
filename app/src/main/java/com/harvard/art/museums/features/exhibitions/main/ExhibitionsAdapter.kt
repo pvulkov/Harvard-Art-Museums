@@ -57,6 +57,7 @@ class ExhibitionsAdapter : RecyclerView.Adapter<ExhibitionsAdapter.ExhibitionVie
              holder.setData(exhibitionItemsList[position], viewEvent)
     }
 
+
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
         super.onAttachedToRecyclerView(recyclerView)
         viewEvent = PublishSubject.create<ViewItemAction>()

@@ -2,13 +2,11 @@ package com.harvard.art.museums.features.exhibitions.details
 
 import com.harvard.art.museums.base.BasePresenter
 import com.harvard.art.museums.base.BaseView
-import com.harvard.art.museums.features.home.data.NavigationAction
-import io.reactivex.Observable
-import com.harvard.art.museums.features.exhibitions.details.ExhibitionsDetailsPresenter.ExhibitionsDetailsView as ExdView
-import com.harvard.art.museums.features.exhibitions.details.ExhibitionsDetailsViewState as ExdViewState
+import com.harvard.art.museums.features.exhibitions.details.ExhibitionDetailsPresenter.ExhibitionsDetailsView as ExdView
+import com.harvard.art.museums.features.exhibitions.details.ExhibitionDetailsViewState as ExdViewState
 
 
-class ExhibitionsDetailsPresenter(view: ExdView) : BasePresenter<ExdView, ExdViewState>(view) {
+class ExhibitionDetailsPresenter(view: ExdView) : BasePresenter<ExdView, ExdViewState>(view) {
 
 
     override fun bindIntents() {
@@ -68,7 +66,6 @@ class ExhibitionsDetailsPresenter(view: ExdView) : BasePresenter<ExdView, ExdVie
 
     interface ExhibitionsDetailsView : BaseView {
 
-        fun navigationEvent(): Observable<NavigationAction>
 
         fun render(state: ExdViewState)
     }

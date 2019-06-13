@@ -3,6 +3,7 @@ package com.harvard.art.museums.data.network
 import com.harvard.art.museums.API_KEY
 import com.harvard.art.museums.data.pojo.Exhibitions
 import io.reactivex.Observable
+import io.reactivex.Single
 import retrofit2.http.*
 
 
@@ -24,11 +25,11 @@ interface HamApi {
         @Query("sortorder") sortorder: String = "desc",
         @Query("status") status: String = "upcoming,current,upcoming",
         @Query("apikey") apikey: String = API_KEY
-    ): Observable<Exhibitions>
+    ): Single<Exhibitions>
 
 
     @GET
-    fun getNextExhibitionsPage(@Url url: String): Observable<Exhibitions>
+    fun getNextExhibitionsPage(@Url url: String): Single<Exhibitions>
 
 
 

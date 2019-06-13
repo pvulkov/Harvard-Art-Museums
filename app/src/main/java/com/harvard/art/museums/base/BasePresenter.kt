@@ -1,6 +1,7 @@
 package com.harvard.art.museums.base
 
 import com.hannesdorfmann.mosby3.mvi.MviBasePresenter
+import com.harvard.art.museums.data.db.HamDatabase
 import com.harvard.art.museums.features.exhibitions.main.ExhibitionsPresenter
 import com.harvard.art.museums.injection.component.DaggerPresenterInjector
 import com.harvard.art.museums.injection.component.PresenterInjector
@@ -33,6 +34,8 @@ abstract class BasePresenter<V : BaseView, VS>(protected val view: V) : MviBaseP
     @Inject
     protected lateinit var hamApi: HamApi
 
+    @Inject
+    protected lateinit var hamDb: HamDatabase
 
     open fun onViewCreated() {
     }

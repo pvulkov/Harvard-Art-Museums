@@ -5,5 +5,7 @@ data class Info(
         val pages: Int,
         val totalrecords: Int,
         val totalrecordsperquery: Int,
+        var cur: String? = null,
+        val prev: String? = null,
         val next: String? = null
 )

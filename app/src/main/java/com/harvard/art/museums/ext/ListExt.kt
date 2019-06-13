@@ -10,6 +10,14 @@ fun <T> MutableList<T>.setData(data: List<T>) {
 }
 
 
+fun List<ExhibitionViewItem>.update(newList :List<ExhibitionViewItem>) : List<ExhibitionViewItem> {
+
+
+    val filteredList = newList.filter { !this.contains(it) }.toList()
+
+    return this.plus(filteredList)
+}
+
 fun List<ExhibitionViewItem>.trimLoaders() : MutableList<ExhibitionViewItem> {
     return this.filter { it.type == ViewItemType.DATA }.toMutableList()
 }

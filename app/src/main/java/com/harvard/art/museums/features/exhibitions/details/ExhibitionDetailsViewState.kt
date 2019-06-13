@@ -3,21 +3,21 @@ package com.harvard.art.museums.features.exhibitions.details
 import androidx.fragment.app.Fragment
 
 
-data class ExhibitionsDetailsViewState(
+data class ExhibitionDetailsViewState(
         val state: State = State.INIT,
         val data: Fragment? = null,
         val tag: String? = null,
         val error: Throwable? = null
 ) {
 
-    enum class State { INIT, NAVIGATION, ERROR, }
+    enum class State { INIT, LOAD_MORE, DATA,  ERROR }
 
 
     fun copy(): Builder {
         return Builder(this)
     }
 
-    class Builder(mainViewState: ExhibitionsDetailsViewState) {
+    class Builder(mainViewState: ExhibitionDetailsViewState) {
 
         private var state: State = mainViewState.state
         private var data: Fragment? = mainViewState.data
@@ -41,8 +41,8 @@ data class ExhibitionsDetailsViewState(
         }
 
 
-        fun build(): ExhibitionsDetailsViewState =
-                ExhibitionsDetailsViewState(state, data, tag, error)
+        fun build(): ExhibitionDetailsViewState =
+                ExhibitionDetailsViewState(state, data, tag, error)
     }
 }
 

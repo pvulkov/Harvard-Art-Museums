@@ -15,7 +15,7 @@ import com.harvard.art.museums.ext.*
 import com.harvard.art.museums.features.exhibitions.main.ExhibitionsViewState.State.*
 import com.harvard.art.museums.features.exhibitions.data.ViewAction
 import com.harvard.art.museums.features.exhibitions.data.ViewItemAction
-import com.harvard.art.museums.features.exhibitions.details.ExhibitionsDetailsActivity
+import com.harvard.art.museums.features.exhibitions.details.ExhibitionDetailsActivity
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.PublishSubject
@@ -87,7 +87,7 @@ class ExhibitionsFragment : BaseFragment<ExhView, ExhibitionsPresenter>(), ExhVi
                     .also { startActivity(it) }
 
 
-            ViewAction.DETAILS -> startActivityByClass(ExhibitionsDetailsActivity::class.java)
+            ViewAction.DETAILS -> startActivityByClass(ExhibitionDetailsActivity::class.java)
             else -> throw Exception("Unhandled view action state")
         }
 

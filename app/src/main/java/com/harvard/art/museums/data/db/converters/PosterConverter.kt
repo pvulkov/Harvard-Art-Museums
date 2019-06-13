@@ -4,20 +4,19 @@ package com.harvard.art.museums.data.db.converters
 import androidx.room.TypeConverter
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import com.harvard.art.museums.data.pojo.Info
-import com.harvard.art.museums.data.pojo.Record
+import com.harvard.art.museums.data.pojo.Poster
 
 
-class InfoConverter {
+class PosterConverter {
 
     @TypeConverter
-    fun fromString(value: String?): Info? {
-        val type = object : TypeToken<Info>() {}.type
+    fun fromString(value: String?): Poster? {
+        val type = object : TypeToken<Poster>() {}.type
         return Gson().fromJson(value, type)
     }
 
     @TypeConverter
-    fun fromData(info: Info?): String? {
+    fun fromData(info: Poster?): String? {
         return Gson().toJson(info)
     }
 
