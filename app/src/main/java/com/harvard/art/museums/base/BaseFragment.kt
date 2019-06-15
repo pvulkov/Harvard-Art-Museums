@@ -1,10 +1,10 @@
 package com.harvard.art.museums.base
 
 import android.content.Context
-import android.os.Bundle
 import com.hannesdorfmann.mosby3.mvi.MviFragment
 import com.hannesdorfmann.mosby3.mvi.MviPresenter
 import com.hannesdorfmann.mosby3.mvp.MvpView
+import io.reactivex.disposables.CompositeDisposable
 
 /**
  * BaseFragment providing required methods and presenter instantiation and calls.
@@ -12,24 +12,22 @@ import com.hannesdorfmann.mosby3.mvp.MvpView
  */
 abstract class BaseFragment<V : MvpView, P : MviPresenter<V, *>> : MviFragment<V, P>(), BaseView {
 
-    protected lateinit var presenter: P
 
-    private var creationTimeDelta = 0L
+    protected val disposable by lazy { CompositeDisposable() }
 
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        creationTimeDelta = System.currentTimeMillis()
-//        presenter = instantiatePresenter()
+    override fun onStop() {
+        super.onStop()
+        if (!disposable.isDisposed)
+            disposable.clear()
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        if (!disposable.isDisposed)
+            disposable.dispose()
+    }
 
-    /**
-     * Instantiates the presenter the Activity is based on.
-     */
-//    protected abstract fun instantiatePresenter(): P
-
-    override fun getContext(): Context =  this.activity as Context
+    override fun getContext(): Context = this.activity as Context
 
 
 }

@@ -1,4 +1,4 @@
-package com.harvard.art.museums.features.exhibitions.details
+package com.harvard.art.museums.features.exhibitions.gallery
 
 import android.os.Bundle
 import android.widget.Toast
@@ -6,19 +6,19 @@ import com.harvard.art.museums.R
 import com.harvard.art.museums.base.BaseActivity
 import com.harvard.art.museums.features.exhibitions.data.ViewItemAction
 import kotlinx.android.synthetic.main.activity_exhibitions_details.*
-import com.harvard.art.museums.features.exhibitions.details.ExhibitionDetailsPresenter.ExhibitionsDetailsView as ExdView
-import com.harvard.art.museums.features.exhibitions.details.ExhibitionDetailsViewState as ExdViewState
-import com.harvard.art.museums.features.exhibitions.details.ExhibitionDetailsPresenter as ExdPresenter
-import com.harvard.art.museums.features.exhibitions.details.ExhibitionDetailsViewState.State.*
+import com.harvard.art.museums.features.exhibitions.gallery.ExhibitionGalleryPresenter.ExhibitionsDetailsView as ExdView
+import com.harvard.art.museums.features.exhibitions.gallery.ExhibitionGalleryViewState as ExdViewState
+import com.harvard.art.museums.features.exhibitions.gallery.ExhibitionGalleryPresenter as ExdPresenter
+import com.harvard.art.museums.features.exhibitions.gallery.ExhibitionGalleryViewState.State.*
 import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.PublishSubject
 
 
-class ExhibitionDetailsActivity : BaseActivity<ExdView, ExdPresenter>(), ExdView {
+class ExhibitionGalleryActivity : BaseActivity<ExdView, ExdPresenter>(), ExdView {
 
     private val trigger: PublishSubject<Boolean> = PublishSubject.create<Boolean>()
-    private val adapter = ExPagerAdapter(supportFragmentManager)
+    private val adapter = ExhibitionsGalleryAdapter(supportFragmentManager)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

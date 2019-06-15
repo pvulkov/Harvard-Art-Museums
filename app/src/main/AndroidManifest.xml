@@ -27,7 +27,7 @@
 
 
         <activity
-            android:name=".features.exhibitions.details.ExhibitionDetailsActivity"
+            android:name=".features.exhibitions.gallery.ExhibitionGalleryActivity"
             android:configChanges="orientation|screenSize"
             android:hardwareAccelerated="true"
             android:screenOrientation="portrait" />

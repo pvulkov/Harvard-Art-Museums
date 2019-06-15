@@ -15,7 +15,7 @@ import com.harvard.art.museums.ext.*
 import com.harvard.art.museums.features.exhibitions.main.ExhibitionsViewState.State.*
 import com.harvard.art.museums.features.exhibitions.data.ViewAction
 import com.harvard.art.museums.features.exhibitions.data.ViewItemAction
-import com.harvard.art.museums.features.exhibitions.details.ExhibitionDetailsActivity
+import com.harvard.art.museums.features.exhibitions.gallery.ExhibitionGalleryActivity
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.PublishSubject
@@ -31,6 +31,7 @@ class ExhibitionsFragment : BaseFragment<ExhView, ExhibitionsPresenter>(), ExhVi
 
     override fun onResume() {
         super.onResume()
+        //TODO (pvalkov) remove from on resume
         trigger.onNext(true)
     }
 
@@ -39,7 +40,10 @@ class ExhibitionsFragment : BaseFragment<ExhView, ExhibitionsPresenter>(), ExhVi
         return inflater.inflate(R.layout.fragment_exibitions, container, false)
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) = super.onViewCreated(view, savedInstanceState).also { initUI() }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        initUI()
+    }
 
     override fun createPresenter() = ExhibitionsPresenter(this)
 
@@ -91,7 +95,7 @@ class ExhibitionsFragment : BaseFragment<ExhView, ExhibitionsPresenter>(), ExhVi
 
                 val extras = Bundle()
                 extras.putInt("exhibitionId", action.item.exhibitionId)
-                generateActivityIntent(ExhibitionDetailsActivity::class.java, extras)
+                generateActivityIntent(ExhibitionGalleryActivity::class.java, extras)
                         .also { startActivity(it) }
             }
 

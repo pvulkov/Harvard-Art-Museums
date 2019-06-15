@@ -5,6 +5,7 @@ import android.util.Log
 import android.widget.Toast
 import com.harvard.art.museums.R
 import com.harvard.art.museums.base.BaseActivity
+import com.harvard.art.museums.ext.replaceFragment
 import com.harvard.art.museums.features.home.HomePresenter.HomeView
 import com.harvard.art.museums.features.home.data.NavigationAction
 import com.jakewharton.rxbinding2.view.clicks
@@ -40,19 +41,8 @@ class HomeActivity : BaseActivity<HomeView, HomePresenter>(), HomeView {
 
 
     private fun renderNavigationState(state: HomeViewState) {
-
         Log.d("DEBUG", "renderNavigationState " + supportFragmentManager.fragments.size)
-
-        val fragmentTransaction = supportFragmentManager.beginTransaction()
-
-        if (supportFragmentManager.fragments.isNotEmpty()) {
-            fragmentTransaction.replace(R.id.mainContainer, state.data!!)
-        } else {
-            fragmentTransaction.add(R.id.mainContainer, state.data!!)
-        }
-
-        fragmentTransaction.addToBackStack(state.tag)
-        fragmentTransaction.commit()
+        replaceFragment(R.id.mainContainer, state.data!!)
     }
 
     private fun renderErrorState(errorState: HomeViewState) {

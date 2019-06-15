@@ -1,10 +1,10 @@
-package com.harvard.art.museums.features.exhibitions.details
+package com.harvard.art.museums.features.exhibitions.gallery
 
 import com.harvard.art.museums.ext.setData
 import com.harvard.art.museums.features.exhibitions.data.ExhibitionDetailsViewItem
 
 
-data class ExhibitionDetailsViewState(
+data class ExhibitionGalleryViewState(
         val state: State = State.INIT,
         val exhibitionsList: List<ExhibitionDetailsViewItem> = listOf(),
         val error: Throwable? = null
@@ -17,7 +17,7 @@ data class ExhibitionDetailsViewState(
         return Builder(this)
     }
 
-    class Builder(mainViewState: ExhibitionDetailsViewState) {
+    class Builder(mainViewState: ExhibitionGalleryViewState) {
 
         private var state: State = mainViewState.state
         private var exhibitionsList = mutableListOf<ExhibitionDetailsViewItem>()
@@ -40,8 +40,8 @@ data class ExhibitionDetailsViewState(
         }
 
 
-        fun build(): ExhibitionDetailsViewState =
-                ExhibitionDetailsViewState(state, exhibitionsList, error)
+        fun build(): ExhibitionGalleryViewState =
+                ExhibitionGalleryViewState(state, exhibitionsList, error)
     }
 }
 

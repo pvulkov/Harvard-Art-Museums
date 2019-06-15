@@ -1,7 +1,8 @@
 package com.harvard.art.museums.injection.component
 
 import com.harvard.art.museums.base.BaseView
-import com.harvard.art.museums.features.exhibitions.details.ExhibitionDetailsPresenter
+import com.harvard.art.museums.features.exhibitions.gallery.ExhibitionGalleryPresenter
+import com.harvard.art.museums.features.exhibitions.gallery.details.GalleryDetailsPresenter
 import com.harvard.art.museums.features.exhibitions.main.ExhibitionsPresenter
 import com.harvard.art.museums.injection.module.ContextModule
 import com.harvard.art.museums.injection.module.DatabaseModule
@@ -28,8 +29,9 @@ interface PresenterInjector {
      */
     fun inject(presenter: ExhibitionsPresenter)
 
-    fun inject(presenter: ExhibitionDetailsPresenter)
+    fun inject(presenter: ExhibitionGalleryPresenter)
 
+    fun inject (presenter: GalleryDetailsPresenter)
 
     @Component.Builder
     interface Builder {

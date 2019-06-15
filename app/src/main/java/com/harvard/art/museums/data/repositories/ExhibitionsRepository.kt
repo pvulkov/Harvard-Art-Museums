@@ -49,7 +49,10 @@ class ExhibitionsRepository(private val hamApi: HamApi, private val database: Ha
 
         return getExhibitionsData()
                 .flatMap { toExhibitionRecords(it) }
-                .flatMap { saveExhibitionRecords(it) }
+                .map { toSortedList(it) }
+                .flatMap {
+                    saveExhibitionRecords(it)
+                }
                 .toObservable()
                 .materialize()
                 .observeOn(AndroidSchedulers.mainThread())
@@ -72,7 +75,10 @@ class ExhibitionsRepository(private val hamApi: HamApi, private val database: Ha
 
         return getNextExhibitionsData(url)
                 .flatMap { toExhibitionRecords(it, url) }
-                .flatMap { saveExhibitionRecords(it) }
+                .map { toSortedList(it) }
+                .flatMap {
+                    saveExhibitionRecords(it)
+                }
                 .toObservable()
                 .materialize()
                 .observeOn(AndroidSchedulers.mainThread())
@@ -89,7 +95,12 @@ class ExhibitionsRepository(private val hamApi: HamApi, private val database: Ha
                 .debounce(400, TimeUnit.MILLISECONDS)
     }
 
-    private fun toExhibitionRecords(exhibitions: Exhibitions, url: String = EMPTY) = Single.just(exhibitions.toExhibitionRecordsList(url))
+    private fun toSortedList(recordsList: List<ExhibitionRecord>): List<ExhibitionRecord> {
+        return recordsList.sortedBy { it.openStatus }
+    }
+
+    private fun toExhibitionRecords(exhibitions: Exhibitions, url: String = EMPTY) =
+            Single.just(exhibitions.toExhibitionRecordsList(url))
 
 
     private fun getExhibitionsData() = hamApi.getExhibitions()

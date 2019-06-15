@@ -27,5 +27,6 @@ data class ExhibitionRecord(
         val venues: List<Venue>? = null,
         val people: List<People>? = null,
         @Embedded
-        val info: Info
+        val info: Info,
+        val openStatus: Int
 )

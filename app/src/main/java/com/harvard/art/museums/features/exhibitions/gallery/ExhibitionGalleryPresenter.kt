@@ -1,4 +1,4 @@
-package com.harvard.art.museums.features.exhibitions.details
+package com.harvard.art.museums.features.exhibitions.gallery
 
 import com.harvard.art.museums.base.BasePresenter
 import com.harvard.art.museums.base.BaseView
@@ -12,12 +12,12 @@ import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import java.util.concurrent.TimeUnit
-import com.harvard.art.museums.features.exhibitions.details.ExhibitionDetailsActionState as ExdActionState
-import com.harvard.art.museums.features.exhibitions.details.ExhibitionDetailsPresenter.ExhibitionsDetailsView as ExdView
-import com.harvard.art.museums.features.exhibitions.details.ExhibitionDetailsViewState as ExdViewState
+import com.harvard.art.museums.features.exhibitions.gallery.ExhibitionGalleryActionState as ExdActionState
+import com.harvard.art.museums.features.exhibitions.gallery.ExhibitionGalleryPresenter.ExhibitionsDetailsView as ExdView
+import com.harvard.art.museums.features.exhibitions.gallery.ExhibitionGalleryViewState as ExdViewState
 
 
-class ExhibitionDetailsPresenter(view: ExdView) : BasePresenter<ExdView, ExdViewState>(view) {
+class ExhibitionGalleryPresenter(view: ExdView) : BasePresenter<ExdView, ExdViewState>(view) {
 
 
     override fun bindIntents() {

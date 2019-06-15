@@ -27,6 +27,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
 
+            <ImageView
+                android:id="@+id/exhibitionOpenStatus"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:adjustViewBounds="true" />
+
 
             <TextView
                 android:id="@+id/exhibitionTitle"
@@ -36,11 +44,12 @@
                 android:layout_marginTop="10dp"
                 android:background="#AA222222"
                 android:ellipsize="end"
+                android:fontFamily="monospace"
                 android:paddingStart="10dp"
                 android:paddingTop="4dp"
                 android:paddingEnd="10dp"
                 android:paddingBottom="4dp"
-                android:singleLine="true"
+                android:maxLines="2"
                 android:textColor="#FFFFFF"
                 android:textSize="14sp" />
 
@@ -53,6 +62,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:ellipsize="end"
+            android:fontFamily="monospace"
             android:paddingStart="10dp"
             android:paddingTop="4dp"
             android:paddingEnd="10dp"
@@ -63,18 +73,37 @@
 
 
         <TextView
-            android:id="@+id/exhibitionLocation"
+            android:id="@+id/exhibitionDescription"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:maxLines="3"
             android:ellipsize="end"
+            android:fontFamily="monospace"
+            android:maxLines="3"
             android:paddingStart="10dp"
             android:paddingTop="4dp"
             android:paddingEnd="10dp"
             android:paddingBottom="4dp"
-            android:textColor="#AA222222"
-            android:textSize="14sp" />
+            android:textColor="@color/colorPrimary"
+            android:textSize="14sp"
+            android:visibility="gone" />
+
+
+        <TextView
+            android:id="@+id/exhibitionLocation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:ellipsize="end"
+            android:fontFamily="monospace"
+            android:maxLines="3"
+            android:paddingStart="10dp"
+            android:paddingTop="4dp"
+            android:paddingEnd="10dp"
+            android:paddingBottom="4dp"
+            android:textColor="@color/colorPrimary"
+            android:textSize="14sp"
+            android:visibility="gone" />
 
 
         <LinearLayout
@@ -106,12 +135,14 @@
                     android:layout_height="40dp"
                     android:layout_weight="1"
                     android:background="#FFFFFFFF"
-                    android:drawableEnd="@drawable/baseline_file_copy_black_24dp"
+                    android:drawableEnd="@drawable/ic_menu_share"
                     android:drawableTint="@color/colorPrimary"
+                    android:fontFamily="monospace"
                     android:padding="2dp"
                     android:text="@string/share_text"
                     android:textColor="@color/colorPrimary"
-                    android:textStyle="normal" />
+                    android:textStyle="normal"
+                    android:visibility="invisible" />
 
                 <Button
                     android:id="@+id/actionOpenWeb"
@@ -121,11 +152,12 @@
                     android:layout_marginEnd="1dp"
                     android:layout_weight="1"
                     android:background="#FFFFFFFF"
-                    android:drawableEnd="@drawable/baseline_file_copy_black_24dp"
-                    android:drawableTint="@color/blue"
+                    android:drawableEnd="@drawable/ic_menu_browser"
+                    android:drawableTint="@color/colorPrimary"
+                    android:fontFamily="monospace"
                     android:text="@string/open_web_text"
-                    android:textColor="@color/blue"
-                    android:textStyle="bold" />
+                    android:textColor="@color/colorPrimary"
+                    android:visibility="invisible" />
 
 
                 <Button
@@ -135,13 +167,13 @@
                     android:layout_marginEnd="1dp"
                     android:layout_weight="1"
                     android:background="#FFFFFFFF"
-                    android:drawableEnd="@drawable/baseline_file_copy_black_24dp"
-                    android:drawableTint="@color/blue"
+                    android:drawableEnd="@drawable/ic_menu_info"
+                    android:drawableTint="@color/colorPrimary"
+                    android:fontFamily="monospace"
                     android:paddingStart="1dp"
                     android:paddingEnd="4dp"
                     android:text="@string/details_text"
-                    android:textColor="@color/blue"
-                    android:textStyle="bold" />
+                    android:textColor="@color/colorPrimary" />
             </LinearLayout>
 
         </LinearLayout>

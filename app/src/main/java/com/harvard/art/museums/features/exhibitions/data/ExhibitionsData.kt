@@ -7,8 +7,11 @@ data class ExhibitionViewItem(
         val title: String? = EMPTY,
         val exhibitionId: Int,
         val imageUrl: String = EMPTY,
+        val shortDescription: String? = null,
+        val openStatus: Int = -1,
         val exhibitionUrl: String? = EMPTY,
         val exhibitionFromTo: String? = EMPTY,
+        val exhibitionLocation: String?= null,
         val people: String? = EMPTY,
         val next: String? = null
 
@@ -29,4 +32,8 @@ data class ViewItemAction(
 
 enum class ViewAction {
     NONE, LOAD_MORE, SHARE, WEB, DETAILS
+}
+
+enum class ExhibitionOpenStatus {
+    OPEN, UPCOMING, CLOSED
 }

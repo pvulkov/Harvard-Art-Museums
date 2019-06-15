@@ -9,3 +9,5 @@ private var ddMMMMyyyy = SimpleDateFormat("dd, MMMM yyyy", Locale.getDefault())
 
 
 fun Date.to_ddMMMMyyyy() = ddMMMMyyyy.format(this)
+
+fun Date.hasPassed(): Boolean = this.before(Date())

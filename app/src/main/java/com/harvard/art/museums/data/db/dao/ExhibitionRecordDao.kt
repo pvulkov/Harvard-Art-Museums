@@ -3,7 +3,6 @@ package com.harvard.art.museums.data.db.dao
 
 import androidx.room.*
 import com.harvard.art.museums.data.pojo.ExhibitionRecord
-import io.reactivex.Completable
 import io.reactivex.Single
 
 @Dao
@@ -25,9 +24,12 @@ interface ExhibitionRecordDao {
     fun deleteAll()
 
 
-    @Query("SELECT * FROM exhibition_records_data_table")
+    @Query("SELECT * FROM exhibition_records_data_table ORDER BY openStatus ASC")
     fun fetchAll(): Single<List<ExhibitionRecord>>
 
     @Query("SELECT * FROM  exhibition_records_data_table WHERE cur = :next")
     fun fetchAll(next: String): Single<List<ExhibitionRecord>>
+
+    @Query("SELECT * FROM exhibition_records_data_table WHERE exhibitionid = :id ")
+    fun getById(id: Int): Single<ExhibitionRecord>
 }

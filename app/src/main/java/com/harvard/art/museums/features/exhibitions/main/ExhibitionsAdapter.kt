@@ -6,7 +6,9 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.harvard.art.museums.R
+import com.harvard.art.museums.ext.isValidUrl
 import com.harvard.art.museums.ext.setData
+import com.harvard.art.museums.ext.show
 import com.harvard.art.museums.features.exhibitions.data.ExhibitionViewItem
 import com.harvard.art.museums.features.exhibitions.data.ViewAction
 import com.harvard.art.museums.features.exhibitions.data.ViewItemAction
@@ -54,7 +56,7 @@ class ExhibitionsAdapter : RecyclerView.Adapter<ExhibitionsAdapter.ExhibitionVie
 
 
     override fun onBindViewHolder(holder: ExhibitionViewHolder, position: Int) {
-             holder.setData(exhibitionItemsList[position], viewEvent)
+        holder.setData(exhibitionItemsList[position], viewEvent)
     }
 
 
@@ -82,19 +84,37 @@ class ExhibitionsAdapter : RecyclerView.Adapter<ExhibitionsAdapter.ExhibitionVie
             override fun setData(item: ExhibitionViewItem, publisher: PublishSubject<ViewItemAction>, disposable: CompositeDisposable?) {
                 itemView.exhibitionTitle.text = item.title
                 itemView.exhibitionFromTo.text = item.exhibitionFromTo
-                itemView.exhibitionLocation.text = item.people
+
+                item.shortDescription?.let {
+                    itemView.exhibitionDescription.show()
+                    itemView.exhibitionDescription.text = it
+                }
+
+                item.exhibitionLocation?.let {
+                    itemView.exhibitionLocation.show()
+                    itemView.exhibitionLocation.text = it
+                }
+
+                val list = mutableListOf<Observable<ViewAction>>()
+                list.add(itemView.actionDetails.clicks().map { ViewAction.DETAILS })
 
 
-                Observable.merge(
-                        itemView.actionShare.clicks().map { ViewAction.SHARE },
-                        itemView.actionOpenWeb.clicks().map { ViewAction.WEB },
-                        itemView.actionDetails.clicks().map { ViewAction.DETAILS })
+                if (item.exhibitionUrl.isValidUrl()) {
+                    itemView.actionShare.show()
+                    itemView.actionOpenWeb.show()
+                    list.add(itemView.actionShare.clicks().map { ViewAction.SHARE })
+                    list.add(itemView.actionOpenWeb.clicks().map { ViewAction.WEB })
+                }
+
+
+                Observable.merge(list)
                         .flatMap { Observable.just(item.toViewItemAction(it)) }
                         .subscribe { publisher.onNext(it) }
                         .also { disposable?.add(it) }
 
 
                 Glide.with(view).load(item.imageUrl).centerCrop().into(itemView.exhibitionImage).waitForLayout()
+                Glide.with(view).load(item.openStatus).centerCrop().into(itemView.exhibitionOpenStatus).waitForLayout()
 
             }
         }
