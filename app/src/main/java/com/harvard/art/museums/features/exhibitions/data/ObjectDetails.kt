@@ -46,7 +46,7 @@ data class Record(
         val id: Int,
         val imagecount: Int,
         val imagepermissionlevel: Int,
-        val images: List<Image>,
+        val images: List<Image>? = null,
         val labeltext: Any,
         val lastupdate: String,
         val markscount: Int,

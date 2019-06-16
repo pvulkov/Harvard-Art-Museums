@@ -110,7 +110,7 @@ private fun ExhibitionRecord.getOpenStatusResId(): Int {
 }
 
 
-private fun ExhibitionRecord.formatLocation(): String {
+fun ExhibitionRecord.formatLocation(): String {
     var addressText = EMPTY
     venues?.apply {
 
@@ -132,7 +132,7 @@ private fun ExhibitionRecord.formatLocation(): String {
     return addressText
 }
 
-private fun ExhibitionRecord.formatFromToDate(): String {
+fun ExhibitionRecord.formatFromToDate(): String {
 
     val from = begindate.fromServerDate()
     val to = enddate.fromServerDate()

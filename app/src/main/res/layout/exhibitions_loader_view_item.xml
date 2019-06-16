@@ -14,7 +14,7 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="10dp"
         android:indeterminate="true"
-        android:indeterminateDrawable="@drawable/image_progress_animation"
+        android:indeterminateDrawable="@drawable/progress_anim_white"
         android:indeterminateTint="@color/colorPrimary" />
 
 </FrameLayout>

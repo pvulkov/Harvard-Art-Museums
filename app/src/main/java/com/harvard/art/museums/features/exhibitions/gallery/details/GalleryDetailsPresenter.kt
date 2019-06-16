@@ -4,8 +4,11 @@ import com.harvard.art.museums.base.BasePresenter
 import com.harvard.art.museums.base.BaseView
 import com.harvard.art.museums.data.pojo.ExhibitionRecord
 import com.harvard.art.museums.data.pojo.Image
+import com.harvard.art.museums.ext.formatFromToDate
+import com.harvard.art.museums.ext.formatLocation
 import com.harvard.art.museums.features.exhibitions.data.GalleryObjectData
 import com.harvard.art.museums.features.exhibitions.data.ObjectDetails
+import com.harvard.art.museums.features.exhibitions.data.Record
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.functions.BiFunction
@@ -91,11 +94,19 @@ class GalleryDetailsPresenter(view: GalleryView) : BasePresenter<GalleryView, Ga
     private fun toGalleryObjectData(data: ObjectAndExhibitionData): GalleryObjectData {
 
         val imageList = mutableListOf<Image>()
-        data.o.records.forEach { imageList.addAll(it.images) }
+        data.o.records.forEach { imageList.addAll(getImageList(it)) }
 
-        return GalleryObjectData(imageList, data.e.textiledescription)
+        return GalleryObjectData(data.e.title, imageList, data.e.poster, data.e.textiledescription, data.e.formatFromToDate(), data.e.formatLocation())
     }
 
+
+    private fun getImageList(record: Record): List<Image> {
+
+        return record.images
+                ?.map { i -> Image(baseimageurl = i.baseimageurl, caption = record.title) }
+                ?: emptyList()
+
+    }
 
     private fun getExhibitionsImageData(exId: Int) = hamApi.getExhibitionsDetails(exId)
 

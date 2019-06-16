@@ -62,7 +62,7 @@ class ExhibitionGalleryActivity : BaseActivity<ExdView, ExdPresenter>(), ExdView
 
 
     private fun initUI() {
-        setSupportActionBar(toolbar)
+//        setSupportActionBar(toolbar)
 
         pagerContainer.adapter = adapter
 

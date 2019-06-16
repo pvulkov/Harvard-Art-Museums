@@ -1,6 +1,7 @@
 package com.harvard.art.museums.features.exhibitions.gallery.details
 
 import android.os.Bundle
+import android.text.method.LinkMovementMethod
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -9,8 +10,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.harvard.art.museums.R
 import com.harvard.art.museums.base.BaseFragment
-import com.harvard.art.museums.data.pojo.Image
 import com.harvard.art.museums.ext.generateArguments
+import com.harvard.art.museums.ext.hide
+import com.harvard.art.museums.ext.show
 import com.harvard.art.museums.features.exhibitions.gallery.ExhibitionGalleryAdapter
 import com.harvard.art.museums.features.exhibitions.gallery.details.GalleryDetailsViewState.State.*
 import io.reactivex.Observable
@@ -48,8 +50,7 @@ class GalleryDetailsFragment : BaseFragment<GalleryView, GalleryPresenter>(), Ga
         when (viewState.state) {
             NONE -> {
             }
-            LOAD -> {
-            }
+            LOAD -> renderLoadingState()
             DATA -> renderDataState(viewState)
             ERROR -> renderErrorState(viewState)
 
@@ -63,40 +64,60 @@ class GalleryDetailsFragment : BaseFragment<GalleryView, GalleryPresenter>(), Ga
     override fun onResume() {
         super.onResume()
 
-        exhGalleryView.apply {
-            adapter = galleryAdapter
-            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
 
-        }
+    }
+
+    private fun renderLoadingState() {
+        progressView.show()
+        mainContent.hide()
     }
 
 
     private fun renderErrorState(viewState: GalleryDetailsViewState) {
-
+        progressView.hide()
+        //TODO (pvalkov) display "retry" button
         Log.d("DEBUG", "---")
     }
 
     private fun renderDataState(viewState: GalleryDetailsViewState) {
 
+        progressView.hide()
+        mainContent.show()
 
-        exhDetailsDescription.text = viewState.galleryObjectData?.description
+        viewState.galleryObjectData?.apply {
+
+            exhDetailsDescription.text = this.description
+            exhDetailsDescription.setMovementMethod(LinkMovementMethod.getInstance())
+
+            exhDetailsFromTo.text = this.dateFromTo
+            exhDetailsLocation.text = this.location
+            exhDetailsTitle.text = this.title
+            this.poster?.let { p -> loadPoster(p.imageurl, p.caption) }
 
 
-        //TODO (pvalkov)
-        galleryAdapter.updateData(viewState.galleryObjectData!!.images)
-        galleryAdapter.viewEvents()
-                .subscribeOn(AndroidSchedulers.mainThread())
-                .throttleLatest(200, TimeUnit.MILLISECONDS)
-                .subscribe { loadPoster(it) }
-                .also { disposable.add(it) }
+            if (this.images.isEmpty()) {
+                exhGalleryView.hide()
+            } else {
+                exhGalleryView.adapter = galleryAdapter
+                exhGalleryView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+                galleryAdapter.updateData(this.images)
+                galleryAdapter.viewEvents()
+                        .subscribeOn(AndroidSchedulers.mainThread())
+                        .throttleLatest(200, TimeUnit.MILLISECONDS)
+                        .subscribe { loadPoster(it.baseimageurl, it.caption) }
+                        .also { disposable.add(it) }
+            }
+
+        }
     }
 
-    private fun loadPoster(image: Image) {
-        Glide.with(context).load(image.baseimageurl)
+    private fun loadPoster(ulr: String, caption: String) {
+        exhPosterCaption.text = caption
+        Glide.with(context).load(ulr)
                 .centerCrop()
-                .placeholder(R.drawable.image_progress_animation)
+                .placeholder(R.drawable.progress_anim_tint)
                 .into(exhDetailsPoster)
-                //.waitForLayout()
+        //.waitForLayout()
     }
 
 
