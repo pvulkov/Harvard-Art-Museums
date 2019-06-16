@@ -9,13 +9,15 @@ Clicking on details shows a second screen containing detailed information about 
 
 **Screens**
 
-<img src="https://raw.githubusercontent.com/pvulkov/Harvard-Art-Museums/master/screen/device-2019-06-16-214817.png" align="left" height="600" width="300" >
-&nbsp;
-<img src="https://raw.githubusercontent.com/pvulkov/Harvard-Art-Museums/master/screen/device-2019-06-16-214912.png" align="left" height="600" width="300" >
+
+![Imgur](https://raw.githubusercontent.com/pvulkov/Harvard-Art-Museums/master/screen/device-2019-06-16-214817.png)
+
+![Imgur](https://raw.githubusercontent.com/pvulkov/Harvard-Art-Museums/master/screen/device-2019-06-16-214912.png)
+
 
 **Technical Stack**
 - Kotlin
-- MVI (mosbiMvi)
+- MVI (mosbyMvi)
 - RxJava
 - Glide
 - Room
