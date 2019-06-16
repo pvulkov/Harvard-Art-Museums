@@ -9,11 +9,10 @@ Clicking on details shows a second screen containing detailed information about 
 
 **Screens**
 
-
-![Imgur](https://raw.githubusercontent.com/pvulkov/Harvard-Art-Museums/master/screen/device-2019-06-16-214817.png)
-
-![Imgur](https://raw.githubusercontent.com/pvulkov/Harvard-Art-Museums/master/screen/device-2019-06-16-214912.png)
-
+<p align="left">
+ <img src="https://raw.githubusercontent.com/pvulkov/Harvard-Art-Museums/master/screen/device-2019-06-16-214817.png" width="150" height="300">
+<img src="https://raw.githubusercontent.com/pvulkov/Harvard-Art-Museums/master/screen/device-2019-06-16-214912.png" width="150" height="300">
+</p>
 
 **Technical Stack**
 - Kotlin
@@ -21,6 +20,3 @@ Clicking on details shows a second screen containing detailed information about 
 - RxJava
 - Glide
 - Room
-
-
-[hamApi]: <https://github.com/harvardartmuseums/api-docs>
