@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_content"
     android:layout_width="match_parent"
@@ -8,25 +7,6 @@
     android:fitsSystemWindows="true"
     android:orientation="vertical"
     tools:context="com.harvard.art.museums.features.home.HomeActivity">
-
-
-    <!--<com.google.android.material.appbar.AppBarLayout-->
-        <!--android:id="@+id/appbar"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">-->
-
-
-        <!--<androidx.appcompat.widget.Toolbar-->
-            <!--android:id="@+id/toolbar"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="@dimen/topNavigationBarSite"-->
-            <!--android:background="?attr/colorPrimary"-->
-            <!--app:layout_scrollFlags="scroll|enterAlways|snap"-->
-            <!--app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />-->
-
-
-    <!--</com.google.android.material.appbar.AppBarLayout>-->
 
 
     <androidx.viewpager.widget.ViewPager

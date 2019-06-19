@@ -4,6 +4,10 @@
     <string name="details_text">Details</string>
     <string name="open_web_text">Open Web</string>
     <string name="share_text">Share</string>
+    <string name="search_text">Search</string>
+    <string name="poster_text">Poster</string>
+
+
 
 
 </resources>

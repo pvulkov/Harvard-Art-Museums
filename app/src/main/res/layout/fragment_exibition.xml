@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="@color/colorLightGray">
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
@@ -15,114 +15,127 @@
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:layout_gravity="center"
-            android:layout_marginTop="150dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="100dp"
+            android:layout_marginEnd="8dp"
+            android:contentDescription="@string/poster_text"
             android:src="@drawable/progress_anim_white"
             android:tint="@color/colorPrimary"
-            android:visibility="gone" />
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.50"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-        <LinearLayout
+
+        <androidx.constraintlayout.widget.Group
             android:id="@+id/mainContent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="visible"
+            app:constraint_referenced_ids="cardView3, cardView4, cardView2 " />
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardView4"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:visibility="visible">
+            android:background="@color/white"
+            app:cardBackgroundColor="@color/colorPrimary"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
 
-            <androidx.cardview.widget.CardView
+            <TextView
+                android:id="@+id/exhDetailsTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/white"
-                app:cardBackgroundColor="@color/colorPrimary">
+                android:gravity="center"
+                android:padding="5dp"
+                android:textColor="@color/white"
+                android:textSize="22sp" />
+        </androidx.cardview.widget.CardView>
+
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardView3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:background="@color/white"
+            app:layout_constraintTop_toBottomOf="@+id/cardView4">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/exhDetailsPoster"
+                    android:layout_width="match_parent"
+                    android:layout_height="400dp" />
+
+                <TextView
+                    android:id="@+id/exhPosterCaption"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="5dp"
+                    android:textAlignment="center"
+                    android:textColor="@color/light_gray"
+                    android:textSize="14sp" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/exhGalleryView"
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp"
+                    android:layout_marginTop="5dp" />
+
+            </LinearLayout>
+
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardView2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/cardView3">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/exhDetailsFromTo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:textSize="14sp" />
 
 
                 <TextView
-                    android:id="@+id/exhDetailsTitle"
+                    android:id="@+id/exhDetailsLocation"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
+                    android:layout_margin="5dp"
+                    android:textSize="14sp" />
+
+
+                <TextView
+                    android:id="@+id/exhDetailsDescription"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:autoLink="web"
+                    android:fontFamily="monospace"
                     android:padding="5dp"
-                    android:textColor="@color/white"
-                    android:textSize="22sp" />
-            </androidx.cardview.widget.CardView>
+                    android:text="alksjdalksjlkdjalsa jlsadk"
+                    android:textColor="@color/colorPrimary" />
 
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:background="@color/white">
+            </LinearLayout>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <ImageView
-                        android:id="@+id/exhDetailsPoster"
-                        android:layout_width="match_parent"
-                        android:layout_height="400dp" />
-
-                    <TextView
-                        android:id="@+id/exhPosterCaption"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:padding="5dp"
-                        android:textSize="14sp"
-                        android:textColor="@color/light_gray"
-                        android:textAlignment="center" />
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/exhGalleryView"
-                        android:layout_width="match_parent"
-                        android:layout_height="80dp"
-                        android:layout_marginTop="5dp" />
-
-                </LinearLayout>
+        </androidx.cardview.widget.CardView>
 
 
-            </androidx.cardview.widget.CardView>
-
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/exhDetailsFromTo"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textSize="14sp"
-                        android:layout_margin="5dp" />
-
-
-                    <TextView
-                        android:id="@+id/exhDetailsLocation"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textSize="14sp"
-                        android:layout_margin="5dp"/>
-
-
-                    <TextView
-                        android:id="@+id/exhDetailsDescription"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="monospace"
-                        android:padding="5dp"
-                        android:autoLink="web"
-                        android:text="alksjdalksjlkdjalsa jlsadk"
-                        android:textColor="@color/colorPrimary" />
-
-                </LinearLayout>
-
-            </androidx.cardview.widget.CardView>
-
-
-        </LinearLayout>
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </ScrollView>

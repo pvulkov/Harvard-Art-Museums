@@ -32,6 +32,13 @@
             android:hardwareAccelerated="true"
             android:screenOrientation="portrait" />
 
+
+        <activity
+            android:name=".features.search.SearchActivity"
+            android:configChanges="orientation|screenSize"
+            android:hardwareAccelerated="true"
+            android:screenOrientation="portrait" />
+
     </application>
 
 
