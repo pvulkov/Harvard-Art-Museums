@@ -32,6 +32,15 @@ interface HamApi {
     fun getNextExhibitionsPage(@Url url: String): Single<Exhibitions>
 
 
+    //https://api.harvardartmuseums.org/exhibition?apikey=4493ff90-89fa-11e9-bae4-390e251d4987&q=woodblock
+    @GET("exhibition")
+    fun getExhibitionsByKeyword(
+            @Query("q") q: String,
+            @Query("sort") sort: String = "chronological",
+            @Query("status") status: String = "current, upcoming, past",
+            @Query("apikey") apikey: String = API_KEY
+    ): Single<Exhibitions>
+
     //https://api.harvardartmuseums.org/object?apikey=4493ff90-89fa-11e9-bae4-390e251d4987&exhibition=5700&fields=images
     @GET("object")
     fun getExhibitionsDetails(

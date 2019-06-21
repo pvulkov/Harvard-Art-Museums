@@ -25,7 +25,7 @@ data class HomeViewState(
         private var error: Throwable? = mainViewState.error
 
 
-        fun exhibitionsData(data: Fragment?): Builder {
+        fun setData(data: Fragment?): Builder {
             this.data = data
             return this
         }

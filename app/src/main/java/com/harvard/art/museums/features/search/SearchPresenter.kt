@@ -2,11 +2,15 @@ package com.harvard.art.museums.features.search
 
 import com.harvard.art.museums.base.BasePresenter
 import com.harvard.art.museums.base.BaseView
+import com.harvard.art.museums.data.pojo.Exhibitions
 import com.harvard.art.museums.data.pojo.ObjectDetails
+import com.harvard.art.museums.ext.EMPTY
 import com.harvard.art.museums.features.search.SearchPresenter.SearchView
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.functions.BiFunction
 import io.reactivex.schedulers.Schedulers
+import java.lang.Exception
 
 
 class SearchPresenter(view: SearchView) : BasePresenter<SearchView, SearchViewState>(view) {
@@ -23,10 +27,15 @@ class SearchPresenter(view: SearchView) : BasePresenter<SearchView, SearchViewSt
                 .observeOn(AndroidSchedulers.mainThread())
 
 
+        val zipper =
+                BiFunction { o: String, e: Filter -> TextAndFilter(o, e) }
+
+
         val searchState: Observable<SearchActionState> = intent(SearchView::searchEvent)
+                .map { it.text!! }
+                .withLatestFrom(intent(SearchView::filterEvent).map { it.filter }, zipper)
                 .subscribeOn(Schedulers.io())
-//                .filter { it.next.isValidUrl() }
-                .switchMap { searchObjects(it.text!!) }
+                .switchMap { searchObjects(it) }
                 .observeOn(AndroidSchedulers.mainThread())
 
 
@@ -66,7 +75,7 @@ class SearchPresenter(view: SearchView) : BasePresenter<SearchView, SearchViewSt
                 previousState
                         .copy()
                         .state(SearchViewState.State.DATA)
-                        .filterData(currentState.items.toMutableList())
+                        .resultData(currentState.items.toMutableList())
                         .error(null)
                         .build()
             }
@@ -81,7 +90,7 @@ class SearchPresenter(view: SearchView) : BasePresenter<SearchView, SearchViewSt
                 previousState
                         .copy()
                         .state(SearchViewState.State.FILTER)
-                        .filterData(currentState.filter)
+                        .resultData(currentState.filter)
                         .build()
             }
         }
@@ -92,21 +101,55 @@ class SearchPresenter(view: SearchView) : BasePresenter<SearchView, SearchViewSt
         return Observable.just(SearchActionState.FilterState(filter))
     }
 
-    private fun searchObjects(text: String): Observable<SearchActionState> {
-        return hamApi.searchObjectByKeyword(text)
-                .toObservable()
-                .map { toSearchViewItems(it) }
+    private fun searchObjects(tf: TextAndFilter): Observable<SearchActionState> {
+
+        return searchData(tf)
                 .map<SearchActionState> { SearchActionState.DataState(it) }
                 .startWith(SearchActionState.LoadingState)
                 .onErrorReturn { SearchActionState.ErrorState(it) }
     }
 
-    private fun toSearchViewItems(data: ObjectDetails): List<String> {
 
-        val result = mutableListOf<String>()
+    private fun searchData(tf: TextAndFilter): Observable<List<SearchResultViewItem>> {
 
-        var idx = 0
-        data.records.forEach { result.add(" item ${idx++}") }
+        return when (tf.filter) {
+            Filter.EXHIBITION -> hamApi.getExhibitionsByKeyword(tf.text).map { toSearchViewItems(it) }.toObservable()
+            Filter.OBJECTS -> hamApi.searchObjectByKeyword(tf.text).map { toSearchViewItems(it) }.toObservable()
+
+            else -> throw Exception("Unhandled else case")
+        }
+    }
+
+    private fun toSearchViewItems(data: ObjectDetails): List<SearchResultViewItem> {
+
+        val result = mutableListOf<SearchResultViewItem>()
+
+        data.records.forEach {
+            val item = SearchResultViewItem(
+                    SearchResultViewType.OBJECT,
+                    it.title ?: EMPTY,
+                    it.primaryimageurl,
+                    1)
+            result.add(item)
+        }
+
+
+        return result
+    }
+
+
+    private fun toSearchViewItems(data: Exhibitions): List<SearchResultViewItem> {
+
+        val result = mutableListOf<SearchResultViewItem>()
+
+        data.records.forEach {
+            val item = SearchResultViewItem(
+                    SearchResultViewType.EXHIBITION,
+                    it.title ?: EMPTY,
+                    "https://images.pexels.com/photos/67636/rose-blue-flower-rose-blooms-67636.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+                    2)
+            result.add(item)
+        }
 
 
         return result
@@ -115,6 +158,7 @@ class SearchPresenter(view: SearchView) : BasePresenter<SearchView, SearchViewSt
 
 //    private fun getExhibitionsData() = hamDb.exhibitionRecordDao().fetchAll().toObservable()
 
+    private data class TextAndFilter(val text: String, val filter: Filter)
 
     interface SearchView : BaseView {
 

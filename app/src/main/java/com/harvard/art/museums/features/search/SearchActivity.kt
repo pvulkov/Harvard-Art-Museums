@@ -1,10 +1,10 @@
 package com.harvard.art.museums.features.search
 
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.harvard.art.museums.R
 import com.harvard.art.museums.base.BaseActivity
@@ -15,8 +15,8 @@ import com.harvard.art.museums.features.search.Filter.*
 import com.harvard.art.museums.features.search.SearchPresenter.SearchView
 import com.harvard.art.museums.features.search.SearchViewState.State.DATA
 import com.harvard.art.museums.features.search.SearchViewState.State.ERROR
+import com.jakewharton.rxbinding2.support.v7.widget.RxSearchView
 import com.jakewharton.rxbinding2.view.clicks
-import com.jakewharton.rxbinding2.widget.RxTextView
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
 import kotlinx.android.synthetic.main.activity_search.*
@@ -25,12 +25,16 @@ import java.util.concurrent.TimeUnit
 
 class SearchActivity : BaseActivity<SearchView, SearchPresenter>(), SearchView {
 
-    private val trigger: PublishSubject<Boolean> = PublishSubject.create<Boolean>()
+    private val trigger: PublishSubject<SearchViewAction> = PublishSubject.create<SearchViewAction>()
     private val adapter = SearchAdapter()
+    private var filter: Filter = EXHIBITION
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
+
+        filter = intent.getSerializableExtra("filter.type") as Filter
 
         initUI()
     }
@@ -38,26 +42,13 @@ class SearchActivity : BaseActivity<SearchView, SearchPresenter>(), SearchView {
 
     override fun onResume() {
         super.onResume()
-        trigger.onNext(true)
+        trigger.onNext(SearchViewAction(exhFilterView, FILTER, filter))
     }
 
 
-    override fun filterEvent(): Observable<SearchViewAction> {
+    override fun filterEvent(): Observable<SearchViewAction> = trigger.filter { it.action == FILTER }
 
-        return Observable.merge(
-                exhFilterView.clicks().map { SearchViewAction(exhFilterView, FILTER, EXHIBITION) },
-                exhObjectView.clicks().map { SearchViewAction(exhObjectView, FILTER, OBJECTS) },
-                exhUnknownView.clicks().map { SearchViewAction(exhObjectView, FILTER, UNKNOWN) }
-        ).throttleLatest(200, TimeUnit.MILLISECONDS)
-    }
-
-    override fun searchEvent(): Observable<SearchViewAction> {
-        return RxTextView.textChanges(searchTextView)
-                .map { searchTextView.text.toString() }
-                .filter { it.length > 1 }
-                .map { SearchViewAction(exhObjectView, SEARCH, UNKNOWN, it) }
-                .debounce(300, TimeUnit.MILLISECONDS)
-    }
+    override fun searchEvent(): Observable<SearchViewAction> = trigger.filter { it.action == SEARCH }
 
 
     override fun createPresenter() = SearchPresenter(this)
@@ -67,21 +58,20 @@ class SearchActivity : BaseActivity<SearchView, SearchPresenter>(), SearchView {
     override fun render(state: SearchViewState) {
         when (state.state) {
 //            INIT -> Unit
-            SearchViewState.State.FILTER -> renderChangeFilterState(state)
+            SearchViewState.State.FILTER -> renderChangeFilterState(state.filter)
             DATA -> renderDataState(state)
             ERROR -> Unit
         }
     }
 
 
-    private fun renderChangeFilterState(state: SearchViewState) {
-        Log.d("DEBUG", "state " + state.state)
+    private fun renderChangeFilterState(filter: Filter) {
 
-        val blueColor = getColor(R.color.blue)
-        val grayColor = getColor(R.color.light_gray)
+        val blueColor = ContextCompat.getColor(this, R.color.blue)
+        val grayColor = ContextCompat.getColor(this, R.color.light_gray)
 
 
-        when (state.filter) {
+        when (filter) {
             EXHIBITION -> {
                 exhFilterView.setColor(blueColor)
                 exhObjectView.setColor(grayColor)
@@ -116,7 +106,7 @@ class SearchActivity : BaseActivity<SearchView, SearchPresenter>(), SearchView {
 
     private fun renderDataState(state: SearchViewState) {
 
-        adapter.updateData(state.data)
+        adapter.updateData(state.items)
         // adapter.updateData(state.exhibitionsList)
 
     }
@@ -128,15 +118,34 @@ class SearchActivity : BaseActivity<SearchView, SearchPresenter>(), SearchView {
 
     private fun initUI() {
 
-        searchView.let {
-            it.layoutManager = LinearLayoutManager(this)
+        searchResultsView.let {
+            val manager = GridLayoutManager(this, 2, RecyclerView.VERTICAL, false)
+            setSpanLookUp(manager)
+            it.layoutManager = manager
             it.adapter = adapter
             it.addItemDecoration(DividerItemDecoration(this, RecyclerView.VERTICAL))
         }
 
 
-//        exhFilterView.setColor(getColor(R.color.light_gray))
-//        exhObjectView.setColor(getColor(R.color.light_gray))
-//        exhUnknownView.setColor(getColor(R.color.light_gray))
+
+        Observable.merge(
+                exhFilterView.clicks().map { SearchViewAction(exhFilterView, FILTER, EXHIBITION) },
+                exhObjectView.clicks().map { SearchViewAction(exhObjectView, FILTER, OBJECTS) },
+                exhUnknownView.clicks().map { SearchViewAction(exhObjectView, FILTER, UNKNOWN) }
+        ).throttleLatest(200, TimeUnit.MILLISECONDS)
+                .subscribe(trigger)
+
+        RxSearchView.queryTextChangeEvents(searchTextView)
+                .map { it.queryText().toString() }
+                .filter { it.length > 1 }
+                .map { SearchViewAction(exhObjectView, SEARCH, UNKNOWN, it) }
+                .debounce(300, TimeUnit.MILLISECONDS).subscribe(trigger)
+    }
+
+    private fun setSpanLookUp(manager: GridLayoutManager) {
+
+        manager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
+            override fun getSpanSize(position: Int): Int = adapter.getItemSpan(position)
+        }
     }
 }

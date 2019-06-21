@@ -7,19 +7,24 @@ import android.widget.Toast
 import com.harvard.art.museums.R
 import com.harvard.art.museums.base.BaseActivity
 import com.harvard.art.museums.ext.replaceFragment
+import com.harvard.art.museums.features.exhibitions.main.ExhibitionsFragment
 import com.harvard.art.museums.features.home.HomePresenter.HomeView
 import com.harvard.art.museums.features.home.HomeViewState.State.*
 import com.harvard.art.museums.features.home.data.NavigationAction
+import com.harvard.art.museums.features.objects.ObjectsFragment
+import com.harvard.art.museums.features.search.Filter
 import com.harvard.art.museums.features.search.SearchActivity
 import com.jakewharton.rxbinding2.view.clicks
 import io.reactivex.Observable
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.header_layout.*
+import java.lang.Exception
 import java.util.concurrent.TimeUnit
 
 
 class HomeActivity : BaseActivity<HomeView, HomePresenter>(), HomeView {
 
+    private var filter: Filter = Filter.EXHIBITION
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,6 +54,17 @@ class HomeActivity : BaseActivity<HomeView, HomePresenter>(), HomeView {
     private fun renderNavigationState(state: HomeViewState) {
         Log.d("DEBUG", "renderNavigationState " + supportFragmentManager.fragments.size)
         replaceFragment(R.id.mainContainer, state.data!!)
+        updateFilterValue(state)
+    }
+
+
+    private fun updateFilterValue(state: HomeViewState) {
+        filter = when (state.data) {
+            is ObjectsFragment -> Filter.OBJECTS
+            is ExhibitionsFragment -> Filter.EXHIBITION
+            else -> throw  Exception("Unhandled else case")
+
+        }
     }
 
     private fun renderErrorState(errorState: HomeViewState) {
@@ -63,6 +79,7 @@ class HomeActivity : BaseActivity<HomeView, HomePresenter>(), HomeView {
         //TODO (pvalkov) refactor code
         searchTextView.clicks().subscribe {
             val intent = Intent(this@HomeActivity, SearchActivity::class.java)
+            intent.putExtra("filter.type", filter)
             startActivity(intent)
         }
     }

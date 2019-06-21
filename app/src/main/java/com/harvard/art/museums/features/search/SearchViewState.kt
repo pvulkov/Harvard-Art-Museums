@@ -6,7 +6,7 @@ import com.harvard.art.museums.ext.setData
 data class SearchViewState(
         val state: State = State.INIT,
         val filter: Filter = Filter.UNKNOWN,
-        val data: MutableList<String> = mutableListOf(),
+        val items: MutableList<SearchResultViewItem> = mutableListOf(),
         val error: Throwable? = null
 ) {
 
@@ -17,20 +17,20 @@ data class SearchViewState(
         return Builder(this)
     }
 
-    class Builder(mainViewState: SearchViewState) {
+    class Builder(state: SearchViewState) {
 
-        private var state: State = mainViewState.state
-        private var filter: Filter = mainViewState.filter
-        private var data: MutableList<String> = mainViewState.data
-        private var error: Throwable? = mainViewState.error
+        private var state: State = state.state
+        private var filter: Filter = state.filter
+        private var items: MutableList<SearchResultViewItem> = state.items
+        private var error: Throwable? = state.error
 
-        fun filterData(filter: Filter): Builder {
+        fun resultData(filter: Filter): Builder {
             this.filter = filter
             return this
         }
 
-        fun filterData(data: MutableList<String>): Builder {
-            this.data.setData(data)
+        fun resultData(data: List<SearchResultViewItem>): Builder {
+            this.items.setData(data)
             return this
         }
 
@@ -44,7 +44,7 @@ data class SearchViewState(
             return this
         }
 
-        fun build(): SearchViewState = SearchViewState(state, filter, data, error)
+        fun build(): SearchViewState = SearchViewState(state, filter, items, error)
     }
 }
 
