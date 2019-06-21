@@ -6,11 +6,16 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "people_data_table")
 data class People(
         @PrimaryKey(autoGenerate = true)
-        val rid: Long,
+        val alphasort: String,
+        val birthplace: Any,
+        val culture: String,
+        val deathplace: Any,
+        val displaydate: String,
         val displayname: String,
         val displayorder: Int,
+        val gender: String,
         val name: String,
         val personid: Int,
-        val prefix: String,
+        val prefix: Any,
         val role: String
 )

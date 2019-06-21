@@ -68,7 +68,7 @@ fun Record.toExhibitionRecord(info: Info): ExhibitionRecord {
             primaryimageurl = primaryimageurl,
             shortdescription = shortdescription,
             temporalorder = temporalorder,
-            title = title,
+            title = title ?: EMPTY,
             venues = venues ?: listOf(),
             people = people ?: listOf(),
             info = info,

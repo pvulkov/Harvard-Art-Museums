@@ -39,7 +39,7 @@
             android:hardwareAccelerated="true"
             android:screenOrientation="portrait" />
 
-    </application>
 
+    </application>
 
 </manifest>

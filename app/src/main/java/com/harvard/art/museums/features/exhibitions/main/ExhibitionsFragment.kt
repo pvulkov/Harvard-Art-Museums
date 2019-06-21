@@ -99,7 +99,7 @@ class ExhibitionsFragment : BaseFragment<ExhView, ExhibitionsPresenter>(), ExhVi
                         .also { startActivity(it) }
             }
 
-            else -> throw Exception("Unhandled view action state")
+            else -> throw Exception("Unhandled view filter state")
         }
 
     }

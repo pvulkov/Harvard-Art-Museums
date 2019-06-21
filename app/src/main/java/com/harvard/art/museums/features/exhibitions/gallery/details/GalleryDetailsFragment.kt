@@ -45,14 +45,14 @@ class GalleryDetailsFragment : BaseFragment<GalleryView, GalleryPresenter>(), Ga
 
     override fun createPresenter() = GalleryPresenter(this)
 
-    override fun render(viewState: GalleryDetailsViewState) {
+    override fun render(state: GalleryDetailsViewState) {
 
-        when (viewState.state) {
+        when (state.state) {
             NONE -> {
             }
             LOAD -> renderLoadingState()
-            DATA -> renderDataState(viewState)
-            ERROR -> renderErrorState(viewState)
+            DATA -> renderDataState(state)
+            ERROR -> renderErrorState(state)
 
 
         }
@@ -61,30 +61,25 @@ class GalleryDetailsFragment : BaseFragment<GalleryView, GalleryPresenter>(), Ga
     override fun loadData(): Observable<Int> = Observable.just(arguments?.getInt(KEY))
 
 
-    override fun onResume() {
-        super.onResume()
-
-
-    }
-
     private fun renderLoadingState() {
         progressView.show()
         mainContent.hide()
     }
 
 
-    private fun renderErrorState(viewState: GalleryDetailsViewState) {
+    private fun renderErrorState(state: GalleryDetailsViewState) {
         progressView.hide()
+        state.error?.printStackTrace()
         //TODO (pvalkov) display "retry" button
         Log.d("DEBUG", "---")
     }
 
-    private fun renderDataState(viewState: GalleryDetailsViewState) {
+    private fun renderDataState(state: GalleryDetailsViewState) {
 
         progressView.hide()
         mainContent.show()
 
-        viewState.galleryObjectData?.apply {
+        state.galleryObjectData?.apply {
 
             exhDetailsDescription.text = this.description
             exhDetailsDescription.setMovementMethod(LinkMovementMethod.getInstance())

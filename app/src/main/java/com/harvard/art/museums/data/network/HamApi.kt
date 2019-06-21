@@ -2,7 +2,7 @@ package com.harvard.art.museums.data.network
 
 import com.harvard.art.museums.API_KEY
 import com.harvard.art.museums.data.pojo.Exhibitions
-import com.harvard.art.museums.features.exhibitions.data.ObjectDetails
+import com.harvard.art.museums.data.pojo.ObjectDetails
 import io.reactivex.Observable
 import io.reactivex.Single
 import retrofit2.http.*
@@ -36,10 +36,17 @@ interface HamApi {
     @GET("object")
     fun getExhibitionsDetails(
             @Query("exhibition") exhibitionId: Int,
-            @Query("&fields") fields: String = "images",
+            @Query("fields") fields: String = "images",
             @Query("apikey") apikey: String = API_KEY
     ): Single<ObjectDetails>
 
+    //https://api.harvardartmuseums.org/object?apikey=4493ff90-89fa-11e9-bae4-390e251d4987&exhibition=5700&fields=images
+    @GET("object")
+    fun searchObjectByKeyword(
+            @Query("keyword") keyword: String,
+            @Query("size") size: Int = 10,
+            @Query("apikey") apikey: String = API_KEY
+    ): Single<ObjectDetails>
 
     //https://github.com/harvardartmuseums/api-docs/blob/master/sections/image.md
     //https://api.harvardartmuseums.org/object?apikey=4493ff90-89fa-11e9-bae4-390e251d4987&exhibition=5700&field:images&size=100

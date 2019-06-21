@@ -4,6 +4,7 @@ import com.harvard.art.museums.base.BaseView
 import com.harvard.art.museums.features.exhibitions.gallery.ExhibitionGalleryPresenter
 import com.harvard.art.museums.features.exhibitions.gallery.details.GalleryDetailsPresenter
 import com.harvard.art.museums.features.exhibitions.main.ExhibitionsPresenter
+import com.harvard.art.museums.features.search.SearchPresenter
 import com.harvard.art.museums.injection.module.ContextModule
 import com.harvard.art.museums.injection.module.DatabaseModule
 import com.harvard.art.museums.injection.module.NetworkModule
@@ -32,6 +33,8 @@ interface PresenterInjector {
     fun inject(presenter: ExhibitionGalleryPresenter)
 
     fun inject (presenter: GalleryDetailsPresenter)
+
+    fun inject(presenter: SearchPresenter)
 
     @Component.Builder
     interface Builder {

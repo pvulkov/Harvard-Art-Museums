@@ -7,8 +7,9 @@ import com.harvard.art.museums.data.pojo.Image
 import com.harvard.art.museums.ext.formatFromToDate
 import com.harvard.art.museums.ext.formatLocation
 import com.harvard.art.museums.features.exhibitions.data.GalleryObjectData
-import com.harvard.art.museums.features.exhibitions.data.ObjectDetails
-import com.harvard.art.museums.features.exhibitions.data.Record
+import com.harvard.art.museums.data.pojo.ObjectDetails
+import com.harvard.art.museums.data.pojo.Record
+import com.harvard.art.museums.ext.EMPTY
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.functions.BiFunction
@@ -103,7 +104,7 @@ class GalleryDetailsPresenter(view: GalleryView) : BasePresenter<GalleryView, Ga
     private fun getImageList(record: Record): List<Image> {
 
         return record.images
-                ?.map { i -> Image(baseimageurl = i.baseimageurl, caption = record.title) }
+                ?.map { i -> Image(baseimageurl = i.baseimageurl, caption = record.title ?: EMPTY) }
                 ?: emptyList()
 
     }

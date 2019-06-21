@@ -65,7 +65,7 @@ class HomePresenter(view: HomeView) : BasePresenter<HomeView, HomeViewState>(vie
             NavigationAction.OBJECTS -> HomeViewState(HomeViewState.State.NAVIGATION, ObjectsFragment(), action.tag, null)
         }
 
-        Log.d("DEBUG", "action >> " + action)
+        Log.d("DEBUG", "filter >> " + action)
         return Observable.just(state)
     }
 

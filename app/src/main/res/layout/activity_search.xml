@@ -1,56 +1,135 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_content"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorLightGray"
     android:fitsSystemWindows="true"
     android:orientation="vertical">
 
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/cardView1"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/topNavigationBarSite"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <EditText
+            android:id="@+id/searchTextView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="5dp"
+            android:background="@drawable/no_border_background"
+            android:hint="@string/search_text"
+            android:paddingStart="8dp"
+            android:paddingEnd="5dp"
+            android:textSize="17sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.cardview.widget.CardView>
+
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp">
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cardView1">
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:paddingTop="15dp"
-            android:paddingBottom="15dp"
-            android:weightSum="3">
+            android:paddingBottom="15dp">
 
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/profile_image1"
-                android:layout_width="0dp"
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/exhFilterView"
+                android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:layout_weight="1"
-                android:src="@drawable/offline_flag_3"
-                app:civ_border_color="@color/colorPrimary"
-                app:civ_border_width="1dp" />
+                android:src="@drawable/ic_menu_event"
+                app:backgroundTint="@color/light_gray"
+                app:borderWidth="0dp"
+                app:elevation="1dp"
+                app:fabCustomSize="50dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/exhObjectView"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
 
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/profile_image2"
-                android:layout_width="0dp"
+            <TextView
+                android:id="@+id/exhFilterViewText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@string/exhibitions_text"
+                app:layout_constraintEnd_toEndOf="@+id/exhFilterView"
+                app:layout_constraintStart_toStartOf="@+id/exhFilterView"
+                app:layout_constraintTop_toBottomOf="@+id/exhFilterView" />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/exhObjectView"
+                android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:layout_weight="1"
-                android:src="@drawable/offline_flag_3"
-                app:civ_border_color="@color/colorPrimary"
-                app:civ_border_width="1dp" />
+                android:src="@drawable/ic_menu_object"
+                app:backgroundTint="@color/light_gray"
+                app:borderWidth="0dp"
+                app:elevation="1dp"
+                app:fabCustomSize="50dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/exhUnknownView"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/exhFilterView"
+                app:layout_constraintTop_toTopOf="parent" />
 
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/profile_image3"
-                android:layout_width="0dp"
+            <TextView
+                android:id="@+id/exhObjectViewText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@string/objects_text"
+                app:layout_constraintEnd_toEndOf="@+id/exhObjectView"
+                app:layout_constraintStart_toStartOf="@+id/exhObjectView"
+                app:layout_constraintTop_toBottomOf="@+id/exhObjectView" />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/exhUnknownView"
+                android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:layout_weight="1"
                 android:src="@drawable/offline_flag_3"
-                app:civ_border_color="@color/colorPrimary"
-                app:civ_border_width="1dp" />
+                android:visibility="invisible"
+                app:backgroundTint="@color/light_gray"
+                app:borderWidth="0dp"
+                app:elevation="1dp"
+                app:fabCustomSize="50dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/exhObjectView"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        </LinearLayout>
+            <TextView
+                android:id="@+id/exhUnknownViewText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:visibility="invisible"
+                app:layout_constraintEnd_toEndOf="@+id/exhUnknownView"
+                app:layout_constraintStart_toStartOf="@+id/exhUnknownView"
+                app:layout_constraintTop_toBottomOf="@+id/exhUnknownView" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.cardview.widget.CardView>
 
@@ -59,18 +138,25 @@
         android:id="@+id/searchView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:dividerHeight="0dp" />
+        android:dividerHeight="0dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cardView" />
 
     <ProgressBar
         android:id="@+id/progressView"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_gravity="center"
-        android:layout_marginTop="10dp"
+        android:layout_marginBottom="8dp"
         android:indeterminate="true"
         android:indeterminateDrawable="@drawable/progress_anim_white"
         android:indeterminateTint="@color/colorPrimary"
-        android:visibility="gone" />
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

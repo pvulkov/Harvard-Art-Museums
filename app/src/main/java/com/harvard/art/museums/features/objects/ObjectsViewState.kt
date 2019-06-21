@@ -20,7 +20,7 @@ data class ObjectsViewState(
 //        private var error: Throwable? = exhibitionsViewState.error
 //
 //
-//        fun exhibitionsData(exhibitionItems: List<ExhibitionViewItem>): Builder {
+//        fun filterData(exhibitionItems: List<ExhibitionViewItem>): Builder {
 //            this.exhibitionItems = exhibitionItems
 //            return this
 //        }

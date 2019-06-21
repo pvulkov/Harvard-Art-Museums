@@ -1,16 +1,16 @@
 package com.harvard.art.museums.features.search
 
 import com.harvard.art.museums.ext.setData
-import com.harvard.art.museums.features.exhibitions.data.ExhibitionDetailsViewItem
 
 
 data class SearchViewState(
         val state: State = State.INIT,
-        val exhibitionsList: List<ExhibitionDetailsViewItem> = listOf(),
+        val filter: Filter = Filter.UNKNOWN,
+        val data: MutableList<String> = mutableListOf(),
         val error: Throwable? = null
 ) {
 
-    enum class State { INIT, LOAD_MORE, DATA, ERROR }
+    enum class State { INIT, FILTER, SEARCH, DATA, ERROR }
 
 
     fun copy(): Builder {
@@ -20,12 +20,17 @@ data class SearchViewState(
     class Builder(mainViewState: SearchViewState) {
 
         private var state: State = mainViewState.state
-        private var exhibitionsList = mutableListOf<ExhibitionDetailsViewItem>()
+        private var filter: Filter = mainViewState.filter
+        private var data: MutableList<String> = mainViewState.data
         private var error: Throwable? = mainViewState.error
 
+        fun filterData(filter: Filter): Builder {
+            this.filter = filter
+            return this
+        }
 
-        fun exhibitionsData(data: List<ExhibitionDetailsViewItem>): Builder {
-            this.exhibitionsList.setData(data)
+        fun filterData(data: MutableList<String>): Builder {
+            this.data.setData(data)
             return this
         }
 
@@ -39,9 +44,7 @@ data class SearchViewState(
             return this
         }
 
-
-        fun build(): SearchViewState =
-                SearchViewState(state, exhibitionsList, error)
+        fun build(): SearchViewState = SearchViewState(state, filter, data, error)
     }
 }
 
