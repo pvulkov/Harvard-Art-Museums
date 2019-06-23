@@ -9,6 +9,8 @@ import com.harvard.art.museums.features.exhibitions.data.ExhibitionDetailsViewIt
 import com.harvard.art.museums.features.exhibitions.data.ExhibitionOpenStatus
 import com.harvard.art.museums.features.exhibitions.data.ExhibitionViewItem
 import com.harvard.art.museums.features.exhibitions.data.ViewItemType
+import com.harvard.art.museums.features.search.SearchResultViewItem
+import com.harvard.art.museums.features.search.SearchResultViewType
 
 
 fun Exhibitions.toExhibitionRecordsList(nextUrl: String): List<ExhibitionRecord> {
@@ -74,6 +76,25 @@ fun Record.toExhibitionRecord(info: Info): ExhibitionRecord {
             info = info,
             openStatus = getOpenStatus()
     )
+}
+
+
+fun Exhibitions.toSearchViewItems(): List<SearchResultViewItem> {
+
+    val result = mutableListOf<SearchResultViewItem>()
+
+    this.records.forEach {
+        val item = SearchResultViewItem(
+                SearchResultViewType.EXHIBITION,
+                it.id,
+                it.title ?: EMPTY,
+                it.poster?.imageurl ?: EMPTY,
+                2)
+        result.add(item)
+    }
+
+
+    return result
 }
 
 

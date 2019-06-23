@@ -87,7 +87,7 @@ class GalleryDetailsFragment : BaseFragment<GalleryView, GalleryPresenter>(), Ga
             exhDetailsFromTo.text = this.dateFromTo
             exhDetailsLocation.text = this.location
             exhDetailsTitle.text = this.title
-            this.poster?.let { p -> loadPoster(p.imageurl, p.caption) }
+            this.poster?.let { p -> loadPoster(p.imageurl!!, p.caption) }
 
 
             if (this.images.isEmpty()) {

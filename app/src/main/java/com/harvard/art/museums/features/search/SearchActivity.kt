@@ -8,13 +8,14 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.harvard.art.museums.R
 import com.harvard.art.museums.base.BaseActivity
+import com.harvard.art.museums.ext.hide
+import com.harvard.art.museums.ext.hideSoftKeyboard
 import com.harvard.art.museums.ext.setColor
-import com.harvard.art.museums.features.search.Action.FILTER
-import com.harvard.art.museums.features.search.Action.SEARCH
+import com.harvard.art.museums.ext.show
+import com.harvard.art.museums.features.search.Action.*
 import com.harvard.art.museums.features.search.Filter.*
 import com.harvard.art.museums.features.search.SearchPresenter.SearchView
-import com.harvard.art.museums.features.search.SearchViewState.State.DATA
-import com.harvard.art.museums.features.search.SearchViewState.State.ERROR
+import com.harvard.art.museums.features.search.SearchViewState.State.*
 import com.jakewharton.rxbinding2.support.v7.widget.RxSearchView
 import com.jakewharton.rxbinding2.view.clicks
 import io.reactivex.Observable
@@ -27,46 +28,82 @@ class SearchActivity : BaseActivity<SearchView, SearchPresenter>(), SearchView {
 
     private val trigger: PublishSubject<SearchViewAction> = PublishSubject.create<SearchViewAction>()
     private val adapter = SearchAdapter()
-    private var filter: Filter = EXHIBITION
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
-
-        filter = intent.getSerializableExtra("filter.type") as Filter
-
         initUI()
     }
 
 
     override fun onResume() {
         super.onResume()
-        trigger.onNext(SearchViewAction(exhFilterView, FILTER, filter))
+        val filter = intent.getSerializableExtra("filter.type") as Filter
+        trigger.onNext(SearchViewAction(ACTION_INIT, filter))
+        trigger.onNext(SearchViewAction(ACTION_FILTER, filter))
     }
-
-
-    override fun filterEvent(): Observable<SearchViewAction> = trigger.filter { it.action == FILTER }
-
-    override fun searchEvent(): Observable<SearchViewAction> = trigger.filter { it.action == SEARCH }
-
 
     override fun createPresenter() = SearchPresenter(this)
 
-//    override fun initDataEvent() = trigger.subscribeOn(Schedulers.io())
+    override fun itemViewsEvents(): Observable<SearchResultViewItem> = adapter.viewEvents()
+
+    override fun initEvent(): Observable<SearchViewAction> = trigger.filter { it.action == ACTION_INIT }
+
+    override fun filterEvent(): Observable<SearchViewAction> = trigger.filter { it.action == ACTION_FILTER }
+
+    override fun searchEvent(): Observable<SearchViewAction> = trigger.filter { it.action == ACTION_SEARCH }
+
 
     override fun render(state: SearchViewState) {
         when (state.state) {
-//            INIT -> Unit
-            SearchViewState.State.FILTER -> renderChangeFilterState(state.filter)
+            INIT -> renderInitState(state)
+            SEARCHING -> renderSearchingState()
+            REPEAT_SEARCH -> renderRepeatSearchState(state)
+            CHANGE_FILTER -> renderChangeFilterState(state.filter)
             DATA -> renderDataState(state)
-            ERROR -> Unit
+            ERROR -> renderErrorState(state)
+            OPEN_ITEM -> Unit
         }
+    }
+
+    private fun renderInitState(state: SearchViewState) {
+        applyFilter(state.filter)
+        filterCardView.show()
+        resultsCardView.show()
+        adapter.updateData(state.items)
+    }
+
+    private fun renderSearchingState() {
+        progressView.show()
+        filterCardView.hide()
+        resultsCardView.hide()
+    }
+
+    private fun renderDataState(state: SearchViewState) {
+
+        progressView.hide()
+        filterCardView.hide()
+        resultsCardView.show()
+        adapter.updateData(state.items)
+    }
+
+    private fun renderErrorState(state: SearchViewState) {
+        progressView.hide()
+        Toast.makeText(this, "error ${state.error}", Toast.LENGTH_LONG).show()
+    }
+
+    private fun renderRepeatSearchState(state: SearchViewState) {
+        state.text?.let { searchTextView.setQuery(it, true) }
     }
 
 
     private fun renderChangeFilterState(filter: Filter) {
+        applyFilter(filter)
+    }
 
+
+    private fun applyFilter(filter: Filter) {
         val blueColor = ContextCompat.getColor(this, R.color.blue)
         val grayColor = ContextCompat.getColor(this, R.color.light_gray)
 
@@ -100,19 +137,6 @@ class SearchActivity : BaseActivity<SearchView, SearchPresenter>(), SearchView {
                 exhUnknownViewText.setTextColor(blueColor)
             }
         }
-
-
-    }
-
-    private fun renderDataState(state: SearchViewState) {
-
-        adapter.updateData(state.items)
-        // adapter.updateData(state.exhibitionsList)
-
-    }
-
-    private fun renderErrorState(state: SearchViewState) {
-        Toast.makeText(this, "error ${state.error}", Toast.LENGTH_LONG).show()
     }
 
 
@@ -123,27 +147,34 @@ class SearchActivity : BaseActivity<SearchView, SearchPresenter>(), SearchView {
             setSpanLookUp(manager)
             it.layoutManager = manager
             it.adapter = adapter
-            it.addItemDecoration(DividerItemDecoration(this, RecyclerView.VERTICAL))
+            it.addItemDecoration(DividerItemDecoration(this, RecyclerView.HORIZONTAL))
         }
 
 
 
         Observable.merge(
-                exhFilterView.clicks().map { SearchViewAction(exhFilterView, FILTER, EXHIBITION) },
-                exhObjectView.clicks().map { SearchViewAction(exhObjectView, FILTER, OBJECTS) },
-                exhUnknownView.clicks().map { SearchViewAction(exhObjectView, FILTER, UNKNOWN) }
-        ).throttleLatest(200, TimeUnit.MILLISECONDS)
+                exhFilterView.clicks().map { SearchViewAction(ACTION_FILTER, EXHIBITION) },
+                exhObjectView.clicks().map { SearchViewAction(ACTION_FILTER, OBJECTS) },
+                exhUnknownView.clicks().map { SearchViewAction(ACTION_FILTER, UNKNOWN) }
+        )
+                .throttleLatest(200, TimeUnit.MILLISECONDS)
                 .subscribe(trigger)
 
+
+
         RxSearchView.queryTextChangeEvents(searchTextView)
-                .map { it.queryText().toString() }
-                .filter { it.length > 1 }
-                .map { SearchViewAction(exhObjectView, SEARCH, UNKNOWN, it) }
-                .debounce(300, TimeUnit.MILLISECONDS).subscribe(trigger)
+                .doOnNext {
+                    if (it.isSubmitted)
+                        hideSoftKeyboard()
+                }
+                .map { SearchViewAction(ACTION_SEARCH, UNKNOWN, it.queryText().toString(), it.isSubmitted) }
+                //TODO (pvalkov) ig text is empty do not debounce
+                .debounce(300, TimeUnit.MILLISECONDS)
+                .subscribe(trigger)
     }
 
-    private fun setSpanLookUp(manager: GridLayoutManager) {
 
+    private fun setSpanLookUp(manager: GridLayoutManager) {
         manager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
             override fun getSpanSize(position: Int): Int = adapter.getItemSpan(position)
         }

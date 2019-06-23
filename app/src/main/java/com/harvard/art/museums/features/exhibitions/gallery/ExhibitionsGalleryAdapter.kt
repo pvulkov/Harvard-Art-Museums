@@ -36,7 +36,7 @@ class ExhibitionsGalleryAdapter(fragmentManager: FragmentManager) : FragmentPage
     }
 
     //TODO (pvalkov) check if code below is used
-    // Returns the page title for the top indicator
+    // Returns the page text for the top indicator
     override fun getPageTitle(position: Int): CharSequence? {
         return "Page $position"
     }

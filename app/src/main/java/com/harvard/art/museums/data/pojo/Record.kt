@@ -13,7 +13,7 @@ data class Record(
         val images: List<Image>? = null,
         val url: String,
         val lastupdate: String,
-        val poster: Poster,
+        val poster: Poster? = null,
         val primaryimageurl: String? = null,
         val shortdescription: String,
         val temporalorder: Int,
