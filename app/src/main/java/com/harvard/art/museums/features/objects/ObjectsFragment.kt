@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.harvard.art.museums.R
 import com.harvard.art.museums.base.BaseFragment
-import com.harvard.art.museums.features.exhibitions.main.ExhibitionsViewState.State.*
+import com.harvard.art.museums.features.exhibitions.list.ExhibitionsViewState.State.*
 import com.harvard.art.museums.features.objects.ObjectsPresenter.ObjectsView
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.PublishSubject

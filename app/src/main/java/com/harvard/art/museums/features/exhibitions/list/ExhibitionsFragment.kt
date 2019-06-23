@@ -1,4 +1,4 @@
-package com.harvard.art.museums.features.exhibitions.main
+package com.harvard.art.museums.features.exhibitions.list
 
 import android.content.Intent
 import android.os.Bundle
@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.harvard.art.museums.R
 import com.harvard.art.museums.base.BaseFragment
 import com.harvard.art.museums.ext.*
-import com.harvard.art.museums.features.exhibitions.main.ExhibitionsViewState.State.*
+import com.harvard.art.museums.features.exhibitions.list.ExhibitionsViewState.State.*
 import com.harvard.art.museums.features.exhibitions.data.ViewAction
 import com.harvard.art.museums.features.exhibitions.data.ViewItemAction
 import com.harvard.art.museums.features.exhibitions.gallery.ExhibitionGalleryActivity
@@ -21,7 +21,7 @@ import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.PublishSubject
 import kotlinx.android.synthetic.main.fragment_exibitions.*
 import java.util.concurrent.TimeUnit
-import com.harvard.art.museums.features.exhibitions.main.ExhibitionsPresenter.ExhibitionsView as ExhView
+import com.harvard.art.museums.features.exhibitions.list.ExhibitionsPresenter.ExhibitionsView as ExhView
 
 
 class ExhibitionsFragment : BaseFragment<ExhView, ExhibitionsPresenter>(), ExhView {

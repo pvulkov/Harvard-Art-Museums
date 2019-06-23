@@ -8,6 +8,6 @@ sealed class SearchActionState {
     data class DataState(val items: List<SearchResultViewItem>) : SearchActionState()
     data class FilterState(val filter: Filter) : SearchActionState()
     data class RepeatSearchState(val text: String) : SearchActionState()
-    data class OpenItemState(val data: Any) : SearchActionState()
+    data class OpenItemState(val itemId: Int) : SearchActionState()
 
 }

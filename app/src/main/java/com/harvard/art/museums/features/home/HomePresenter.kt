@@ -3,7 +3,7 @@ package com.harvard.art.museums.features.home
 import android.util.Log
 import com.harvard.art.museums.base.BasePresenter
 import com.harvard.art.museums.base.BaseView
-import com.harvard.art.museums.features.exhibitions.main.ExhibitionsFragment
+import com.harvard.art.museums.features.exhibitions.list.ExhibitionsFragment
 import com.harvard.art.museums.features.home.HomePresenter.HomeView
 import com.harvard.art.museums.features.home.data.NavigationAction
 import com.harvard.art.museums.features.objects.ObjectsFragment

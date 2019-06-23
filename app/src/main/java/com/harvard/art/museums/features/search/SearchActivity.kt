@@ -8,15 +8,16 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.harvard.art.museums.R
 import com.harvard.art.museums.base.BaseActivity
-import com.harvard.art.museums.ext.hide
-import com.harvard.art.museums.ext.hideSoftKeyboard
-import com.harvard.art.museums.ext.setColor
-import com.harvard.art.museums.ext.show
+import com.harvard.art.museums.ext.*
+import com.harvard.art.museums.features.exhibitions.gallery.ExhibitionGalleryActivity
 import com.harvard.art.museums.features.search.Action.*
 import com.harvard.art.museums.features.search.Filter.*
 import com.harvard.art.museums.features.search.SearchPresenter.SearchView
 import com.harvard.art.museums.features.search.SearchViewState.State.*
 import com.jakewharton.rxbinding2.support.v7.widget.RxSearchView
+
+import com.harvard.art.museums.features.search.SearchViewState as ViewState
+
 import com.jakewharton.rxbinding2.view.clicks
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
@@ -46,7 +47,7 @@ class SearchActivity : BaseActivity<SearchView, SearchPresenter>(), SearchView {
 
     override fun createPresenter() = SearchPresenter(this)
 
-    override fun itemViewsEvents(): Observable<SearchResultViewItem> = adapter.viewEvents()
+    override fun itemActionsEvents(): Observable<SearchResultViewItem> = adapter.viewEvents()
 
     override fun initEvent(): Observable<SearchViewAction> = trigger.filter { it.action == ACTION_INIT }
 
@@ -55,7 +56,7 @@ class SearchActivity : BaseActivity<SearchView, SearchPresenter>(), SearchView {
     override fun searchEvent(): Observable<SearchViewAction> = trigger.filter { it.action == ACTION_SEARCH }
 
 
-    override fun render(state: SearchViewState) {
+    override fun render(state: ViewState) {
         when (state.state) {
             INIT -> renderInitState(state)
             SEARCHING -> renderSearchingState()
@@ -63,11 +64,11 @@ class SearchActivity : BaseActivity<SearchView, SearchPresenter>(), SearchView {
             CHANGE_FILTER -> renderChangeFilterState(state.filter)
             DATA -> renderDataState(state)
             ERROR -> renderErrorState(state)
-            OPEN_ITEM -> Unit
+            OPEN_ITEM -> renderOpenItemState(state)
         }
     }
 
-    private fun renderInitState(state: SearchViewState) {
+    private fun renderInitState(state: ViewState) {
         applyFilter(state.filter)
         filterCardView.show()
         resultsCardView.show()
@@ -80,21 +81,28 @@ class SearchActivity : BaseActivity<SearchView, SearchPresenter>(), SearchView {
         resultsCardView.hide()
     }
 
-    private fun renderDataState(state: SearchViewState) {
-
+    private fun renderDataState(state: ViewState) {
         progressView.hide()
         filterCardView.hide()
         resultsCardView.show()
         adapter.updateData(state.items)
     }
 
-    private fun renderErrorState(state: SearchViewState) {
+    private fun renderErrorState(state: ViewState) {
         progressView.hide()
         Toast.makeText(this, "error ${state.error}", Toast.LENGTH_LONG).show()
     }
 
-    private fun renderRepeatSearchState(state: SearchViewState) {
+    private fun renderRepeatSearchState(state: ViewState) {
         state.text?.let { searchTextView.setQuery(it, true) }
+    }
+
+    private fun renderOpenItemState(state: ViewState) {
+        val extras = Bundle()
+        extras.putInt("exhibitionId", state.exhibitionId!!)
+        generateActivityIntent(ExhibitionGalleryActivity::class.java, extras)
+                .also { startActivity(it) }
+
     }
 
 
@@ -167,7 +175,7 @@ class SearchActivity : BaseActivity<SearchView, SearchPresenter>(), SearchView {
                     if (it.isSubmitted)
                         hideSoftKeyboard()
                 }
-                .map { SearchViewAction(ACTION_SEARCH, UNKNOWN, it.queryText().toString(), it.isSubmitted) }
+                .map { SearchViewAction(ACTION_SEARCH,  UNKNOWN, it.queryText().toString(), it.isSubmitted) }
                 //TODO (pvalkov) ig text is empty do not debounce
                 .debounce(300, TimeUnit.MILLISECONDS)
                 .subscribe(trigger)

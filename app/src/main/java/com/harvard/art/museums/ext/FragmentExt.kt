@@ -11,7 +11,7 @@ import androidx.fragment.app.Fragment
 import java.io.Serializable
 
 
-fun <K : String, V> generateArguments(k: K, v: V) : Bundle {
+fun <K : String, V> generateArguments(k: K, v: V): Bundle {
 
     val extras = Bundle()
     //NOTE (pvalkov) here we go again...

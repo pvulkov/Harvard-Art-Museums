@@ -2,7 +2,7 @@ package com.harvard.art.museums.base
 
 import com.hannesdorfmann.mosby3.mvi.MviBasePresenter
 import com.harvard.art.museums.data.db.HamDatabase
-import com.harvard.art.museums.features.exhibitions.main.ExhibitionsPresenter
+import com.harvard.art.museums.features.exhibitions.list.ExhibitionsPresenter
 import com.harvard.art.museums.injection.component.DaggerPresenterInjector
 import com.harvard.art.museums.injection.component.PresenterInjector
 import com.harvard.art.museums.injection.module.ContextModule

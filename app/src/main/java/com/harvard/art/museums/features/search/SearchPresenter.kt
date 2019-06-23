@@ -11,8 +11,10 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.functions.BiFunction
 import io.reactivex.schedulers.Schedulers
 
+import com.harvard.art.museums.features.search.SearchViewState as ViewState
 
-class SearchPresenter(view: SearchView) : BasePresenter<SearchView, SearchViewState>(view) {
+
+class SearchPresenter(view: SearchView) : BasePresenter<SearchView, ViewState>(view) {
 
     private val zipper = BiFunction { o: String, e: Filter -> TextAndFilter(o, e) }
 
@@ -38,16 +40,16 @@ class SearchPresenter(view: SearchView) : BasePresenter<SearchView, SearchViewSt
                 .observeOn(AndroidSchedulers.mainThread())
 
 
-        val itemViewState: Observable<SearchActionState> = intent(SearchView::itemViewsEvents)
+        val itemActionsState: Observable<SearchActionState> = intent(SearchView::itemActionsEvents)
                 .observeOn(Schedulers.io())
                 .doOnNext { updateRecentSearches(it) }
                 .switchMap { viewItemState(it) }
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
 
-        val allViewState = Observable.merge(initState, searchState, filterState, itemViewState)
+        val allViewState = Observable.merge(initState, searchState, filterState, itemActionsState)
 
-        val initializeState = SearchViewState(state = SearchViewState.State.INIT)
+        val initializeState = ViewState(state = ViewState.State.INIT)
         val stateObservable = allViewState
                 .scan(initializeState, this::viewStateReducer)
                 .doOnError {
@@ -60,13 +62,13 @@ class SearchPresenter(view: SearchView) : BasePresenter<SearchView, SearchViewSt
     }
 
 
-    private fun viewStateReducer(previousState: SearchViewState, currentState: SearchActionState): SearchViewState {
+    private fun viewStateReducer(previousState: ViewState, currentState: SearchActionState): ViewState {
 
         return when (currentState) {
             is SearchActionState.InitState -> {
                 previousState
                         .copy()
-                        .state(SearchViewState.State.INIT)
+                        .state(ViewState.State.INIT)
                         .resultData(currentState.filter)
                         .resultData(currentState.items.toMutableList())
                         .error(null)
@@ -75,7 +77,7 @@ class SearchPresenter(view: SearchView) : BasePresenter<SearchView, SearchViewSt
             is SearchActionState.RepeatSearchState -> {
                 previousState
                         .copy()
-                        .state(SearchViewState.State.REPEAT_SEARCH)
+                        .state(ViewState.State.REPEAT_SEARCH)
                         .text(currentState.text)
                         .error(null)
                         .build()
@@ -83,14 +85,14 @@ class SearchPresenter(view: SearchView) : BasePresenter<SearchView, SearchViewSt
             is SearchActionState.LoadingState -> {
                 previousState
                         .copy()
-                        .state(SearchViewState.State.SEARCHING)
+                        .state(ViewState.State.SEARCHING)
                         .error(null)
                         .build()
             }
             is SearchActionState.DataState -> {
                 previousState
                         .copy()
-                        .state(SearchViewState.State.DATA)
+                        .state(ViewState.State.DATA)
                         .resultData(currentState.items.toMutableList())
                         .error(null)
                         .build()
@@ -98,14 +100,14 @@ class SearchPresenter(view: SearchView) : BasePresenter<SearchView, SearchViewSt
             is SearchActionState.ErrorState -> {
                 previousState
                         .copy()
-                        .state(SearchViewState.State.ERROR)
+                        .state(ViewState.State.ERROR)
                         .error(currentState.error)
                         .build()
             }
             is SearchActionState.FilterState -> {
                 previousState
                         .copy()
-                        .state(SearchViewState.State.CHANGE_FILTER)
+                        .state(ViewState.State.CHANGE_FILTER)
                         .resultData(currentState.filter)
                         .build()
             }
@@ -113,9 +115,8 @@ class SearchPresenter(view: SearchView) : BasePresenter<SearchView, SearchViewSt
             is SearchActionState.OpenItemState -> {
                 previousState
                         .copy()
-                        .state(SearchViewState.State.OPEN_ITEM)
-                        //TODO (pvalkov) finish implementation
-//                        .resultData(currentState.filter)
+                        .state(ViewState.State.OPEN_ITEM)
+                        .exhibitionId(currentState.itemId)
                         .build()
             }
         }
@@ -125,8 +126,8 @@ class SearchPresenter(view: SearchView) : BasePresenter<SearchView, SearchViewSt
     private fun viewItemState(item: SearchResultViewItem): Observable<SearchActionState> {
         return when (item.viewType) {
             SearchResultViewType.RECENT -> Observable.just(SearchActionState.RepeatSearchState(item.text))
-            SearchResultViewType.EXHIBITION -> Observable.just(SearchActionState.OpenItemState(item))
-            SearchResultViewType.OBJECT -> Observable.just(SearchActionState.OpenItemState(item))
+            SearchResultViewType.EXHIBITION -> Observable.just(SearchActionState.OpenItemState(item.objectId))
+            SearchResultViewType.OBJECT -> Observable.just(SearchActionState.OpenItemState(item.objectId))
         }
     }
 
@@ -147,11 +148,9 @@ class SearchPresenter(view: SearchView) : BasePresenter<SearchView, SearchViewSt
 
         val recentList = hamDb.recentSearchesDao().fetchAll().toMutableList()
         //NOTE (pvalkov) if record exists just update timestamp
-        recentList
-                .firstOrNull { it.text.equals(sva.text, true) }
+        recentList.firstOrNull { it.text.equals(sva.text, true) }
                 ?.apply { this.timestamp = System.currentTimeMillis() }
-                ?: run { recentList.add(RecentSearchRecord(text = sva.text!!)) }
-
+                ?: run { recentList.add(RecentSearchRecord(text = sva.text, viewType = sva.viewType.ordinal)) }
 
         val newList = recentList.take(10).sortedBy { it.timestamp }
 
@@ -169,7 +168,7 @@ class SearchPresenter(view: SearchView) : BasePresenter<SearchView, SearchViewSt
         recentList
                 .firstOrNull { it.text.equals(sva.text, true) }
                 ?.apply { this.timestamp = System.currentTimeMillis() }
-                ?: run { recentList.add(RecentSearchRecord(text = sva.text!!)) }
+                ?: run { recentList.add(RecentSearchRecord(text = sva.text!!, viewType = SearchResultViewType.RECENT.ordinal)) }
 
 
         val newList = recentList.take(10).sortedBy { it.timestamp }
@@ -203,7 +202,7 @@ class SearchPresenter(view: SearchView) : BasePresenter<SearchView, SearchViewSt
 
     interface SearchView : BaseView {
 
-        fun itemViewsEvents(): Observable<SearchResultViewItem>
+        fun itemActionsEvents(): Observable<SearchResultViewItem>
 
         fun initEvent(): Observable<SearchViewAction>
 
@@ -211,7 +210,7 @@ class SearchPresenter(view: SearchView) : BasePresenter<SearchView, SearchViewSt
 
         fun filterEvent(): Observable<SearchViewAction>
 
-        fun render(state: SearchViewState)
+        fun render(state: ViewState)
     }
 
 }

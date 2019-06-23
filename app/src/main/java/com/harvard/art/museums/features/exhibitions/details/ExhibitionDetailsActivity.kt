@@ -1,51 +1,37 @@
-package com.harvard.art.museums.features.exhibitions.gallery.details
+package com.harvard.art.museums.features.exhibitions.details
 
 import android.os.Bundle
+import android.os.PersistableBundle
 import android.text.method.LinkMovementMethod
-import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.harvard.art.museums.R
-import com.harvard.art.museums.base.BaseFragment
-import com.harvard.art.museums.ext.generateArguments
+import com.harvard.art.museums.base.BaseActivity
 import com.harvard.art.museums.ext.hide
 import com.harvard.art.museums.ext.show
+import com.harvard.art.museums.features.exhibitions.details.ExhibitionDetailsPresenter.ExhibitionDetailsView
 import com.harvard.art.museums.features.exhibitions.gallery.ExhibitionGalleryAdapter
-import com.harvard.art.museums.features.exhibitions.gallery.details.GalleryDetailsViewState.State.*
+import com.harvard.art.museums.features.exhibitions.details.ExhibitionDetailsViewState.State.*
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.exibition_details_layout.*
 import java.util.concurrent.TimeUnit
-import com.harvard.art.museums.features.exhibitions.gallery.details.GalleryDetailsPresenter as GalleryPresenter
-import com.harvard.art.museums.features.exhibitions.gallery.details.GalleryDetailsPresenter.GalleryDetailsView as GalleryView
+import com.harvard.art.museums.features.exhibitions.details.ExhibitionDetailsPresenter as Presenter
+import  com.harvard.art.museums.features.exhibitions.details.ExhibitionDetailsViewState as ViewState
 
 
-class GalleryDetailsFragment : BaseFragment<GalleryView, GalleryPresenter>(), GalleryView {
+class ExhibitionDetailsActivity : BaseActivity<ExhibitionDetailsView, Presenter>(), ExhibitionDetailsView {
 
     private val galleryAdapter = ExhibitionGalleryAdapter()
 
-
-    companion object {
-
-        private const val KEY = "Exhibition.id"
-
-        fun newInstance(exhibitionId: Int): GalleryDetailsFragment {
-            return GalleryDetailsFragment().also { it.arguments = generateArguments(KEY, exhibitionId) }
-        }
+    override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
+        super.onCreate(savedInstanceState, persistentState)
+        setContentView(R.layout.exibition_details_layout)
     }
 
+    override fun createPresenter() = Presenter(this)
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        super.onCreateView(inflater, container, savedInstanceState)
-        return inflater.inflate(R.layout.exibition_details_layout, container, false)
-    }
-
-    override fun createPresenter() = GalleryPresenter(this)
-
-    override fun render(state: GalleryDetailsViewState) {
+    override fun render(state: ViewState) {
 
         when (state.state) {
             //TODO (pvalkov) review state
@@ -59,23 +45,23 @@ class GalleryDetailsFragment : BaseFragment<GalleryView, GalleryPresenter>(), Ga
         }
     }
 
-    override fun loadData(): Observable<Int> = Observable.just(arguments?.getInt(KEY))
+    override fun loadData(): Observable<Int> = Observable.just(intent.getIntExtra("exhibitionId", -1))
 
 
     private fun renderLoadingState() {
-        progressView.show()
-        mainContent.hide()
+//        progressView.show()
+//        mainContent.hide()
     }
 
 
-    private fun renderErrorState(state: GalleryDetailsViewState) {
-        progressView.hide()
-        state.error?.printStackTrace()
-        //TODO (pvalkov) display "retry" button
-        Log.d("DEBUG", "---")
+    private fun renderErrorState(state: ViewState) {
+//        progressView.hide()
+//        state.error?.printStackTrace()
+//        //TODO (pvalkov) display "retry" button
+//        Log.d("DEBUG", "---")
     }
 
-    private fun renderDataState(state: GalleryDetailsViewState) {
+    private fun renderDataState(state: ViewState) {
 
         progressView.hide()
         mainContent.show()
@@ -95,7 +81,7 @@ class GalleryDetailsFragment : BaseFragment<GalleryView, GalleryPresenter>(), Ga
                 exhGalleryView.hide()
             } else {
                 exhGalleryView.adapter = galleryAdapter
-                exhGalleryView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+                exhGalleryView.layoutManager = LinearLayoutManager(this@ExhibitionDetailsActivity, LinearLayoutManager.HORIZONTAL, false)
                 galleryAdapter.updateData(this.images)
                 galleryAdapter.viewEvents()
                         .subscribeOn(AndroidSchedulers.mainThread())
@@ -109,7 +95,7 @@ class GalleryDetailsFragment : BaseFragment<GalleryView, GalleryPresenter>(), Ga
 
     private fun loadPoster(ulr: String, caption: String) {
         exhPosterCaption.text = caption
-        Glide.with(context).load(ulr)
+        Glide.with(this).load(ulr)
                 .centerCrop()
                 .placeholder(R.drawable.progress_anim_tint)
                 .into(exhDetailsPoster)

@@ -7,7 +7,7 @@ import android.widget.Toast
 import com.harvard.art.museums.R
 import com.harvard.art.museums.base.BaseActivity
 import com.harvard.art.museums.ext.replaceFragment
-import com.harvard.art.museums.features.exhibitions.main.ExhibitionsFragment
+import com.harvard.art.museums.features.exhibitions.list.ExhibitionsFragment
 import com.harvard.art.museums.features.home.HomePresenter.HomeView
 import com.harvard.art.museums.features.home.HomeViewState.State.*
 import com.harvard.art.museums.features.home.data.NavigationAction

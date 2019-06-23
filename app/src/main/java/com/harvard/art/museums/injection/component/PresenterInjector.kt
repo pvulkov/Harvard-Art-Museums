@@ -3,7 +3,7 @@ package com.harvard.art.museums.injection.component
 import com.harvard.art.museums.base.BaseView
 import com.harvard.art.museums.features.exhibitions.gallery.ExhibitionGalleryPresenter
 import com.harvard.art.museums.features.exhibitions.gallery.details.GalleryDetailsPresenter
-import com.harvard.art.museums.features.exhibitions.main.ExhibitionsPresenter
+import com.harvard.art.museums.features.exhibitions.list.ExhibitionsPresenter
 import com.harvard.art.museums.features.search.SearchPresenter
 import com.harvard.art.museums.injection.module.ContextModule
 import com.harvard.art.museums.injection.module.DatabaseModule

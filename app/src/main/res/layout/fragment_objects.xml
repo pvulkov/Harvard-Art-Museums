@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorLightGray"
-    tools:context="com.harvard.art.museums.features.exhibitions.main.ExhibitionsFragment">
+    tools:context="com.harvard.art.museums.features.exhibitions.list.ExhibitionsFragment">
 
     <!--<androidx.recyclerview.widget.RecyclerView-->
         <!--android:id="@+id/exhibitionsView"-->

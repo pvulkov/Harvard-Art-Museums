@@ -1,4 +1,4 @@
-package com.harvard.art.museums.features.exhibitions.main
+package com.harvard.art.museums.features.exhibitions.list
 
 import android.content.Intent
 import com.harvard.art.museums.features.exhibitions.data.ExhibitionViewItem
