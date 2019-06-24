@@ -1,7 +1,7 @@
 package com.harvard.art.museums.features.search
 
 data class SearchResultViewItem(
-        val viewType: SearchResultViewType,
+        var viewType: SearchResultViewType,
         val objectId: Int,
         val text: String,
         val imageUrl: String? = null,
@@ -9,5 +9,5 @@ data class SearchResultViewItem(
 )
 
 enum class SearchResultViewType {
-    EXHIBITION, OBJECT, RECENT
+    EXHIBITION, OBJECT, RECENT_SEARCH, RECENT_EXHIBITION, RECENT_OBJECT
 }

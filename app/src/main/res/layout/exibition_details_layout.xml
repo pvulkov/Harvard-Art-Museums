@@ -10,6 +10,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
+
         <ImageView
             android:id="@+id/progressView"
             android:layout_width="80dp"
@@ -128,7 +129,6 @@
                     android:autoLink="web"
                     android:fontFamily="monospace"
                     android:padding="5dp"
-                    android:text="alksjdalksjlkdjalsa jlsadk"
                     android:textColor="@color/colorPrimary" />
 
             </LinearLayout>

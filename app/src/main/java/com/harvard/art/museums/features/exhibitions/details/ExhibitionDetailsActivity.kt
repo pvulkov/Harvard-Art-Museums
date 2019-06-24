@@ -17,15 +17,15 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.exibition_details_layout.*
 import java.util.concurrent.TimeUnit
 import com.harvard.art.museums.features.exhibitions.details.ExhibitionDetailsPresenter as Presenter
-import  com.harvard.art.museums.features.exhibitions.details.ExhibitionDetailsViewState as ViewState
+import com.harvard.art.museums.features.exhibitions.details.ExhibitionDetailsViewState as ViewState
 
 
 class ExhibitionDetailsActivity : BaseActivity<ExhibitionDetailsView, Presenter>(), ExhibitionDetailsView {
 
     private val galleryAdapter = ExhibitionGalleryAdapter()
 
-    override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
-        super.onCreate(savedInstanceState, persistentState)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         setContentView(R.layout.exibition_details_layout)
     }
 
@@ -49,14 +49,14 @@ class ExhibitionDetailsActivity : BaseActivity<ExhibitionDetailsView, Presenter>
 
 
     private fun renderLoadingState() {
-//        progressView.show()
-//        mainContent.hide()
+        progressView.show()
+        mainContent.hide()
     }
 
 
     private fun renderErrorState(state: ViewState) {
-//        progressView.hide()
-//        state.error?.printStackTrace()
+        progressView.hide()
+        state.error?.printStackTrace()
 //        //TODO (pvalkov) display "retry" button
 //        Log.d("DEBUG", "---")
     }
@@ -69,7 +69,7 @@ class ExhibitionDetailsActivity : BaseActivity<ExhibitionDetailsView, Presenter>
         state.galleryObjectData?.apply {
 
             exhDetailsDescription.text = this.description
-            exhDetailsDescription.setMovementMethod(LinkMovementMethod.getInstance())
+            exhDetailsDescription.movementMethod = LinkMovementMethod.getInstance()
 
             exhDetailsFromTo.text = this.dateFromTo
             exhDetailsLocation.text = this.location
@@ -77,7 +77,7 @@ class ExhibitionDetailsActivity : BaseActivity<ExhibitionDetailsView, Presenter>
             this.poster?.let { p -> loadPoster(p.imageurl!!, p.caption) }
 
 
-            if (this.images.isEmpty()) {
+            if (this.images.isEmpty() || this.images.size == 1) {
                 exhGalleryView.hide()
             } else {
                 exhGalleryView.adapter = galleryAdapter

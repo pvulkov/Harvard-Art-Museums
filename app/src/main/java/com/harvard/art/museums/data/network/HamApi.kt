@@ -1,6 +1,7 @@
 package com.harvard.art.museums.data.network
 
 import com.harvard.art.museums.API_KEY
+import com.harvard.art.museums.data.pojo.Exhibition
 import com.harvard.art.museums.data.pojo.Exhibitions
 import com.harvard.art.museums.data.pojo.ObjectDetails
 import io.reactivex.Observable
@@ -37,17 +38,26 @@ interface HamApi {
     fun getExhibitionsByKeyword(
             @Query("q") q: String,
             @Query("sort") sort: String = "chronological",
+            @Query("sortorder") sortorder: String = "desc",
             @Query("status") status: String = "current, upcoming, past",
             @Query("apikey") apikey: String = API_KEY
     ): Single<Exhibitions>
 
     //https://api.harvardartmuseums.org/object?apikey=4493ff90-89fa-11e9-bae4-390e251d4987&exhibition=5700&fields=images
     @GET("object")
-    fun getExhibitionsDetails(
+    fun getExhibitionImages(
             @Query("exhibition") exhibitionId: Int,
             @Query("fields") fields: String = "images",
             @Query("apikey") apikey: String = API_KEY
     ): Single<ObjectDetails>
+
+
+//    //https://api.harvardartmuseums.org/object?apikey=4493ff90-89fa-11e9-bae4-390e251d4987&exhibition=5700&fields=images
+    @GET("exhibition/{exhibitionId}")
+    fun getExhibitionDetails(
+        @Path("exhibitionId") exhibitionId: Int,
+        @Query("apikey") apikey: String = API_KEY
+    ): Single<Exhibition>
 
     //https://api.harvardartmuseums.org/object?apikey=4493ff90-89fa-11e9-bae4-390e251d4987&exhibition=5700&fields=images
     @GET("object")

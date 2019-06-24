@@ -1,5 +1,6 @@
 package com.harvard.art.museums.features.search
 
+import android.util.Log
 import com.harvard.art.museums.base.BasePresenter
 import com.harvard.art.museums.base.BaseView
 import com.harvard.art.museums.data.pojo.RecentSearchRecord
@@ -43,6 +44,7 @@ class SearchPresenter(view: SearchView) : BasePresenter<SearchView, ViewState>(v
         val itemActionsState: Observable<SearchActionState> = intent(SearchView::itemActionsEvents)
                 .observeOn(Schedulers.io())
                 .doOnNext { updateRecentSearches(it) }
+                .filter { it.viewType == SearchResultViewType.RECENT_SEARCH }
                 .switchMap { viewItemState(it) }
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -125,9 +127,10 @@ class SearchPresenter(view: SearchView) : BasePresenter<SearchView, ViewState>(v
 
     private fun viewItemState(item: SearchResultViewItem): Observable<SearchActionState> {
         return when (item.viewType) {
-            SearchResultViewType.RECENT -> Observable.just(SearchActionState.RepeatSearchState(item.text))
+            SearchResultViewType.RECENT_SEARCH -> Observable.just(SearchActionState.RepeatSearchState(item.text))
             SearchResultViewType.EXHIBITION -> Observable.just(SearchActionState.OpenItemState(item.objectId))
             SearchResultViewType.OBJECT -> Observable.just(SearchActionState.OpenItemState(item.objectId))
+            else -> throw Exception("unhandled esle case")
         }
     }
 
@@ -146,11 +149,22 @@ class SearchPresenter(view: SearchView) : BasePresenter<SearchView, ViewState>(v
 
     private fun updateRecentSearches(sva: SearchResultViewItem) {
 
+
+        Log.d("DEBUG", "updating recent  " + sva.viewType)
+
+
         val recentList = hamDb.recentSearchesDao().fetchAll().toMutableList()
         //NOTE (pvalkov) if record exists just update timestamp
         recentList.firstOrNull { it.text.equals(sva.text, true) }
                 ?.apply { this.timestamp = System.currentTimeMillis() }
-                ?: run { recentList.add(RecentSearchRecord(text = sva.text, viewType = sva.viewType.ordinal)) }
+                ?: run {
+                    recentList.add(
+                            RecentSearchRecord(
+                                    text = sva.text,
+                                    objectId = sva.objectId,
+                                    imageUrl = sva.imageUrl,
+                                    viewType = sva.viewType.ordinal))
+                }
 
         val newList = recentList.take(10).sortedBy { it.timestamp }
 
@@ -159,6 +173,9 @@ class SearchPresenter(view: SearchView) : BasePresenter<SearchView, ViewState>(v
 
 
     private fun updateRecentSearches(sva: SearchViewAction) {
+
+        Log.d("DEBUG", "updating recent view type NONE")
+
         //NOTE (pvalkov) update recent searches only if user clicked "search" button
         if (!sva.isSubmitted)
             return
@@ -168,7 +185,14 @@ class SearchPresenter(view: SearchView) : BasePresenter<SearchView, ViewState>(v
         recentList
                 .firstOrNull { it.text.equals(sva.text, true) }
                 ?.apply { this.timestamp = System.currentTimeMillis() }
-                ?: run { recentList.add(RecentSearchRecord(text = sva.text!!, viewType = SearchResultViewType.RECENT.ordinal)) }
+                ?: run {
+                    recentList.add(
+
+                            RecentSearchRecord(
+                                    text = sva.text!!,
+                                    viewType = SearchResultViewType.RECENT_SEARCH.ordinal)
+                    )
+                }
 
 
         val newList = recentList.take(10).sortedBy { it.timestamp }

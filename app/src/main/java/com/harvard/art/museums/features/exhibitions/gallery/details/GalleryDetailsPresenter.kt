@@ -109,7 +109,7 @@ class GalleryDetailsPresenter(view: GalleryView) : BasePresenter<GalleryView, Ga
 
     }
 
-    private fun getExhibitionsImageData(exId: Int) = hamApi.getExhibitionsDetails(exId)
+    private fun getExhibitionsImageData(exId: Int) = hamApi.getExhibitionImages(exId)
 
     private fun getExhibitionsStoredData(exId: Int) = hamDb.exhibitionRecordDao().getById(exId)
 

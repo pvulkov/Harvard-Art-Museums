@@ -10,6 +10,9 @@ import java.util.*
 
 const val EMPTY: String = ""
 
+const val N_A: String = "N/A"
+
+
 private var SERVER_SDF = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
 
 
@@ -19,7 +22,7 @@ fun String?.isValidUrl() = this?.let { URLUtil.isValidUrl(this) } ?: false
 /**
  * Parses strings like "2020-01-05" to date object
  * */
-fun String.fromServerDate(): Date = SERVER_SDF.parse(this)
+fun String?.fromServerDate(): Date? = this?.let { SERVER_SDF.parse(it) }
 
 
 @SuppressWarnings("All")

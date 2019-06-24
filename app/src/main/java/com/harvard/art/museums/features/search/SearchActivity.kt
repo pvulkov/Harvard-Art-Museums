@@ -1,6 +1,7 @@
 package com.harvard.art.museums.features.search
 
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -9,20 +10,18 @@ import androidx.recyclerview.widget.RecyclerView
 import com.harvard.art.museums.R
 import com.harvard.art.museums.base.BaseActivity
 import com.harvard.art.museums.ext.*
-import com.harvard.art.museums.features.exhibitions.gallery.ExhibitionGalleryActivity
+import com.harvard.art.museums.features.exhibitions.details.ExhibitionDetailsActivity
 import com.harvard.art.museums.features.search.Action.*
 import com.harvard.art.museums.features.search.Filter.*
 import com.harvard.art.museums.features.search.SearchPresenter.SearchView
 import com.harvard.art.museums.features.search.SearchViewState.State.*
 import com.jakewharton.rxbinding2.support.v7.widget.RxSearchView
-
-import com.harvard.art.museums.features.search.SearchViewState as ViewState
-
 import com.jakewharton.rxbinding2.view.clicks
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
 import kotlinx.android.synthetic.main.activity_search.*
 import java.util.concurrent.TimeUnit
+import com.harvard.art.museums.features.search.SearchViewState as ViewState
 
 
 class SearchActivity : BaseActivity<SearchView, SearchPresenter>(), SearchView {
@@ -40,6 +39,7 @@ class SearchActivity : BaseActivity<SearchView, SearchPresenter>(), SearchView {
 
     override fun onResume() {
         super.onResume()
+        setListeners()
         val filter = intent.getSerializableExtra("filter.type") as Filter
         trigger.onNext(SearchViewAction(ACTION_INIT, filter))
         trigger.onNext(SearchViewAction(ACTION_FILTER, filter))
@@ -100,7 +100,7 @@ class SearchActivity : BaseActivity<SearchView, SearchPresenter>(), SearchView {
     private fun renderOpenItemState(state: ViewState) {
         val extras = Bundle()
         extras.putInt("exhibitionId", state.exhibitionId!!)
-        generateActivityIntent(ExhibitionGalleryActivity::class.java, extras)
+        generateActivityIntent(ExhibitionDetailsActivity::class.java, extras)
                 .also { startActivity(it) }
 
     }
@@ -158,8 +158,10 @@ class SearchActivity : BaseActivity<SearchView, SearchPresenter>(), SearchView {
             it.addItemDecoration(DividerItemDecoration(this, RecyclerView.HORIZONTAL))
         }
 
+    }
 
 
+    private fun setListeners(){
         Observable.merge(
                 exhFilterView.clicks().map { SearchViewAction(ACTION_FILTER, EXHIBITION) },
                 exhObjectView.clicks().map { SearchViewAction(ACTION_FILTER, OBJECTS) },
@@ -175,10 +177,28 @@ class SearchActivity : BaseActivity<SearchView, SearchPresenter>(), SearchView {
                     if (it.isSubmitted)
                         hideSoftKeyboard()
                 }
-                .map { SearchViewAction(ACTION_SEARCH,  UNKNOWN, it.queryText().toString(), it.isSubmitted) }
+                .map { SearchViewAction(ACTION_SEARCH, UNKNOWN, it.queryText().toString(), it.isSubmitted) }
                 //TODO (pvalkov) ig text is empty do not debounce
                 .debounce(300, TimeUnit.MILLISECONDS)
                 .subscribe(trigger)
+
+
+        adapter.viewEvents()
+                .filter { it.viewType != SearchResultViewType.RECENT_SEARCH }
+                .subscribe(
+                        { asd(it.objectId) },
+                        { Log.d("DEBUG", "on error " + it.message) },
+                        { Log.d("DEBUG", "on complete ") }
+                )
+                .also { disposable.add(it) }
+    }
+
+    private fun asd(exhibitionId: Int) {
+        Log.d("DEBUG", "on next " + exhibitionId)
+        val extras = Bundle()
+        extras.putInt("exhibitionId", exhibitionId)
+        generateActivityIntent(ExhibitionDetailsActivity::class.java, extras)
+                .also { startActivity(it) }
     }
 
 

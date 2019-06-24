@@ -1,14 +1,14 @@
 package com.harvard.art.museums.features.search
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.harvard.art.museums.R
-import com.harvard.art.museums.ext.isValidUrl
-import com.harvard.art.museums.ext.setData
-import com.harvard.art.museums.ext.thumbUrl
+import com.harvard.art.museums.ext.*
 import com.harvard.art.museums.features.search.SearchResultViewType.*
 import com.jakewharton.rxbinding2.view.RxView
 import io.reactivex.disposables.CompositeDisposable
@@ -28,7 +28,7 @@ class SearchAdapter : RecyclerView.Adapter<SearchAdapter.ItemViewHolder>() {
         notifyDataSetChanged()
     }
 
-    fun viewEvents() = viewEventsSubject
+    fun viewEvents() = viewEventsSubject.share()
 
     override fun getItemCount() = items.size
 
@@ -43,20 +43,34 @@ class SearchAdapter : RecyclerView.Adapter<SearchAdapter.ItemViewHolder>() {
         return when (values()[viewType]) {
             OBJECT -> ItemViewHolder(inflater.inflate(R.layout.result_object_view_item, parent, false))
             EXHIBITION -> ItemViewHolder(inflater.inflate(R.layout.result_exhibition_view_item, parent, false))
-            RECENT -> ItemViewHolder(inflater.inflate(R.layout.result_recent_search_view_item, parent, false))
+            RECENT_SEARCH -> ItemViewHolder(inflater.inflate(R.layout.result_recent_search_view_item, parent, false))
+            RECENT_EXHIBITION -> ItemViewHolder(inflater.inflate(R.layout.result_recent_search_view_item, parent, false))
+            RECENT_OBJECT -> ItemViewHolder(inflater.inflate(R.layout.result_recent_search_view_item, parent, false))
         }
     }
 
 
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
-        val item = items[position]
-        bindActionItem(holder.view, item)
-        holder.setData(item)
+        bindActionItem(holder.view, position)
+        holder.setData(items[position])
     }
 
-    private fun bindActionItem(view: View, item: SearchResultViewItem) {
+    private fun bindActionItem(view: View, position: Int) {
+
+
+        val item = items[position]
+
+        Log.d("DEBUG", "binding " + item.viewType)
+
+        val viewType = when (item.viewType) {
+            OBJECT -> RECENT_OBJECT
+            EXHIBITION -> RECENT_EXHIBITION
+            else -> item.viewType
+        }
+
+
         RxView.clicks(view)
-                .map { item }
+                .map { item.also { it.viewType = viewType } }
                 .subscribe(viewEventsSubject)
     }
 
@@ -80,8 +94,18 @@ class SearchAdapter : RecyclerView.Adapter<SearchAdapter.ItemViewHolder>() {
 //                    .subscribe { subject.onNext(image) }
 //                    .also { disposable.add(it) }
 
-            if (item.imageUrl.isValidUrl())
-                Glide.with(view).load(item.imageUrl!!.thumbUrl()).centerCrop().into(itemView.resultImage).waitForLayout()
+
+            item.imageUrl.isValidUrl()
+                    .ifTrue {
+                        Glide.with(view).load(item.imageUrl!!.thumbUrl())
+                                .apply(RequestOptions.circleCropTransform())
+                                .into(itemView.resultImage).waitForLayout()
+                    }.ifFalse {
+                        Glide.with(view).load(R.drawable.ic_search_tinted)
+                                .apply(RequestOptions.circleCropTransform())
+                                .into(itemView.resultImage).waitForLayout()
+                    }
+
 
         }
     }

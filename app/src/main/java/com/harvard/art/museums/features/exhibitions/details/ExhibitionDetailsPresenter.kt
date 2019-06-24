@@ -2,14 +2,9 @@ package com.harvard.art.museums.features.exhibitions.details
 
 import com.harvard.art.museums.base.BasePresenter
 import com.harvard.art.museums.base.BaseView
-import com.harvard.art.museums.data.pojo.ExhibitionRecord
-import com.harvard.art.museums.data.pojo.Image
-import com.harvard.art.museums.ext.formatFromToDate
-import com.harvard.art.museums.ext.formatLocation
+import com.harvard.art.museums.data.pojo.*
+import com.harvard.art.museums.ext.*
 import com.harvard.art.museums.features.exhibitions.data.GalleryObjectData
-import com.harvard.art.museums.data.pojo.ObjectDetails
-import com.harvard.art.museums.data.pojo.Record
-import com.harvard.art.museums.ext.EMPTY
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.functions.BiFunction
@@ -75,9 +70,9 @@ class ExhibitionDetailsPresenter(view: ExhibitionDetailsView) : BasePresenter<Ex
 
 
     private fun loadExhibitionDetails(exhibitionId: Int): Observable<ActionState> {
-        return getExhibitionsImageData(exhibitionId)
+        return getExhibitionDetails(exhibitionId)
                 .subscribeOn(Schedulers.io())
-                .zipWith(getExhibitionsStoredData(exhibitionId), zipper)
+                .zipWith(getExhibitionsImageData(exhibitionId), zipper)
                 .toObservable()
                 .map { toGalleryObjectData(it) }
                 .map<ActionState> { ActionState.DataState(it) }
@@ -88,16 +83,30 @@ class ExhibitionDetailsPresenter(view: ExhibitionDetailsView) : BasePresenter<Ex
 
 
     private val zipper =
-            BiFunction { o: ObjectDetails, e: ExhibitionRecord -> ObjectAndExhibitionData(o, e) }
+            BiFunction { e: Exhibition, o: ObjectDetails -> ExhibitionDetailsData(e, o) }
 
-    data class ObjectAndExhibitionData(val o: ObjectDetails, val e: ExhibitionRecord)
+    data class ExhibitionDetailsData(val e: Exhibition, val o: ObjectDetails)
 
-    private fun toGalleryObjectData(data: ObjectAndExhibitionData): GalleryObjectData {
+    private fun toGalleryObjectData(data: ExhibitionDetailsData): GalleryObjectData {
+
+        //TODO (pvalkov) make this an extension function
+        return GalleryObjectData(
+                data.e.title,
+                getImageList(data.o),
+                data.e.poster,
+                data.e.textiledescription,
+                data.e.begindate.fromServerDate().to_ddMMMMyyyy(),
+                data.e.enddate.fromServerDate().to_ddMMMMyyyy()
+        )
+    }
+
+
+    private fun getImageList(o: ObjectDetails): List<Image> {
 
         val imageList = mutableListOf<Image>()
-        data.o.records.forEach { imageList.addAll(getImageList(it)) }
+        o.records.forEach { imageList.addAll(getImageList(it)) }
 
-        return GalleryObjectData(data.e.title, imageList, data.e.poster, data.e.textiledescription, data.e.formatFromToDate(), data.e.formatLocation())
+        return imageList
     }
 
 
@@ -109,9 +118,9 @@ class ExhibitionDetailsPresenter(view: ExhibitionDetailsView) : BasePresenter<Ex
 
     }
 
-    private fun getExhibitionsImageData(exId: Int) = hamApi.getExhibitionsDetails(exId)
+    private fun getExhibitionsImageData(exId: Int) = hamApi.getExhibitionImages(exId)
 
-    private fun getExhibitionsStoredData(exId: Int) = hamDb.exhibitionRecordDao().getById(exId)
+    private fun getExhibitionDetails(exId: Int) = hamApi.getExhibitionDetails(exId)
 
     interface ExhibitionDetailsView : BaseView {
 

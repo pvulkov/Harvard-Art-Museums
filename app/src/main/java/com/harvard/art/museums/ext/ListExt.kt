@@ -4,7 +4,7 @@ import com.harvard.art.museums.data.pojo.RecentSearchRecord
 import com.harvard.art.museums.features.exhibitions.data.ExhibitionViewItem
 import com.harvard.art.museums.features.exhibitions.data.ViewItemType
 import com.harvard.art.museums.features.search.SearchResultViewItem
-import com.harvard.art.museums.features.search.SearchResultViewType.RECENT
+import com.harvard.art.museums.features.search.SearchResultViewType
 
 fun <T> MutableList<T>.setData(data: List<T>) {
     this.clear()
@@ -25,5 +25,12 @@ fun List<ExhibitionViewItem>.trimLoaders(): MutableList<ExhibitionViewItem> {
 }
 
 fun List<RecentSearchRecord>.toSearchViewItems(): List<SearchResultViewItem> {
-    return this.map { SearchResultViewItem(RECENT, it.id, it.text, null, 2) }.toList()
+    return this.map {
+        SearchResultViewItem(
+                SearchResultViewType.values()[it.viewType],
+                it.objectId ?: -1,
+                it.text,
+                it.imageUrl,
+                2)
+    }.toList()
 }

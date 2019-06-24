@@ -8,6 +8,6 @@ import java.util.*
 private var ddMMMMyyyy = SimpleDateFormat("dd, MMMM yyyy", Locale.getDefault())
 
 
-fun Date.to_ddMMMMyyyy() = ddMMMMyyyy.format(this)
+fun Date?.to_ddMMMMyyyy() = this?.let { ddMMMMyyyy.format(it) } ?: N_A
 
-fun Date.hasPassed(): Boolean = this.before(Date())
+fun Date?.hasPassed(): Boolean = this?.before(Date()) ?: true
