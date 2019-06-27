@@ -83,9 +83,9 @@ class ExhibitionDetailsPresenter(view: ExhibitionDetailsView) : BasePresenter<Ex
 
 
     private val zipper =
-            BiFunction { e: Exhibition, o: ObjectDetails -> ExhibitionDetailsData(e, o) }
+            BiFunction { e: Exhibition, o: RecordsInfoData -> ExhibitionDetailsData(e, o) }
 
-    data class ExhibitionDetailsData(val e: Exhibition, val o: ObjectDetails)
+    data class ExhibitionDetailsData(val e: Exhibition, val o: RecordsInfoData)
 
     private fun toGalleryObjectData(data: ExhibitionDetailsData): GalleryObjectData {
 
@@ -101,7 +101,7 @@ class ExhibitionDetailsPresenter(view: ExhibitionDetailsView) : BasePresenter<Ex
     }
 
 
-    private fun getImageList(o: ObjectDetails): List<Image> {
+    private fun getImageList(o: RecordsInfoData): List<Image> {
 
         val imageList = mutableListOf<Image>()
         o.records.forEach { imageList.addAll(getImageList(it)) }

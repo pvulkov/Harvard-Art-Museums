@@ -7,7 +7,7 @@ import com.harvard.art.museums.data.pojo.Image
 import com.harvard.art.museums.ext.formatFromToDate
 import com.harvard.art.museums.ext.formatLocation
 import com.harvard.art.museums.features.exhibitions.data.GalleryObjectData
-import com.harvard.art.museums.data.pojo.ObjectDetails
+import com.harvard.art.museums.data.pojo.RecordsInfoData
 import com.harvard.art.museums.data.pojo.Record
 import com.harvard.art.museums.ext.EMPTY
 import io.reactivex.Observable
@@ -88,9 +88,9 @@ class GalleryDetailsPresenter(view: GalleryView) : BasePresenter<GalleryView, Ga
 
 
     private val zipper =
-            BiFunction { o: ObjectDetails, e: ExhibitionRecord -> ObjectAndExhibitionData(o, e) }
+            BiFunction { o: RecordsInfoData, e: ExhibitionRecord -> ObjectAndExhibitionData(o, e) }
 
-    data class ObjectAndExhibitionData(val o: ObjectDetails, val e: ExhibitionRecord)
+    data class ObjectAndExhibitionData(val o: RecordsInfoData, val e: ExhibitionRecord)
 
     private fun toGalleryObjectData(data: ObjectAndExhibitionData): GalleryObjectData {
 

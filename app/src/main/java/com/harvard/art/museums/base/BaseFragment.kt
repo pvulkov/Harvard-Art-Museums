@@ -8,7 +8,7 @@ import io.reactivex.disposables.CompositeDisposable
 
 /**
  * BaseFragment providing required methods and presenter instantiation and calls.
- * @param P the type of the presenter the Fragment is based on
+ * @param P the viewType of the presenter the Fragment is based on
  */
 abstract class BaseFragment<V : MvpView, P : MviPresenter<V, *>> : MviFragment<V, P>(), BaseView {
 

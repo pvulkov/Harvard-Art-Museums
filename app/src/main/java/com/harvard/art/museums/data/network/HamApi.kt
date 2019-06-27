@@ -3,7 +3,7 @@ package com.harvard.art.museums.data.network
 import com.harvard.art.museums.API_KEY
 import com.harvard.art.museums.data.pojo.Exhibition
 import com.harvard.art.museums.data.pojo.Exhibitions
-import com.harvard.art.museums.data.pojo.ObjectDetails
+import com.harvard.art.museums.data.pojo.RecordsInfoData
 import io.reactivex.Observable
 import io.reactivex.Single
 import retrofit2.http.*
@@ -49,15 +49,19 @@ interface HamApi {
             @Query("exhibition") exhibitionId: Int,
             @Query("fields") fields: String = "images",
             @Query("apikey") apikey: String = API_KEY
-    ): Single<ObjectDetails>
+    ): Single<RecordsInfoData>
 
 
-//    //https://api.harvardartmuseums.org/object?apikey=4493ff90-89fa-11e9-bae4-390e251d4987&exhibition=5700&fields=images
+    //    //https://api.harvardartmuseums.org/object?apikey=4493ff90-89fa-11e9-bae4-390e251d4987&exhibition=5700&fields=images
     @GET("exhibition/{exhibitionId}")
     fun getExhibitionDetails(
-        @Path("exhibitionId") exhibitionId: Int,
-        @Query("apikey") apikey: String = API_KEY
+            @Path("exhibitionId") exhibitionId: Int,
+            @Query("apikey") apikey: String = API_KEY
     ): Single<Exhibition>
+
+
+    @GET
+    fun getNextObjectsPage(@Url url: String): Single<RecordsInfoData>
 
     //https://api.harvardartmuseums.org/object?apikey=4493ff90-89fa-11e9-bae4-390e251d4987&exhibition=5700&fields=images
     @GET("object")
@@ -65,7 +69,18 @@ interface HamApi {
             @Query("keyword") keyword: String,
             @Query("size") size: Int = 10,
             @Query("apikey") apikey: String = API_KEY
-    ): Single<ObjectDetails>
+    ): Single<RecordsInfoData>
+
+
+    //https://api.harvardartmuseums.org/object?apikey=4493ff90-89fa-11e9-bae4-390e251d4987&sortorder=desc&size=30
+    @GET("object")
+    fun getObjects(
+            @Query("sort") sort: String = "rank",
+            @Query("sortorder") sortorder: String = "asc",
+            @Query("size") size: Int = 30,
+            @Query("apikey") apikey: String = API_KEY
+    ): Single<RecordsInfoData>
+
 
     //https://github.com/harvardartmuseums/api-docs/blob/master/sections/image.md
     //https://api.harvardartmuseums.org/object?apikey=4493ff90-89fa-11e9-bae4-390e251d4987&exhibition=5700&field:images&size=100

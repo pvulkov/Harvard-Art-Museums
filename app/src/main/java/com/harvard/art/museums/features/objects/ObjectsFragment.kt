@@ -5,34 +5,47 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DividerItemDecoration
 import com.harvard.art.museums.R
 import com.harvard.art.museums.base.BaseFragment
-import com.harvard.art.museums.features.exhibitions.list.ExhibitionsViewState.State.*
+import com.harvard.art.museums.ext.hide
+import com.harvard.art.museums.ext.show
 import com.harvard.art.museums.features.objects.ObjectsPresenter.ObjectsView
+import com.harvard.art.museums.features.objects.ObjectsViewState.State.*
+import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.PublishSubject
+import kotlinx.android.synthetic.main.fragment_objects.*
 
 
 class ObjectsFragment : BaseFragment<ObjectsView, ObjectsPresenter>(), ObjectsView {
 
-    private val trigger: PublishSubject<Boolean> = PublishSubject.create<Boolean>()
-//    private val exhibitionsAdapter = ExhibitionsAdapter()
+    private val trigger: PublishSubject<Boolean> = PublishSubject.create()
+    private val adapter = ObjectsAdapter()
+    private lateinit var layoutManager: ObjectGridlayoutManager
 
     override fun onResume() {
         super.onResume()
         trigger.onNext(true)
     }
 
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         super.onCreateView(inflater, container, savedInstanceState)
         return inflater.inflate(R.layout.fragment_objects, container, false)
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) = super.onViewCreated(view, savedInstanceState).also { initUI() }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        initUI()
+    }
 
     override fun createPresenter() = ObjectsPresenter(this)
 
     override fun initDataEvent() = trigger.subscribeOn(Schedulers.io())
+
+    override fun loadMoreEvent(): Observable<ObjectViewItem> = adapter.viewEvents()
 
 
     override fun render(state: ObjectsViewState) {
@@ -40,32 +53,39 @@ class ObjectsFragment : BaseFragment<ObjectsView, ObjectsPresenter>(), ObjectsVi
             LOADING -> renderLoadingState()
             DATA -> renderDataState(state)
             ERROR -> renderErrorState(state)
+            INIT_DATA -> Unit
         }
     }
 
     private fun renderLoadingState() {
-//        loadingIndicator.visible = true
-//        helloWorldTextview.visible = false
+        progressView.show()
+        objectsView.hide()
     }
 
     private fun renderDataState(state: ObjectsViewState) {
-//        loadingIndicator.visible = false
-//        exhibitionsAdapter.updateData(state.exhibitionItems)
+        progressView.hide()
+        objectsView.show()
+
+        state.viewItems.apply {
+            layoutManager.updateData(this)
+            adapter.updateData(this)
+        }
     }
 
     private fun renderErrorState(state: ObjectsViewState) {
         Log.d("DEBUG", "error")
 //        loadingIndicator.visible = false
-//        helloWorldTextview.visible = false
-        //Toast.makeText(this, "error ${errorState.error}", Toast.LENGTH_LONG).show()
+//        Toast.makeText(this, "error ${state.error}", Toast.LENGTH_LONG).show()
     }
 
 
     private fun initUI() {
-//        exhibitionsView.let {
-//            it.layoutManager = LinearLayoutManager(this.context)
-//            it.adapter = exhibitionsAdapter
-//            it.addItemDecoration(DividerItemDecoration(this.context, RecyclerView.HORIZONTAL))
-//        }
+
+        objectsView.apply {
+            layoutManager = ObjectGridlayoutManager(context)
+            this.layoutManager = layoutManager
+            this.adapter = adapter
+            addItemDecoration(DividerItemDecoration(activity, 0))
+        }
     }
 }

@@ -40,7 +40,7 @@ class SearchActivity : BaseActivity<SearchView, SearchPresenter>(), SearchView {
     override fun onResume() {
         super.onResume()
         setListeners()
-        val filter = intent.getSerializableExtra("filter.type") as Filter
+        val filter = intent.getSerializableExtra("filter.viewType") as Filter
         trigger.onNext(SearchViewAction(ACTION_INIT, filter))
         trigger.onNext(SearchViewAction(ACTION_FILTER, filter))
     }

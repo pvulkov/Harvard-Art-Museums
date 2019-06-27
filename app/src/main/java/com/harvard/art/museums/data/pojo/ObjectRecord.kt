@@ -1,0 +1,76 @@
+package com.harvard.art.museums.data.pojo
+
+import androidx.room.Embedded
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+
+
+@Entity(tableName = "object_records_data_table")
+data class ObjectRecord(
+
+        @PrimaryKey
+        val id: Int,
+        val accessionmethod: String? = null,
+        val accessionyear: Int,
+        val accesslevel: Int,
+        val century: String? = null,
+        val classification: String? = null,
+        val classificationid: Int,
+        val colorcount: Int,
+        val commentary: String? = null,
+        val contact: String,
+        val contextualtextcount: Int,
+        val copyright: String? = null,
+        val creditline: String? = null,
+        val culture: String? = null,
+        val datebegin: Int,
+        val dated: String? = null,
+        val dateend: Int,
+        val dateoffirstpageview: String? = null,
+        val dateoflastpageview: String? = null,
+        val department: String? = null,
+        val description: String? = null,
+        val details: Details? = null,
+        val dimensions: String? = null,
+        val division: String? = null,
+        val edition: String? = null,
+        val exhibitioncount: Int,
+        val groupcount: Int,
+        val imagecount: Int,
+        val imagepermissionlevel: Int,
+        val images: List<Image>,
+        val labeltext: String? = null,
+        val lastupdate: String,
+        val markscount: Int,
+        val mediacount: Int,
+        val medium: String? = null,
+        val objectid: Int,
+        val objectnumber: String,
+        val people: List<People>,
+        val peoplecount: Int,
+        val period: String? = null,
+        val periodid: String? = null,
+        val primaryimageurl: String? = null,
+        val provenance: String? = null,
+        val publicationcount: Int,
+        val rank: Int,
+        val relatedcount: Int,
+        val seeAlso: List<SeeAlso>,
+        val signed: String? = null,
+        val standardreferencenumber: String? = null,
+        val state: String? = null,
+        val style: String? = null,
+        val technique: String? = null,
+        val techniqueid: Int,
+        val title: String? = null,
+        val titlescount: Int,
+        val totalpageviews: Int,
+        val totaluniquepageviews: Int,
+        val url: String,
+        val verificationlevel: Int,
+        val verificationleveldescription: String,
+        val worktypes: List<Worktype>,
+        @Embedded
+        val info: Info,
+        val nextUrl: String
+)

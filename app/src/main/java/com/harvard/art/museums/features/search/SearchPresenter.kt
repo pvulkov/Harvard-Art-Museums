@@ -174,7 +174,7 @@ class SearchPresenter(view: SearchView) : BasePresenter<SearchView, ViewState>(v
 
     private fun updateRecentSearches(sva: SearchViewAction) {
 
-        Log.d("DEBUG", "updating recent view type NONE")
+        Log.d("DEBUG", "updating recent view viewType NONE")
 
         //NOTE (pvalkov) update recent searches only if user clicked "search" button
         if (!sva.isSubmitted)

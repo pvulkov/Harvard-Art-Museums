@@ -81,20 +81,15 @@ fun Record.toExhibitionRecord(info: Info): ExhibitionRecord {
 
 fun Exhibitions.toSearchViewItems(): List<SearchResultViewItem> {
 
-    val result = mutableListOf<SearchResultViewItem>()
-
-    this.records.forEach {
-        val item = SearchResultViewItem(
+    return this.records.map {
+        SearchResultViewItem(
                 SearchResultViewType.EXHIBITION,
                 it.id,
                 it.title ?: EMPTY,
                 it.poster?.imageurl ?: EMPTY,
                 2)
-        result.add(item)
-    }
+    }.toList()
 
-
-    return result
 }
 
 

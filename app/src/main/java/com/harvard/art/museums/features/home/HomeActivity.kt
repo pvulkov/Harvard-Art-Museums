@@ -10,6 +10,7 @@ import com.harvard.art.museums.ext.replaceFragment
 import com.harvard.art.museums.features.exhibitions.list.ExhibitionsFragment
 import com.harvard.art.museums.features.home.HomePresenter.HomeView
 import com.harvard.art.museums.features.home.HomeViewState.State.*
+import com.harvard.art.museums.features.home.HomeViewState as ViewState
 import com.harvard.art.museums.features.home.data.NavigationAction
 import com.harvard.art.museums.features.objects.ObjectsFragment
 import com.harvard.art.museums.features.search.Filter
@@ -40,10 +41,10 @@ class HomeActivity : BaseActivity<HomeView, HomePresenter>(), HomeView {
                     menuObjects.clicks().flatMap { Observable.just(NavigationAction.OBJECTS) },
                     menuExhibitions.clicks().flatMap { Observable.just(NavigationAction.EXHIBITIONS) }
 
-            ).throttleLatest(400, TimeUnit.MILLISECONDS)
+            ).debounce(400, TimeUnit.MILLISECONDS)
 
 
-    override fun render(state: HomeViewState) {
+    override fun render(state: ViewState) {
         when (state.state) {
             INIT, NAVIGATION -> renderNavigationState(state)
             ERROR -> renderErrorState(state)
@@ -51,14 +52,14 @@ class HomeActivity : BaseActivity<HomeView, HomePresenter>(), HomeView {
     }
 
 
-    private fun renderNavigationState(state: HomeViewState) {
+    private fun renderNavigationState(state: ViewState) {
         Log.d("DEBUG", "renderNavigationState " + supportFragmentManager.fragments.size)
         replaceFragment(R.id.mainContainer, state.data!!)
         updateFilterValue(state)
     }
 
 
-    private fun updateFilterValue(state: HomeViewState) {
+    private fun updateFilterValue(state: ViewState) {
         filter = when (state.data) {
             is ObjectsFragment -> Filter.OBJECTS
             is ExhibitionsFragment -> Filter.EXHIBITION
@@ -67,7 +68,7 @@ class HomeActivity : BaseActivity<HomeView, HomePresenter>(), HomeView {
         }
     }
 
-    private fun renderErrorState(errorState: HomeViewState) {
+    private fun renderErrorState(errorState: ViewState) {
         Toast.makeText(this, "error ${errorState.error}", Toast.LENGTH_LONG).show()
     }
 
@@ -77,10 +78,12 @@ class HomeActivity : BaseActivity<HomeView, HomePresenter>(), HomeView {
 
 
         //TODO (pvalkov) refactor code
-        searchTextView.clicks().subscribe {
-            val intent = Intent(this@HomeActivity, SearchActivity::class.java)
-            intent.putExtra("filter.type", filter)
-            startActivity(intent)
-        }
+        searchTextView.clicks()
+                .debounce(300, TimeUnit.MILLISECONDS)
+                .subscribe {
+                    val intent = Intent(this@HomeActivity, SearchActivity::class.java)
+                    intent.putExtra("filter.viewType", filter)
+                    startActivity(intent)
+                }
     }
 }

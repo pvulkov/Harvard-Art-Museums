@@ -9,7 +9,7 @@ import io.reactivex.disposables.CompositeDisposable
 
 /**
  * BaseActivity providing required methods and presenter instantiation and calls.
- * @param P the type of the presenter the Activity is based on
+ * @param P the viewType of the presenter the Activity is based on
  */
 abstract class BaseActivity<V : MvpView, P : MviPresenter<V, *>> : MviActivity<V, P>(), BaseView {
 
