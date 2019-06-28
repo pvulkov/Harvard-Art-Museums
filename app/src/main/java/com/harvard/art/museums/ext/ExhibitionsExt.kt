@@ -8,9 +8,11 @@ import com.harvard.art.museums.data.pojo.Record
 import com.harvard.art.museums.features.exhibitions.data.ExhibitionDetailsViewItem
 import com.harvard.art.museums.features.exhibitions.data.ExhibitionOpenStatus
 import com.harvard.art.museums.features.exhibitions.data.ExhibitionViewItem
-import com.harvard.art.museums.features.exhibitions.data.ViewItemType
 import com.harvard.art.museums.features.search.SearchResultViewItem
 import com.harvard.art.museums.features.search.SearchResultViewType
+import com.harvard.art.museums.features.exhibitions.data.ViewItemType.ViewType
+
+
 
 
 fun Exhibitions.toExhibitionRecordsList(nextUrl: String): List<ExhibitionRecord> {
@@ -21,10 +23,10 @@ fun Exhibitions.toExhibitionRecordsList(nextUrl: String): List<ExhibitionRecord>
 }
 
 
-fun ExhibitionRecord.toExhibitionViewItem(type: ViewItemType = ViewItemType.DATA): ExhibitionViewItem {
+fun ExhibitionRecord.toExhibitionViewItem(viewType: ViewType = ViewType.DATA): ExhibitionViewItem {
 
     return ExhibitionViewItem(
-            type,
+            viewType,
             title,
             id,
             //TODO (pvalkov) provide default image url
@@ -38,9 +40,9 @@ fun ExhibitionRecord.toExhibitionViewItem(type: ViewItemType = ViewItemType.DATA
     )
 }
 
-fun ExhibitionRecord.toExhibitionDetailsViewItem(type: ViewItemType = ViewItemType.DATA): ExhibitionDetailsViewItem {
+fun ExhibitionRecord.toExhibitionDetailsViewItem(viewType: ViewType = ViewType.DATA): ExhibitionDetailsViewItem {
     return ExhibitionDetailsViewItem(
-            type,
+            viewType,
             title,
             id,
             //TODO (pvalkov) provide default image url

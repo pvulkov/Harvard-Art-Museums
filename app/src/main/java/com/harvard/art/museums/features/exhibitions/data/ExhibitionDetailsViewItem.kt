@@ -3,9 +3,11 @@ package com.harvard.art.museums.features.exhibitions.data
 import android.os.Parcel
 import android.os.Parcelable
 import com.harvard.art.museums.ext.EMPTY
+import com.harvard.art.museums.features.exhibitions.data.ViewItemType.ViewType
+
 
 data class ExhibitionDetailsViewItem(
-        val type: ViewItemType = ViewItemType.DATA,
+        val type: ViewType = ViewType.DATA,
         val title: String? = EMPTY,
         val exhibitionId: Int,
         val imageUrl: String = EMPTY,
@@ -16,10 +18,10 @@ data class ExhibitionDetailsViewItem(
         val next: String? = null
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
-            ViewItemType.values()[parcel.readInt()],
+            ViewType.values()[parcel.readInt()],
             parcel.readString(),
             parcel.readInt(),
-            parcel.readString(),
+            parcel.readString() ?: EMPTY,
             parcel.readString(),
             parcel.readString(),
             parcel.readString(),

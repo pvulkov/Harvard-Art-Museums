@@ -12,13 +12,14 @@ import com.harvard.art.museums.ext.show
 import com.harvard.art.museums.features.exhibitions.data.ExhibitionViewItem
 import com.harvard.art.museums.features.exhibitions.data.ViewAction
 import com.harvard.art.museums.features.exhibitions.data.ViewItemAction
-import com.harvard.art.museums.features.exhibitions.data.ViewItemType.*
 import com.harvard.art.museums.features.exhibitions.data.toViewItemAction
 import com.jakewharton.rxbinding2.view.clicks
 import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.subjects.PublishSubject
 import kotlinx.android.synthetic.main.exhibitions_data_view_item.view.*
+import com.harvard.art.museums.features.exhibitions.data.ViewItemType.ViewType.*
+
 
 class ExhibitionsAdapter : RecyclerView.Adapter<ExhibitionsAdapter.ExhibitionViewHolder>() {
 
@@ -43,7 +44,7 @@ class ExhibitionsAdapter : RecyclerView.Adapter<ExhibitionsAdapter.ExhibitionVie
 
     override fun getItemCount() = exhibitionItemsList.size
 
-    override fun getItemViewType(position: Int): Int = exhibitionItemsList[position].type.ordinal
+    override fun getItemViewType(position: Int): Int = exhibitionItemsList[position].viewType.ordinal
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ExhibitionViewHolder {

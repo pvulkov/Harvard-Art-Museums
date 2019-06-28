@@ -3,11 +3,12 @@ package com.harvard.art.museums.features.exhibitions.gallery
 import com.harvard.art.museums.base.BasePresenter
 import com.harvard.art.museums.base.BaseView
 import com.harvard.art.museums.data.pojo.ExhibitionRecord
+import com.harvard.art.museums.ext.ifTrue
 import com.harvard.art.museums.ext.isValidUrl
 import com.harvard.art.museums.ext.toExhibitionDetailsViewItem
 import com.harvard.art.museums.features.exhibitions.data.ExhibitionDetailsViewItem
 import com.harvard.art.museums.features.exhibitions.data.ViewItemAction
-import com.harvard.art.museums.features.exhibitions.data.ViewItemType
+import com.harvard.art.museums.features.exhibitions.data.ViewItemType.ViewType
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -106,14 +107,14 @@ class ExhibitionGalleryPresenter(view: ExdView) : BasePresenter<ExdView, ExdView
     }
 
 
-    fun toExhibitionItems(exhibitions: List<ExhibitionRecord>): List<ExhibitionDetailsViewItem> {
+    private fun toExhibitionItems(exhibitions: List<ExhibitionRecord>): List<ExhibitionDetailsViewItem> {
         return exhibitions.map { it.toExhibitionDetailsViewItem() }
                 .toMutableList()
                 .also {
                     exhibitions.last().apply {
-                        if (info.next.isValidUrl())
-                            it.add(ExhibitionDetailsViewItem(ViewItemType.LOADER, exhibitionId = -1, next = info.next))
-
+                        info.next.isValidUrl().ifTrue {
+                            it.add(ExhibitionDetailsViewItem(ViewType.LOADER, exhibitionId = -1, next = info.next))
+                        }
                     }
                 }
     }

@@ -2,8 +2,8 @@ package com.harvard.art.museums.features.exhibitions.data
 
 import com.harvard.art.museums.ext.EMPTY
 
-data class ExhibitionViewItem(
-        val type: ViewItemType = ViewItemType.DATA,
+class ExhibitionViewItem(
+        viewType: ViewType = ViewType.DATA,
         val title: String? = EMPTY,
         val exhibitionId: Int,
         val imageUrl: String = EMPTY,
@@ -11,18 +11,21 @@ data class ExhibitionViewItem(
         val openStatus: Int = -1,
         val exhibitionUrl: String? = EMPTY,
         val exhibitionFromTo: String? = EMPTY,
-        val exhibitionLocation: String?= null,
+        val exhibitionLocation: String? = null,
         val people: String? = EMPTY,
         val next: String? = null
 
-)
+) : ViewItemType(viewType)
+
+//TODO (pvalkov) ViewItemType is now a super for objects and exhibitions
+// place into a different folder/file
+
+open class ViewItemType(val viewType: ViewType) {
+    enum class ViewType { DATA, LOADER }
+}
 
 
 fun ExhibitionViewItem.toViewItemAction(action: ViewAction) = ViewItemAction(action, this)
-
-enum class ViewItemType {
-    DATA, LOADER
-}
 
 
 data class ViewItemAction(

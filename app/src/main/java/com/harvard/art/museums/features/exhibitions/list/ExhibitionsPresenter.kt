@@ -9,6 +9,7 @@ import com.harvard.art.museums.ext.*
 import com.harvard.art.museums.features.exhibitions.data.ExhibitionViewItem
 import com.harvard.art.museums.features.exhibitions.data.ViewItemAction
 import com.harvard.art.museums.features.exhibitions.data.ViewItemType
+import com.harvard.art.museums.features.exhibitions.data.ViewItemType.ViewType
 import com.harvard.art.museums.features.exhibitions.list.ExhibitionsPresenter.ExhibitionsView
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -126,7 +127,7 @@ class ExhibitionsPresenter(view: ExhibitionsView) : BasePresenter<ExhibitionsVie
                 .also {
                     exhibitions.last().apply {
                         if (info.next.isValidUrl())
-                            it.add(ExhibitionViewItem(ViewItemType.LOADER, exhibitionId = -1, next = info.next))
+                            it.add(ExhibitionViewItem(ViewType.LOADER, exhibitionId = -1, next = info.next))
 
                     }
                 }

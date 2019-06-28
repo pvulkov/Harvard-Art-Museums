@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.GridLayoutManager
 import com.harvard.art.museums.R
 import com.harvard.art.museums.base.BaseFragment
 import com.harvard.art.museums.ext.hide
@@ -21,8 +22,8 @@ import kotlinx.android.synthetic.main.fragment_objects.*
 class ObjectsFragment : BaseFragment<ObjectsView, ObjectsPresenter>(), ObjectsView {
 
     private val trigger: PublishSubject<Boolean> = PublishSubject.create()
-    private val adapter = ObjectsAdapter()
-    private lateinit var layoutManager: ObjectGridlayoutManager
+    private val objectsAdapter = ObjectsAdapter()
+    private lateinit var objectsLayoutManager: ObjectGridlayoutManager
 
     override fun onResume() {
         super.onResume()
@@ -45,7 +46,7 @@ class ObjectsFragment : BaseFragment<ObjectsView, ObjectsPresenter>(), ObjectsVi
 
     override fun initDataEvent() = trigger.subscribeOn(Schedulers.io())
 
-    override fun loadMoreEvent(): Observable<ObjectViewItem> = adapter.viewEvents()
+    override fun loadMoreEvent(): Observable<ObjectViewItem> = objectsAdapter.viewEvents()
 
 
     override fun render(state: ObjectsViewState) {
@@ -67,8 +68,8 @@ class ObjectsFragment : BaseFragment<ObjectsView, ObjectsPresenter>(), ObjectsVi
         objectsView.show()
 
         state.viewItems.apply {
-            layoutManager.updateData(this)
-            adapter.updateData(this)
+            objectsLayoutManager.updateData(this)
+            objectsAdapter.updateData(this)
         }
     }
 
@@ -80,12 +81,11 @@ class ObjectsFragment : BaseFragment<ObjectsView, ObjectsPresenter>(), ObjectsVi
 
 
     private fun initUI() {
-
+        objectsLayoutManager = ObjectGridlayoutManager(context)
         objectsView.apply {
-            layoutManager = ObjectGridlayoutManager(context)
-            this.layoutManager = layoutManager
-            this.adapter = adapter
-            addItemDecoration(DividerItemDecoration(activity, 0))
+            this.layoutManager = objectsLayoutManager
+            this.adapter = objectsAdapter
+            addItemDecoration(DividerItemDecoration(activity, GridLayoutManager.HORIZONTAL))
         }
     }
 }

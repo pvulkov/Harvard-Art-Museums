@@ -75,7 +75,7 @@ class ObjectsRepository(private val hamApi: HamApi, private val database: HamDat
     private fun getNextObjectsFromApi(url: String, errorCallback: ErrorCallback?): Observable<List<ObjectRecord>> {
 
         return getNextObjectsData(url)
-                .flatMap { toObjectRecords(it, url) }
+                .flatMap { toObjectRecords(it) }
 
                 //TODO (pvalkov) check if we need that
                 // .map { toSortedList(it) }
@@ -103,8 +103,8 @@ class ObjectsRepository(private val hamApi: HamApi, private val database: HamDat
 //        return recordsList.sortedBy { it.openStatus }
 //    }
 
-    private fun toObjectRecords(data: RecordsInfoData, url: String = EMPTY) =
-            Single.just(data.toObjectRecordItems(url))
+    private fun toObjectRecords(data: RecordsInfoData) =
+            Single.just(data.toObjectRecordItems(data.info.next ?: EMPTY))
 
 
     private fun getObjectsData() = hamApi.getObjects()
