@@ -85,7 +85,7 @@ class ObjectsFragment : BaseFragment<ObjectsView, ObjectsPresenter>(), ObjectsVi
         objectsView.apply {
             this.layoutManager = objectsLayoutManager
             this.adapter = objectsAdapter
-            addItemDecoration(GridSpacingItemDecoration(6, 10, false))
+            addItemDecoration(GridSpacingItemDecoration(8   , 1, false))
         }
     }
 }

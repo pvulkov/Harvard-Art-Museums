@@ -2,6 +2,7 @@ package com.harvard.art.museums.injection.module
 
 import android.content.Context
 import androidx.room.Room
+import com.harvard.art.museums.DB_NAME
 import com.harvard.art.museums.data.db.HamDatabase
 import dagger.Module
 import dagger.Provides
@@ -24,7 +25,7 @@ object DatabaseModule {
     @Singleton
     @JvmStatic
     internal fun provideDatabase(context: Context): HamDatabase {
-        return Room.databaseBuilder(context, HamDatabase::class.java, "DB_NAME")
+        return Room.databaseBuilder(context, HamDatabase::class.java, DB_NAME)
                 .fallbackToDestructiveMigration()
                 .build()
     }

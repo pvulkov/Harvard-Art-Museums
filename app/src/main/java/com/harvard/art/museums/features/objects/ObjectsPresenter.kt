@@ -20,9 +20,7 @@ class ObjectsPresenter(view: ObjectsView) : BasePresenter<ObjectsView, ViewState
 
     private val repository = ObjectsRepository(hamApi, hamDb)
 
-
     override fun bindIntents() {
-
 
         val initialState: Observable<ActionState> = intent(ObjectsView::initDataEvent)
                 .subscribeOn(Schedulers.io())
@@ -50,12 +48,9 @@ class ObjectsPresenter(view: ObjectsView) : BasePresenter<ObjectsView, ViewState
         val stateObservable = allViewState
                 .scan(initializeState, this::viewStateReducer)
                 .doOnError {
-
                     //TODO (pvalkov) implement crashlytics
                     it.printStackTrace()
                 }
-
-
 
         subscribeViewState(stateObservable, ObjectsView::render)
     }
@@ -113,7 +108,6 @@ class ObjectsPresenter(view: ObjectsView) : BasePresenter<ObjectsView, ViewState
         return repository.getNextObjects(url)
                 .map { toObjectsViewItems(it) }
                 .map<ActionState> { ActionState.DataState(it) }
-                .startWith(ActionState.LoadingState)
                 .onErrorReturn { ActionState.ErrorState(it) }
     }
 
@@ -125,6 +119,9 @@ class ObjectsPresenter(view: ObjectsView) : BasePresenter<ObjectsView, ViewState
                             ViewType.DATA,
                             it.id,
                             it.title ?: EMPTY,
+                            it.objectnumber,
+                            getPeople(it),
+                            it.classification ?: EMPTY,
                             it.images.firstOrNull(),
                             it.nextUrl
                     )
@@ -135,6 +132,11 @@ class ObjectsPresenter(view: ObjectsView) : BasePresenter<ObjectsView, ViewState
                         it.add(ObjectViewItem(ViewType.LOADER, nextUrl = it.last().nextUrl))
                     }
                 }
+    }
+
+
+    private fun getPeople(data: ObjectRecord): String {
+        return data.people.joinToString(", ", EMPTY, EMPTY) { it.displayname }
     }
 
 

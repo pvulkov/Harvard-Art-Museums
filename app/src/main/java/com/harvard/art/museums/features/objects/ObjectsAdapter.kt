@@ -75,22 +75,26 @@ class ObjectsAdapter : RecyclerView.Adapter<ObjectsAdapter.ItemViewHolder>() {
 
             override fun setData(item: ObjectViewItem) {
 
-                itemView.objectText.text = item.text
+                itemView.objectText.applyTextAndVisibility(item.text)
+                itemView.objectId.applyTextAndVisibility(item.objectId)
+                itemView.objectAuthor.applyTextAndVisibility(item.objectAuthor)
+                itemView.objectCategory.applyTextAndVisibility(item.objectCategory)
+
                 item.image.hasValidUrl()
                         .ifTrue {
-                            Glide.with(view).load(item.image!!.baseimageurl.thumbUrl())
-                                    .into(itemView.objectImage).waitForLayout()
+                            Glide.with(view).load(item.image!!.baseimageurl.width280Url())
+                                    .centerCrop()
+                                    .into(itemView.objectImage)//.waitForLayout()
                         }.ifFalse {
                             Glide.with(view).load(R.drawable.ic_search_tinted)
-                                    .into(itemView.objectImage).waitForLayout()
+                                    .centerCrop()
+                                    .into(itemView.objectImage)//.waitForLayout()
                         }
             }
         }
 
         class LoaderViewHolder(view: View) : ItemViewHolder(view) {
-            override fun setData(item: ObjectViewItem) {
-//                publisher.onNext(item.toViewItemAction(ViewAction.LOAD_MORE))
-            }
+            override fun setData(item: ObjectViewItem) {}
         }
     }
 

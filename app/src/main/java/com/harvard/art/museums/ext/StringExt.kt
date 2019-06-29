@@ -4,6 +4,7 @@ import android.os.Build
 import android.text.Html
 import android.webkit.URLUtil
 import com.harvard.art.museums.THUMB_SIZE
+import com.harvard.art.museums.WIDTH_280
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -36,3 +37,5 @@ fun String?.fromHtml(): String = this?.let {
 
 
 fun String.thumbUrl() = if (this.isValidUrl()) "$this?height=$THUMB_SIZE&width=$THUMB_SIZE" else this
+
+fun String.width280Url() = if (this.isValidUrl()) "$this?width=$WIDTH_280" else this
