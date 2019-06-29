@@ -1,11 +1,13 @@
 package com.harvard.art.museums.ext
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.os.IBinder
 import android.os.Parcelable
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import java.io.Serializable
@@ -37,6 +39,9 @@ fun <K : String, V> generateArguments(k: K, v: V): Bundle {
 
     return extras
 }
+
+fun Fragment.showToast(text: String?) = text?.let { Toast.makeText(context, it, Toast.LENGTH_LONG).show() }
+
 
 fun generateShareIntent(url: String) = Intent().apply {
     action = Intent.ACTION_SEND

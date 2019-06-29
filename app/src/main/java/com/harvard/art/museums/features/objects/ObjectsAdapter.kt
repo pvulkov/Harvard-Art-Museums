@@ -11,6 +11,7 @@ import com.harvard.art.museums.features.objects.ObjectsAdapter.ItemViewHolder.Lo
 import com.harvard.art.museums.features.objects.ObjectsAdapter.ItemViewHolder.ObjectViewHolder
 import com.harvard.art.museums.features.exhibitions.data.ViewItemType.ViewType.*
 import com.jakewharton.rxbinding2.view.RxView
+import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.subjects.PublishSubject
 import kotlinx.android.synthetic.main.object_view_item.view.*
@@ -28,7 +29,7 @@ class ObjectsAdapter : RecyclerView.Adapter<ObjectsAdapter.ItemViewHolder>() {
         notifyDataSetChanged()
     }
 
-    fun viewEvents() = viewObjectSubject.share()
+    fun viewEvents(): Observable<ObjectViewItem> = viewObjectSubject.share()
 
     override fun getItemCount() = items.size
 

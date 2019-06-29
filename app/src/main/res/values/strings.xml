@@ -9,10 +9,6 @@
     <string name="exhibitions_text">Exhibitions</string>
     <string name="objects_text">Objects</string>
     <string name="search_for_text">Search For</string>
-
-
-
-
-
+    <string name="retry_text">Retry</string>
 
 </resources>
