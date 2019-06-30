@@ -84,11 +84,9 @@ class ObjectsAdapter : RecyclerView.Adapter<ObjectsAdapter.ItemViewHolder>() {
                 item.image.hasValidUrl()
                         .ifTrue {
                             Glide.with(view).load(item.image!!.baseimageurl.width280Url())
-                                    .centerCrop()
                                     .into(itemView.objectImage)//.waitForLayout()
                         }.ifFalse {
                             Glide.with(view).load(R.drawable.ic_search_tinted)
-                                    .centerCrop()
                                     .into(itemView.objectImage)//.waitForLayout()
                         }
             }

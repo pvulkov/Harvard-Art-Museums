@@ -33,7 +33,8 @@
         android:background="#FFFFFFFF"
         android:fontFamily="monospace"
         android:padding="4dp"
-        android:text="@string/details_text"
-        android:textColor="@color/colorPrimary" />
+        android:text="@string/retry_text"
+        android:textColor="@color/colorPrimary"
+        android:visibility="gone"/>
 
 </FrameLayout>

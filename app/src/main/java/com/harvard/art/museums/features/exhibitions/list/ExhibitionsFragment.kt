@@ -16,9 +16,9 @@ import com.harvard.art.museums.features.exhibitions.list.ExhibitionsViewState.St
 import com.harvard.art.museums.features.exhibitions.data.ViewAction
 import com.harvard.art.museums.features.exhibitions.data.ViewItemAction
 import com.harvard.art.museums.features.exhibitions.gallery.ExhibitionGalleryActivity
+import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
-import io.reactivex.subjects.PublishSubject
 import kotlinx.android.synthetic.main.fragment_exibitions.*
 import java.util.concurrent.TimeUnit
 import com.harvard.art.museums.features.exhibitions.list.ExhibitionsPresenter.ExhibitionsView as ExhView
@@ -26,14 +26,8 @@ import com.harvard.art.museums.features.exhibitions.list.ExhibitionsPresenter.Ex
 
 class ExhibitionsFragment : BaseFragment<ExhView, ExhibitionsPresenter>(), ExhView {
 
-    private val trigger: PublishSubject<Boolean> = PublishSubject.create<Boolean>()
     private val exhibitionsAdapter = ExhibitionsAdapter()
 
-    override fun onResume() {
-        super.onResume()
-        //TODO (pvalkov) remove from on resume
-        trigger.onNext(true)
-    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         super.onCreateView(inflater, container, savedInstanceState)
@@ -47,7 +41,7 @@ class ExhibitionsFragment : BaseFragment<ExhView, ExhibitionsPresenter>(), ExhVi
 
     override fun createPresenter() = ExhibitionsPresenter(this)
 
-    override fun initDataEvent() = trigger.subscribeOn(Schedulers.io())
+    override fun initDataEvent() = Observable.just(true).subscribeOn(Schedulers.io())
 
     override fun loadMoreEvent() = exhibitionsAdapter.loadMoreEvent()
 
@@ -73,7 +67,6 @@ class ExhibitionsFragment : BaseFragment<ExhView, ExhibitionsPresenter>(), ExhVi
     }
 
     private fun renderErrorState(state: ExhibitionsViewState) {
-        Log.d("DEBUG", "error.....")
         state.error?.printStackTrace()
 //        loadingIndicator.visible = false
         //Toast.makeText(this, "error ${errorState.error}", Toast.LENGTH_LONG).show()
@@ -111,10 +104,12 @@ class ExhibitionsFragment : BaseFragment<ExhView, ExhibitionsPresenter>(), ExhVi
             it.addItemDecoration(DividerItemDecoration(this.context, RecyclerView.HORIZONTAL))
         }
 
+
         exhibitionsAdapter.viewEvents()
                 .subscribeOn(AndroidSchedulers.mainThread())
                 .throttleLatest(200, TimeUnit.MILLISECONDS)
                 .subscribe { onEventReceived(it) }
+                .also { disposable.add(it) }
     }
 
 
