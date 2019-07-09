@@ -119,6 +119,7 @@ class ObjectsPresenter(view: ObjectsView) : BasePresenter<ObjectsView, ViewState
                             ViewType.DATA,
                             it.id,
                             it.title ?: EMPTY,
+                            it.objectid,
                             it.objectnumber,
                             getPeople(it),
                             it.classification ?: EMPTY,

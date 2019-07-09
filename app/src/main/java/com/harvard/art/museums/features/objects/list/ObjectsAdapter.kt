@@ -77,7 +77,7 @@ class ObjectsAdapter : RecyclerView.Adapter<ObjectsAdapter.ItemViewHolder>() {
             override fun setData(item: ObjectViewItem) {
 
                 itemView.objectText.applyTextAndVisibility(item.text)
-                itemView.objectId.applyTextAndVisibility(item.objectId)
+                itemView.objectId.applyTextAndVisibility(item.objectNumber)
                 itemView.objectAuthor.applyTextAndVisibility(item.objectAuthor)
                 itemView.objectCategory.applyTextAndVisibility(item.objectCategory)
 

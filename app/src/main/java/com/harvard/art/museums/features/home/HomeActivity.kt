@@ -38,8 +38,8 @@ class HomeActivity : BaseActivity<HomeView, HomePresenter>(), HomeView {
 
     override fun navigationEvent() =
             Observable.merge(
-                    menuObjects.clicks().flatMap { Observable.just(NavigationAction.OBJECTS) },
-                    menuExhibitions.clicks().flatMap { Observable.just(NavigationAction.EXHIBITIONS) }
+                    menuObjects.clicks().map { NavigationAction.OBJECTS },
+                    menuExhibitions.clicks().map { NavigationAction.EXHIBITIONS }
 
             ).debounce(400, TimeUnit.MILLISECONDS)
 

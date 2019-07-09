@@ -7,9 +7,12 @@ import android.view.View
 import android.view.ViewGroup
 import com.harvard.art.museums.R
 import com.harvard.art.museums.base.BaseFragment
+import com.harvard.art.museums.ext.generateActivityIntent
 import com.harvard.art.museums.ext.hide
 import com.harvard.art.museums.ext.show
 import com.harvard.art.museums.ext.showToast
+import com.harvard.art.museums.features.exhibitions.gallery.ExhibitionGalleryActivity
+import com.harvard.art.museums.features.objects.details.ObjectDetailsActivity
 import com.harvard.art.museums.features.objects.list.ObjectsPresenter.ObjectsView
 import com.harvard.art.museums.features.objects.list.ObjectsViewState.State.*
 import io.reactivex.Observable
@@ -83,7 +86,16 @@ class ObjectsFragment : BaseFragment<ObjectsView, ObjectsPresenter>(), ObjectsVi
 
 
         objectsAdapter.itemClickedEvent()
-                .subscribe({ Log.d("DEBUG", "next") })
+                .subscribe({ startObjectDetailsActivity(it) }, {}, {})
                 .also { disposable.add(it) }
+    }
+
+
+    private fun startObjectDetailsActivity(item: ObjectViewItem) {
+
+        val extras = Bundle()
+        extras.putInt("objectNumber", item.objectId)
+        generateActivityIntent(ObjectDetailsActivity::class.java, extras)
+                .also { startActivity(it) }
     }
 }

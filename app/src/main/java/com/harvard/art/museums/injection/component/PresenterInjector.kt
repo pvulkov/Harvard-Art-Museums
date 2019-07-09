@@ -5,6 +5,7 @@ import com.harvard.art.museums.features.exhibitions.details.ExhibitionDetailsPre
 import com.harvard.art.museums.features.exhibitions.gallery.ExhibitionGalleryPresenter
 import com.harvard.art.museums.features.exhibitions.gallery.details.GalleryDetailsPresenter
 import com.harvard.art.museums.features.exhibitions.list.ExhibitionsPresenter
+import com.harvard.art.museums.features.objects.details.ObjectDetailsPresenter
 import com.harvard.art.museums.features.objects.list.ObjectsPresenter
 import com.harvard.art.museums.features.search.SearchPresenter
 import com.harvard.art.museums.injection.module.ContextModule
@@ -41,6 +42,8 @@ interface PresenterInjector {
     fun inject(presenter: ExhibitionDetailsPresenter)
 
     fun inject(presenter: ObjectsPresenter)
+
+    fun inject(presenter: ObjectDetailsPresenter)
 
 
     @Component.Builder

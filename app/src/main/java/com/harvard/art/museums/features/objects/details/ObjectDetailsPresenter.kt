@@ -22,7 +22,7 @@ class ObjectDetailsPresenter(view: ObjectDetailsView) : BasePresenter<ObjectDeta
         val loadState: Observable<ActionState> = intent(ObjectDetailsView::loadData)
                 .observeOn(Schedulers.io())
 //                .subscribeOn(Schedulers.io())
-                .switchMap { loadExhibitionDetails(it) }
+                .switchMap { loadObjectDetails(it) }
                 .observeOn(AndroidSchedulers.mainThread())
 
 
@@ -54,7 +54,7 @@ class ObjectDetailsPresenter(view: ObjectDetailsView) : BasePresenter<ObjectDeta
                 previousState
                         .copy()
                         .state(ViewState.State.DATA)
-                        .exhibitionsData(currentState.data)
+                        .objectData(currentState.data)
                         .error(null)
                         .build()
             }
@@ -69,12 +69,12 @@ class ObjectDetailsPresenter(view: ObjectDetailsView) : BasePresenter<ObjectDeta
     }
 
 
-    private fun loadExhibitionDetails(exhibitionId: Int): Observable<ActionState> {
-        return getExhibitionDetails(exhibitionId)
+    private fun loadObjectDetails(objectId: Int): Observable<ActionState> {
+        return getObjectDetails(objectId)
                 .subscribeOn(Schedulers.io())
-                .zipWith(getExhibitionsImageData(exhibitionId), zipper)
+//                .zipWith(getExhibitionsImageData(objectNumber), zipper)
                 .toObservable()
-                .map { toGalleryObjectData(it) }
+//                .map { toGalleryObjectData(it) }
                 .map<ActionState> { ActionState.DataState(it) }
                 .startWith(ActionState.LoadingState)
                 .onErrorReturn { ActionState.ErrorState(it) }
@@ -120,7 +120,7 @@ class ObjectDetailsPresenter(view: ObjectDetailsView) : BasePresenter<ObjectDeta
 
     private fun getExhibitionsImageData(exId: Int) = hamApi.getExhibitionImages(exId)
 
-    private fun getExhibitionDetails(exId: Int) = hamApi.getExhibitionDetails(exId)
+    private fun getObjectDetails(obId: Int) = hamApi.getObjectDetails(obId)
 
     interface ObjectDetailsView : BaseView {
 

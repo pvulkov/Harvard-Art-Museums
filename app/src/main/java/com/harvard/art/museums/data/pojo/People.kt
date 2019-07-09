@@ -7,15 +7,15 @@ import androidx.room.PrimaryKey
 data class People(
         @PrimaryKey(autoGenerate = true)
         val alphasort: String,
-        val birthplace: Any,
+        val birthplace: String,
         val culture: String,
-        val deathplace: Any,
+        val deathplace: String,
         val displaydate: String,
         val displayname: String,
         val displayorder: Int,
         val gender: String,
         val name: String,
         val personid: Int,
-        val prefix: Any,
+        val prefix: String,
         val role: String
 )

@@ -5,7 +5,7 @@ data class Venue(
         val address2: String? = null,
         val begindate: String,
         val city: String,
-        val country: Any,
+        val country: String,
         val enddate: String,
         val fullname: String,
         val ishamvenue: Int,

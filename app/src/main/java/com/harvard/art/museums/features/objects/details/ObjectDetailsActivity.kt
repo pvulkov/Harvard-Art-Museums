@@ -1,6 +1,9 @@
 package com.harvard.art.museums.features.objects.details
 
 import android.os.Bundle
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.harvard.art.museums.R
 import com.harvard.art.museums.base.BaseActivity
@@ -17,10 +20,13 @@ import com.harvard.art.museums.features.objects.details.ObjectDetailsViewState a
 class ObjectDetailsActivity : BaseActivity<ObjectDetailsView, Presenter>(), ObjectDetailsView {
 
     private val imagesAdapter = ImageGalleryAdapter()
+    private val objectsAdapter = ObjectDetailsAdapter()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.object_details_layout)
+        initUI()
     }
 
     override fun createPresenter() = Presenter(this)
@@ -37,12 +43,12 @@ class ObjectDetailsActivity : BaseActivity<ObjectDetailsView, Presenter>(), Obje
         }
     }
 
-    override fun loadData(): Observable<Int> = Observable.just(intent.getIntExtra("exhibitionId", -1))
+    override fun loadData(): Observable<Int> = Observable.just(intent.getIntExtra("objectNumber", -1))
 
 
     private fun renderLoadingState() {
-        progressView.show()
-        mainContent.hide()
+//        progressView.show()
+        mainContainer.hide()
     }
 
 
@@ -55,8 +61,12 @@ class ObjectDetailsActivity : BaseActivity<ObjectDetailsView, Presenter>(), Obje
 
     private fun renderDataState(state: ViewState) {
 
-        progressView.hide()
-        mainContent.show()
+//        progressView.hide()
+        mainContainer.show()
+
+        objectDetailsDataView.apply {
+            adapter = objectsAdapter
+        }
 
 //        state.galleryObjectData?.apply {
 //
@@ -86,12 +96,28 @@ class ObjectDetailsActivity : BaseActivity<ObjectDetailsView, Presenter>(), Obje
     }
 
     private fun loadPoster(ulr: String, caption: String) {
-        exhPosterCaption.text = caption
+        obPosterCaption.text = caption
         Glide.with(this).load(ulr)
                 .centerCrop()
                 .placeholder(R.drawable.progress_anim_tint)
-                .into(exhDetailsPoster)
+                .into(objectPoster)
         //.waitForLayout()
+    }
+
+
+    private fun initUI() {
+
+        objectDetailsDataView.let {
+            it.layoutManager = LinearLayoutManager(this)
+            it.adapter = objectsAdapter
+            it.addItemDecoration(DividerItemDecoration(this, RecyclerView.HORIZONTAL))
+        }
+
+        val list = mutableListOf<String>()
+        for (i in 1..40)
+            list.add(">> $i")
+        objectsAdapter.updateData(list)
+
     }
 
 

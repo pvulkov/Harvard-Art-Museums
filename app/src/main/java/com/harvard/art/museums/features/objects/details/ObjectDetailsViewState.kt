@@ -1,11 +1,9 @@
 package com.harvard.art.museums.features.objects.details
 
-import com.harvard.art.museums.features.exhibitions.data.GalleryObjectData
-
 
 data class ObjectDetailsViewState(
         val state: State = State.NONE,
-        val galleryObjectData: GalleryObjectData? = null,
+        val objectData: Any? = null,
         val error: Throwable? = null
 ) {
 
@@ -19,12 +17,12 @@ data class ObjectDetailsViewState(
     class Builder(viewState: ObjectDetailsViewState) {
 
         private var state: State = viewState.state
-        private var galleryObjectData: GalleryObjectData? = viewState.galleryObjectData
+        private var objectData: Any? = viewState.objectData
         private var error: Throwable? = viewState.error
 
 
-        fun exhibitionsData(galleryObjectData: GalleryObjectData): Builder {
-            this.galleryObjectData = galleryObjectData
+        fun objectData(objectData: Any): Builder {
+            this.objectData = objectData
             return this
         }
 
@@ -40,7 +38,7 @@ data class ObjectDetailsViewState(
 
 
         fun build(): ObjectDetailsViewState =
-                ObjectDetailsViewState(state, galleryObjectData, error)
+                ObjectDetailsViewState(state, objectData, error)
     }
 }
 

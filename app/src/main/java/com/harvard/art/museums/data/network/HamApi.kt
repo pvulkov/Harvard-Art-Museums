@@ -3,10 +3,14 @@ package com.harvard.art.museums.data.network
 import com.harvard.art.museums.API_KEY
 import com.harvard.art.museums.data.pojo.Exhibition
 import com.harvard.art.museums.data.pojo.Exhibitions
+import com.harvard.art.museums.data.pojo.ObjectDetails
 import com.harvard.art.museums.data.pojo.RecordsInfoData
 import io.reactivex.Observable
 import io.reactivex.Single
-import retrofit2.http.*
+import retrofit2.http.GET
+import retrofit2.http.Path
+import retrofit2.http.Query
+import retrofit2.http.Url
 
 
 interface HamApi {
@@ -80,6 +84,15 @@ interface HamApi {
             @Query("size") size: Int = 30,
             @Query("apikey") apikey: String = API_KEY
     ): Single<RecordsInfoData>
+
+
+    //https://api.harvardartmuseums.org/object/304069?apikey=4493ff90-89fa-11e9-bae4-390e251d4987
+    @GET("object/{objectNumber}")
+    fun getObjectDetails(
+            @Path("objectNumber") objectId: Int,
+            @Query("apikey") apikey: String = API_KEY
+    ): Single<ObjectDetails>
+
 
 
     //https://github.com/harvardartmuseums/api-docs/blob/master/sections/image.md

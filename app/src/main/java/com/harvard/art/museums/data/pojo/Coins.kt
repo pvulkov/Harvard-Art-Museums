@@ -1,10 +1,10 @@
 package com.harvard.art.museums.data.pojo
 
 data class Coins(
-        val dateonobject: Any,
-        val denomination: Any,
+        val dateonobject: String,
+        val denomination: String,
         val dieaxis: String,
         val metal: String,
-        val obverseinscription: Any,
+        val obverseinscription: String,
         val reverseinscription: String
 )
