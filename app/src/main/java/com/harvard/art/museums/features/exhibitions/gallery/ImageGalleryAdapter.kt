@@ -14,7 +14,7 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.subjects.PublishSubject
 import kotlinx.android.synthetic.main.gallery_view_item.view.*
 
-class ExhibitionGalleryAdapter : RecyclerView.Adapter<ExhibitionGalleryAdapter.GalleryItemViewHolder>() {
+class ImageGalleryAdapter : RecyclerView.Adapter<ImageGalleryAdapter.GalleryItemViewHolder>() {
 
 
     private val disposable = CompositeDisposable()

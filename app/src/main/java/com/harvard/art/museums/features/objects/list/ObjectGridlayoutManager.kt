@@ -1,4 +1,4 @@
-package com.harvard.art.museums.features.objects
+package com.harvard.art.museums.features.objects.list
 
 import android.content.Context
 import androidx.recyclerview.widget.GridLayoutManager

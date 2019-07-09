@@ -1,4 +1,4 @@
-package com.harvard.art.museums.features.objects
+package com.harvard.art.museums.features.objects.list
 
 import com.harvard.art.museums.data.pojo.Image
 import com.harvard.art.museums.ext.EMPTY

@@ -13,7 +13,7 @@ import com.harvard.art.museums.base.BaseFragment
 import com.harvard.art.museums.ext.generateArguments
 import com.harvard.art.museums.ext.hide
 import com.harvard.art.museums.ext.show
-import com.harvard.art.museums.features.exhibitions.gallery.ExhibitionGalleryAdapter
+import com.harvard.art.museums.features.exhibitions.gallery.ImageGalleryAdapter
 import com.harvard.art.museums.features.exhibitions.gallery.details.GalleryDetailsViewState.State.*
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -25,7 +25,7 @@ import com.harvard.art.museums.features.exhibitions.gallery.details.GalleryDetai
 
 class GalleryDetailsFragment : BaseFragment<GalleryView, GalleryPresenter>(), GalleryView {
 
-    private val galleryAdapter = ExhibitionGalleryAdapter()
+    private val galleryAdapter = ImageGalleryAdapter()
 
 
     companion object {

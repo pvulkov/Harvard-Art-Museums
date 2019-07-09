@@ -46,6 +46,14 @@
             android:hardwareAccelerated="true"
             android:screenOrientation="portrait" />
 
+
+        <activity
+            android:name=".features.objects.details.ObjectDetailsActivity"
+            android:configChanges="orientation|screenSize"
+            android:hardwareAccelerated="true"
+            android:screenOrientation="portrait" />
+
+
     </application>
 
 </manifest>

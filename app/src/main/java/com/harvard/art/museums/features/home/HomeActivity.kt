@@ -12,7 +12,7 @@ import com.harvard.art.museums.features.home.HomePresenter.HomeView
 import com.harvard.art.museums.features.home.HomeViewState.State.*
 import com.harvard.art.museums.features.home.HomeViewState as ViewState
 import com.harvard.art.museums.features.home.data.NavigationAction
-import com.harvard.art.museums.features.objects.ObjectsFragment
+import com.harvard.art.museums.features.objects.list.ObjectsFragment
 import com.harvard.art.museums.features.search.Filter
 import com.harvard.art.museums.features.search.SearchActivity
 import com.jakewharton.rxbinding2.view.clicks

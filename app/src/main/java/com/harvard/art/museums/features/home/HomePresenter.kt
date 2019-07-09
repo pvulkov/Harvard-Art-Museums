@@ -6,7 +6,7 @@ import com.harvard.art.museums.base.BaseView
 import com.harvard.art.museums.features.exhibitions.list.ExhibitionsFragment
 import com.harvard.art.museums.features.home.HomePresenter.HomeView
 import com.harvard.art.museums.features.home.data.NavigationAction
-import com.harvard.art.museums.features.objects.ObjectsFragment
+import com.harvard.art.museums.features.objects.list.ObjectsFragment
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers

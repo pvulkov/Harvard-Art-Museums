@@ -1,4 +1,4 @@
-package com.harvard.art.museums.features.objects
+package com.harvard.art.museums.features.objects.list
 
 import android.view.LayoutInflater
 import android.view.View
@@ -7,9 +7,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.harvard.art.museums.R
 import com.harvard.art.museums.ext.*
-import com.harvard.art.museums.features.objects.ObjectsAdapter.ItemViewHolder.LoaderViewHolder
-import com.harvard.art.museums.features.objects.ObjectsAdapter.ItemViewHolder.ObjectViewHolder
 import com.harvard.art.museums.features.exhibitions.data.ViewItemType.ViewType.*
+import com.harvard.art.museums.features.objects.list.ObjectsAdapter.ItemViewHolder.LoaderViewHolder
+import com.harvard.art.museums.features.objects.list.ObjectsAdapter.ItemViewHolder.ObjectViewHolder
 import com.jakewharton.rxbinding2.view.RxView
 import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
@@ -29,7 +29,9 @@ class ObjectsAdapter : RecyclerView.Adapter<ObjectsAdapter.ItemViewHolder>() {
         notifyDataSetChanged()
     }
 
-    fun viewEvents(): Observable<ObjectViewItem> = viewObjectSubject.share()
+    fun loadMoreEvent(): Observable<ObjectViewItem> = viewObjectSubject.filter { it.viewType == LOADER }
+
+    fun itemClickedEvent(): Observable<ObjectViewItem> = viewObjectSubject.filter { it.viewType == DATA }
 
     override fun getItemCount() = items.size
 
@@ -70,9 +72,7 @@ class ObjectsAdapter : RecyclerView.Adapter<ObjectsAdapter.ItemViewHolder>() {
 
         abstract fun setData(item: ObjectViewItem)
 
-
         class ObjectViewHolder(view: View) : ItemViewHolder(view) {
-
 
             override fun setData(item: ObjectViewItem) {
 
@@ -96,5 +96,6 @@ class ObjectsAdapter : RecyclerView.Adapter<ObjectsAdapter.ItemViewHolder>() {
             override fun setData(item: ObjectViewItem) {}
         }
     }
+
 
 }

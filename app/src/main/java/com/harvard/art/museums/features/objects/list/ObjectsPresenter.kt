@@ -1,4 +1,4 @@
-package com.harvard.art.museums.features.objects
+package com.harvard.art.museums.features.objects.list
 
 import android.util.Log
 import com.harvard.art.museums.base.BasePresenter
@@ -7,13 +7,13 @@ import com.harvard.art.museums.data.pojo.ObjectRecord
 import com.harvard.art.museums.data.repositories.ObjectsRepository
 import com.harvard.art.museums.ext.*
 import com.harvard.art.museums.features.exhibitions.data.ViewItemType.ViewType
-import com.harvard.art.museums.features.objects.ObjectsPresenter.ObjectsView
+import com.harvard.art.museums.features.objects.list.ObjectsPresenter.ObjectsView
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import java.util.concurrent.TimeUnit
-import com.harvard.art.museums.features.objects.ObjectsActionState as ActionState
-import com.harvard.art.museums.features.objects.ObjectsViewState as ViewState
+import com.harvard.art.museums.features.objects.list.ObjectsActionState as ActionState
+import com.harvard.art.museums.features.objects.list.ObjectsViewState as ViewState
 
 
 class ObjectsPresenter(view: ObjectsView) : BasePresenter<ObjectsView, ViewState>(view) {

@@ -11,7 +11,7 @@ import com.harvard.art.museums.data.network.HamApi
 import com.harvard.art.museums.features.exhibitions.details.ExhibitionDetailsPresenter
 import com.harvard.art.museums.features.exhibitions.gallery.ExhibitionGalleryPresenter
 import com.harvard.art.museums.features.exhibitions.gallery.details.GalleryDetailsPresenter
-import com.harvard.art.museums.features.objects.ObjectsPresenter
+import com.harvard.art.museums.features.objects.list.ObjectsPresenter
 import com.harvard.art.museums.features.search.SearchPresenter
 import com.harvard.art.museums.injection.module.DatabaseModule
 import javax.inject.Inject

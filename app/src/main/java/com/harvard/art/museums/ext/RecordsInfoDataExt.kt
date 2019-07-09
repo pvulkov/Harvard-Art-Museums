@@ -2,7 +2,7 @@ package com.harvard.art.museums.ext
 
 import com.harvard.art.museums.data.pojo.ObjectRecord
 import com.harvard.art.museums.data.pojo.RecordsInfoData
-import com.harvard.art.museums.features.objects.ObjectViewItem
+import com.harvard.art.museums.features.objects.list.ObjectViewItem
 import com.harvard.art.museums.features.search.SearchResultViewItem
 import com.harvard.art.museums.features.search.SearchResultViewType
 

@@ -1,4 +1,4 @@
-package com.harvard.art.museums.features.objects
+package com.harvard.art.museums.features.objects.list
 
 data class ObjectsViewState(
         val state: State = State.INIT_DATA,

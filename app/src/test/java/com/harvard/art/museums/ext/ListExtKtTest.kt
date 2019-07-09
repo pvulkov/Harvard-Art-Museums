@@ -37,46 +37,34 @@ class ListExtKtTest {
     }
 
     @Test
-    @CheckReturnValue
     @SchedulerSupport(SchedulerSupport.COMPUTATION)
     fun testObservalble() {
 
-        val list = listOf("","", "")
+        val list = listOf(1, 2, 3, 4, 5, 6)
 
-        Observable.fromIterable(list).compose<Int>(transformer2)
+
+        Observable.fromIterable(list)
+                .flatMap { ft1(it) }
+                .onErrorResumeNext (Observable.fromIterable(list) )
+//                .onErrorReturn { 8  }
+//                .onErrorReturnItem(8)
                 .subscribe(
                         { println(it) },
-                        {},
-                        {}
+                        { println("ERROR") },
+                        { println("COMPLETE") }
                 )
-
-
-//        Observable.interval(5,2, TimeUnit.SECONDS, Schedulers.computation())
-//                .take(5)
-//                .doOnNext{print(it)}
-//                .map { 2 }
-//                .subscribe { print("") }
-
-
-//        Observable
-//                .interval(10, TimeUnit.SECONDS)
-//
-//                .take(5)
-//                .flatMap { Observable.just(it) }
-//                .debounce(20, TimeUnit.SECONDS)
-//                .subscribe(
-//                        {
-//                            println(it)
-//                        },
-//                        {
-//                            print("--- err")
-//                        }
-//                )
-//
-//        testScheduler.advanceTimeTo(200, TimeUnit.SECONDS)
 
 
     }
 
+    private fun ft1(i: Int) = Observable.just(i)
+            .map {
+
+                if (i == 2)
+                    throw Exception("ouch")
+
+                i * i
+            }
+          //  .onErrorReturnItem(8)
 
 }

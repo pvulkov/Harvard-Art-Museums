@@ -1,7 +1,6 @@
 package com.harvard.art.museums.features.exhibitions.details
 
 import android.os.Bundle
-import android.os.PersistableBundle
 import android.text.method.LinkMovementMethod
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
@@ -10,7 +9,7 @@ import com.harvard.art.museums.base.BaseActivity
 import com.harvard.art.museums.ext.hide
 import com.harvard.art.museums.ext.show
 import com.harvard.art.museums.features.exhibitions.details.ExhibitionDetailsPresenter.ExhibitionDetailsView
-import com.harvard.art.museums.features.exhibitions.gallery.ExhibitionGalleryAdapter
+import com.harvard.art.museums.features.exhibitions.gallery.ImageGalleryAdapter
 import com.harvard.art.museums.features.exhibitions.details.ExhibitionDetailsViewState.State.*
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -22,7 +21,7 @@ import com.harvard.art.museums.features.exhibitions.details.ExhibitionDetailsVie
 
 class ExhibitionDetailsActivity : BaseActivity<ExhibitionDetailsView, Presenter>(), ExhibitionDetailsView {
 
-    private val galleryAdapter = ExhibitionGalleryAdapter()
+    private val galleryAdapter = ImageGalleryAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

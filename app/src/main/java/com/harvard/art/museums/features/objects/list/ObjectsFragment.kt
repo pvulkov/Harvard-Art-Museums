@@ -1,6 +1,7 @@
-package com.harvard.art.museums.features.objects
+package com.harvard.art.museums.features.objects.list
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,8 +10,8 @@ import com.harvard.art.museums.base.BaseFragment
 import com.harvard.art.museums.ext.hide
 import com.harvard.art.museums.ext.show
 import com.harvard.art.museums.ext.showToast
-import com.harvard.art.museums.features.objects.ObjectsPresenter.ObjectsView
-import com.harvard.art.museums.features.objects.ObjectsViewState.State.*
+import com.harvard.art.museums.features.objects.list.ObjectsPresenter.ObjectsView
+import com.harvard.art.museums.features.objects.list.ObjectsViewState.State.*
 import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_objects.*
@@ -36,7 +37,7 @@ class ObjectsFragment : BaseFragment<ObjectsView, ObjectsPresenter>(), ObjectsVi
 
     override fun initDataEvent() = Observable.just(true).subscribeOn(Schedulers.io())
 
-    override fun loadMoreEvent(): Observable<ObjectViewItem> = objectsAdapter.viewEvents()
+    override fun loadMoreEvent(): Observable<ObjectViewItem> = objectsAdapter.loadMoreEvent()
 
 
     override fun render(state: ObjectsViewState) {
@@ -62,6 +63,7 @@ class ObjectsFragment : BaseFragment<ObjectsView, ObjectsPresenter>(), ObjectsVi
             objectsLayoutManager.updateData(this)
             objectsAdapter.updateData(this)
         }
+
     }
 
     private fun renderErrorState(state: ObjectsViewState) {
@@ -78,5 +80,10 @@ class ObjectsFragment : BaseFragment<ObjectsView, ObjectsPresenter>(), ObjectsVi
             this.adapter = objectsAdapter
             addItemDecoration(GridSpacingItemDecoration(8, 1, false))
         }
+
+
+        objectsAdapter.itemClickedEvent()
+                .subscribe({ Log.d("DEBUG", "next") })
+                .also { disposable.add(it) }
     }
 }

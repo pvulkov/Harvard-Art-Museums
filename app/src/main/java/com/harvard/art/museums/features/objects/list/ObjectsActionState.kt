@@ -1,7 +1,6 @@
-package com.harvard.art.museums.features.objects
+package com.harvard.art.museums.features.objects.list
 
 import android.content.Intent
-import com.harvard.art.museums.features.exhibitions.data.ExhibitionViewItem
 
 sealed class ObjectsActionState {
     object LoadingState : ObjectsActionState()
