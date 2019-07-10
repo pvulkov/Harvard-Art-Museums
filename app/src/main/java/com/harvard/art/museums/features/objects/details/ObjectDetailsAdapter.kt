@@ -5,45 +5,50 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.harvard.art.museums.R
+import com.harvard.art.museums.ext.applyTextAndVisibility
 import com.harvard.art.museums.ext.setData
 import io.reactivex.disposables.CompositeDisposable
-import kotlinx.android.synthetic.main.exhibitions_data_view_item.view.*
+import  com.harvard.art.museums.features.objects.details.ObjectDetailsAdapter.ObjectItemViewHolder.*
+import kotlinx.android.synthetic.main.ob_details_gallery_text_view_item.view.*
+import kotlinx.android.synthetic.main.ob_details_identification_view_item.view.*
 
 
-class ObjectDetailsAdapter : RecyclerView.Adapter<ObjectDetailsAdapter.ExhibitionItemViewHolder>() {
+class ObjectDetailsAdapter : RecyclerView.Adapter<ObjectDetailsAdapter.ObjectItemViewHolder>() {
 
 
     private val disposable = CompositeDisposable()
-    private val exhibitionItemsList = mutableListOf<String>()
+    private val objectViewItems = mutableListOf<ObjectViewItem>()
 //    private lateinit var viewEvent: PublishSubject<ViewItemAction>
 
 
-    fun updateData(newExhibitionItems: List<String>) {
-        exhibitionItemsList.setData(newExhibitionItems)
+    fun updateData(objectViewItems: List<ObjectViewItem>) {
+        this.objectViewItems.setData(objectViewItems)
         notifyDataSetChanged()
     }
 
 
-//    fun loadMoreEvent() = viewEvent.filter { it.action == ViewAction.LOAD_MORE }
-//
 //
 //    fun viewEvents(): Observable<ViewItemAction> {
 //        return viewEvent.filter { it.action != ViewAction.LOAD_MORE }
 //    }
 
-    override fun getItemCount() = exhibitionItemsList.size
+    override fun getItemCount() = objectViewItems.size
 
-//    override fun getItemViewType(position: Int): Int = exhibitionItemsList[position].viewType.ordinal
+    override fun getItemViewType(position: Int): Int = position
 
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ExhibitionItemViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, position: Int): ObjectItemViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-        return ExhibitionItemViewHolder(inflater.inflate(R.layout.exhibitions_data_view_item, parent, false))
+        return when (objectViewItems[position]) {
+            is GalleryTextViewItem -> GalleryTextItemViewHolder(inflater.inflate(R.layout.ob_details_gallery_text_view_item, parent, false))
+            is IdentificationViewItem -> IdentificationItemViewHolder(inflater.inflate(R.layout.ob_details_identification_view_item, parent, false))
+
+            else -> throw Exception("Unhandled view type holder")
+        }
     }
 
 
-    override fun onBindViewHolder(holder: ExhibitionItemViewHolder, position: Int) {
-        holder.setData(exhibitionItemsList[position])
+    override fun onBindViewHolder(holder: ObjectItemViewHolder, position: Int) {
+        holder.setData(objectViewItems[position])
     }
 
 
@@ -60,36 +65,35 @@ class ObjectDetailsAdapter : RecyclerView.Adapter<ObjectDetailsAdapter.Exhibitio
             disposable.dispose()
     }
 
+    sealed class ObjectItemViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
+        abstract fun setData(item: ObjectViewItem)
 
-    class ExhibitionItemViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
-
-        fun setData(text: String) {
-            itemView.exhibitionTitle.text = text
-            itemView.exhibitionFromTo.text = text
-
-//            item.shortDescription?.let {
-//                itemView.exhibitionDescription.show()
-//                itemView.exhibitionDescription.text = it
-//            }
-//
-//            item.exhibitionLocation?.let {
-//                itemView.exhibitionLocation.show()
-//                itemView.exhibitionLocation.text = it
-//            }
-//
-//            val list = mutableListOf<Observable<ViewAction>>()
-//            list.add(itemView.actionDetails.clicks().map { ViewAction.DETAILS })
-//
-//
-//            if (item.exhibitionUrl.isValidUrl()) {
-//                itemView.actionShare.show()
-//                itemView.actionOpenWeb.show()
-//                list.add(itemView.actionShare.clicks().map { ViewAction.SHARE })
-//                list.add(itemView.actionOpenWeb.clicks().map { ViewAction.WEB })
-//            }
-
+        class GalleryTextItemViewHolder(view: View) : ObjectItemViewHolder(view) {
+            override fun setData(item: ObjectViewItem) {
+                (item as GalleryTextViewItem).apply {
+                    itemView.galleryText.text = text
+                }
+            }
         }
+
+        class IdentificationItemViewHolder(view: View) : ObjectItemViewHolder(view) {
+            override fun setData(item: ObjectViewItem) {
+                (item as IdentificationViewItem).apply {
+                    itemView.objectNumber.applyTextAndVisibility(objectNumber)
+                    itemView.objectTitle.applyTextAndVisibility(title)
+                    itemView.objectOtherTitles.applyTextAndVisibility(otherTitles)
+                    itemView.objectClassification.applyTextAndVisibility(classification)
+                    itemView.objectWorkType.applyTextAndVisibility(worktypes)
+                    itemView.objectDate.applyTextAndVisibility(dated)
+                    itemView.objectPlaces.applyTextAndVisibility(places)
+                    itemView.objectPeriod.applyTextAndVisibility(period)
+                    itemView.objectCulture.applyTextAndVisibility(culture)
+                }
+            }
+        }
+
+
     }
 
 }

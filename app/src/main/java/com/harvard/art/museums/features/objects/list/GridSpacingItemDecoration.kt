@@ -8,8 +8,8 @@ import androidx.recyclerview.widget.RecyclerView
 class GridSpacingItemDecoration(private val spanCount: Int, private val spacing: Int, private val includeEdge: Boolean) : RecyclerView.ItemDecoration() {
 
     override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
-        val position = parent.getChildAdapterPosition(view) // item position
-        val column = position % spanCount // item column
+        val position = parent.getChildAdapterPosition(view) // itemObject position
+        val column = position % spanCount // itemObject column
 
         if (includeEdge) {
             outRect.left = spacing - column * spacing / spanCount // spacing - column * ((1f / spanCount) * spacing)
@@ -18,12 +18,12 @@ class GridSpacingItemDecoration(private val spanCount: Int, private val spacing:
             if (position < spanCount) { // top edge
                 outRect.top = spacing
             }
-            outRect.bottom = spacing // item bottom
+            outRect.bottom = spacing // itemObject bottom
         } else {
             outRect.left = column * spacing / spanCount // column * ((1f / spanCount) * spacing)
             outRect.right = spacing - (column + 1) * spacing / spanCount // spacing - (column + 1) * ((1f /    spanCount) * spacing)
             if (position >= spanCount) {
-                outRect.top = spacing // item top
+                outRect.top = spacing // itemObject top
             }
         }
     }

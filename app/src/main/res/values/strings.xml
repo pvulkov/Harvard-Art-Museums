@@ -10,5 +10,18 @@
     <string name="objects_text">Objects</string>
     <string name="search_for_text">Search For</string>
     <string name="retry_text">Retry</string>
+    <string name="gallery_text">Gallery Text</string>
+    <string name="identification_and_creation_text">Identification and Creation</string>
+    <string name="object_number_text">Object Number</string>
+    <string name="title_text">Title</string>
+    <string name="other_titles_text">Other Titles</string>
+    <string name="classification_text">Classification</string>
+    <string name="work_type_text">Work Type</string>
+    <string name="date_text">Date</string>
+    <string name="places_text">Places</string>
+    <string name="period_text">Period</string>
+    <string name="culture_text">Culture</string>
+
+
 
 </resources>

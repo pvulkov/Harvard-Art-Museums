@@ -13,12 +13,21 @@ const val EMPTY: String = ""
 
 const val N_A: String = "N/A"
 
+const val NULL: String = "null"
+
 
 private var SERVER_SDF = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
 
 
 fun String?.isValidUrl() = this?.let { URLUtil.isValidUrl(this) } ?: false
 
+
+fun String?.exists() = this?.let { it.isNotEmpty() && !it.equals(NULL, true) } ?: false
+
+
+inline fun String?.ifExists(body: () -> Unit) {
+    this?.let { (it.isNotEmpty() && !it.equals(NULL, true)).ifTrue(body) }
+}
 
 /**
  * Parses strings like "2020-01-05" to date object

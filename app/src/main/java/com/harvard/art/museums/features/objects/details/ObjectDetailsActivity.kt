@@ -15,6 +15,7 @@ import io.reactivex.Observable
 import kotlinx.android.synthetic.main.object_details_layout.*
 import com.harvard.art.museums.features.objects.details.ObjectDetailsPresenter as Presenter
 import com.harvard.art.museums.features.objects.details.ObjectDetailsViewState as ViewState
+import  com.harvard.art.museums.features.objects.details.ObjectDetailsViewState.State.*
 
 
 class ObjectDetailsActivity : BaseActivity<ObjectDetailsView, Presenter>(), ObjectDetailsView {
@@ -35,11 +36,11 @@ class ObjectDetailsActivity : BaseActivity<ObjectDetailsView, Presenter>(), Obje
 
         when (state.state) {
             //TODO (pvalkov) review state
-//            NONE -> {
-//            }
-//            LOAD -> renderLoadingState()
-//            DATA -> renderDataState(state)
-//            ERROR -> renderErrorState(state)
+            NONE -> {
+            }
+            LOAD -> renderLoadingState()
+            DATA -> renderDataState(state)
+            ERROR -> renderErrorState(state)
         }
     }
 
@@ -67,6 +68,7 @@ class ObjectDetailsActivity : BaseActivity<ObjectDetailsView, Presenter>(), Obje
         objectDetailsDataView.apply {
             adapter = objectsAdapter
         }
+        objectsAdapter.updateData(state.objectData!!.objectViewItems)
 
 //        state.galleryObjectData?.apply {
 //
@@ -113,10 +115,6 @@ class ObjectDetailsActivity : BaseActivity<ObjectDetailsView, Presenter>(), Obje
             it.addItemDecoration(DividerItemDecoration(this, RecyclerView.HORIZONTAL))
         }
 
-        val list = mutableListOf<String>()
-        for (i in 1..40)
-            list.add(">> $i")
-        objectsAdapter.updateData(list)
 
     }
 

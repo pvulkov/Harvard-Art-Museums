@@ -61,7 +61,7 @@ class ExhibitionsRepository(private val hamApi: HamApi, private val database: Ha
                     it.error?.let {
                         handleErrorCallback(it, errorCallback)
                     }
-                    // put item back into stream
+                    // put itemObject back into stream
                     it
                 }
                 .filter { !it.isOnError }
@@ -87,7 +87,7 @@ class ExhibitionsRepository(private val hamApi: HamApi, private val database: Ha
                     it.error?.let {
                         handleErrorCallback(it, errorCallback)
                     }
-                    // put item back into stream
+                    // put itemObject back into stream
                     it
                 }
                 .filter { !it.isOnError }

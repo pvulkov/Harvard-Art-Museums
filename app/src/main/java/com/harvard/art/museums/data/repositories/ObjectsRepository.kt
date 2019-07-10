@@ -62,7 +62,7 @@ class ObjectsRepository(private val hamApi: HamApi, private val database: HamDat
                     it.error?.let {
                         handleErrorCallback(it, errorCallback)
                     }
-                    // put item back into stream
+                    // put itemObject back into stream
                     it
                 }
                 .filter { !it.isOnError }
@@ -90,7 +90,7 @@ class ObjectsRepository(private val hamApi: HamApi, private val database: HamDat
 //                    it.error?.let {
 //                        handleErrorCallback(it, errorCallback)
 //                    }
-//                    // put item back into stream
+//                    // put itemObject back into stream
 //                    it
 //                }
 //                .filter { !it.isOnError }

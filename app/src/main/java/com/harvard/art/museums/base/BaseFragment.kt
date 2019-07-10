@@ -17,8 +17,8 @@ abstract class BaseFragment<V : MvpView, P : MviPresenter<V, *>> : MviFragment<V
 
     override fun onStop() {
         super.onStop()
-        if (!disposable.isDisposed)
-            disposable.clear()
+//        if (!disposable.isDisposed)
+//            disposable.clear()
     }
 
     override fun onDestroy() {

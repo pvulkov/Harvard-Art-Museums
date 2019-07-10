@@ -3,11 +3,15 @@ package com.harvard.art.museums.features.objects.details
 
 data class ObjectDetailsViewState(
         val state: State = State.NONE,
-        val objectData: Any? = null,
+        val objectData: ObjectDetailsViewItem? = null,
         val error: Throwable? = null
 ) {
 
-    enum class State { NONE, LOAD, DATA, ERROR }
+    enum class State {
+        @Deprecated("not used")
+        NONE,
+        LOAD, DATA, ERROR
+    }
 
 
     fun copy(): Builder {
@@ -17,11 +21,11 @@ data class ObjectDetailsViewState(
     class Builder(viewState: ObjectDetailsViewState) {
 
         private var state: State = viewState.state
-        private var objectData: Any? = viewState.objectData
+        private var objectData: ObjectDetailsViewItem? = viewState.objectData
         private var error: Throwable? = viewState.error
 
 
-        fun objectData(objectData: Any): Builder {
+        fun objectData(objectData: ObjectDetailsViewItem): Builder {
             this.objectData = objectData
             return this
         }

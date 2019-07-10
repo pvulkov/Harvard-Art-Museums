@@ -4,10 +4,8 @@ import com.harvard.art.museums.base.BasePresenter
 import com.harvard.art.museums.base.BaseView
 import com.harvard.art.museums.data.pojo.*
 import com.harvard.art.museums.ext.*
-import com.harvard.art.museums.features.exhibitions.data.GalleryObjectData
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.functions.BiFunction
 import io.reactivex.schedulers.Schedulers
 import com.harvard.art.museums.features.objects.details.ObjectDetailsPresenter.ObjectDetailsView as ObjectDetailsView
 import  com.harvard.art.museums.features.objects.details.ObjectDetailsViewState as ViewState
@@ -54,7 +52,7 @@ class ObjectDetailsPresenter(view: ObjectDetailsView) : BasePresenter<ObjectDeta
                 previousState
                         .copy()
                         .state(ViewState.State.DATA)
-                        .objectData(currentState.data)
+                        .objectData(currentState.itemObject)
                         .error(null)
                         .build()
             }
@@ -72,32 +70,12 @@ class ObjectDetailsPresenter(view: ObjectDetailsView) : BasePresenter<ObjectDeta
     private fun loadObjectDetails(objectId: Int): Observable<ActionState> {
         return getObjectDetails(objectId)
                 .subscribeOn(Schedulers.io())
-//                .zipWith(getExhibitionsImageData(objectNumber), zipper)
                 .toObservable()
-//                .map { toGalleryObjectData(it) }
+                .map { it.toObjectDetailsViewItem() }
                 .map<ActionState> { ActionState.DataState(it) }
                 .startWith(ActionState.LoadingState)
                 .onErrorReturn { ActionState.ErrorState(it) }
 
-    }
-
-
-    private val zipper =
-            BiFunction { e: Exhibition, o: RecordsInfoData -> ExhibitionDetailsData(e, o) }
-
-    data class ExhibitionDetailsData(val e: Exhibition, val o: RecordsInfoData)
-
-    private fun toGalleryObjectData(data: ExhibitionDetailsData): GalleryObjectData {
-
-        //TODO (pvalkov) make this an extension function
-        return GalleryObjectData(
-                data.e.title,
-                getImageList(data.o),
-                data.e.poster,
-                data.e.textiledescription,
-                data.e.begindate.fromServerDate().to_ddMMMMyyyy(),
-                data.e.enddate.fromServerDate().to_ddMMMMyyyy()
-        )
     }
 
 
