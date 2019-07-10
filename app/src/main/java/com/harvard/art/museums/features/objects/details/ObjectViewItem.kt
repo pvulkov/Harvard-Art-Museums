@@ -32,7 +32,7 @@ data class IdentificationViewItem(
 data class LocationViewItem(val location: String) : ObjectViewItem()
 
 data class PhysicalDescriptionsViewItem(
-        val medium: String,
+        val medium: String? = null,
         val dimensions: String
 ) : ObjectViewItem()
 

@@ -27,11 +27,13 @@ private fun ObjectDetails.generateViewItems(): List<ObjectViewItem> {
     //TODO (pvalkov) see below
     //#3  add Location
 
-    //#4  add Physical Descriptions View Item
-//    items.add(this.createPhysicalDescriptionsViewItem())
+//    #4  add Physical Descriptions View Item
+    items.add(this.createPhysicalDescriptionsViewItem())
 
     //#5 add  Provenance View Item
-//    items.add(this.createProvenanceViewItem())
+
+    this.provenance.ifExists { items.add(ProvenanceViewItem(this.provenance!!)) }
+
 
     return items
 }
@@ -57,12 +59,8 @@ private fun ObjectDetails.getWorkTypes(): String {
 
 
 private fun ObjectDetails.getPlaces(): String {
-    return this.places.joinToString(",") { it.displayname }
+    return this.places?.joinToString(",") { it.displayname } ?: EMPTY
 }
 
 private fun ObjectDetails.createPhysicalDescriptionsViewItem(): ObjectViewItem =
         PhysicalDescriptionsViewItem(this.medium, this.dimensions)
-
-
-private fun ObjectDetails.createProvenanceViewItem(): ObjectViewItem =
-        ProvenanceViewItem(this.provenance)

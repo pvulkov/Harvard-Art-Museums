@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginStart="1dp"
@@ -9,7 +10,8 @@
     card_view:cardCornerRadius="2dp"
     card_view:cardElevation="5dp"
     card_view:cardPreventCornerOverlap="false"
-    card_view:cardUseCompatPadding="true">
+    card_view:cardUseCompatPadding="true"
+    tools:context="com.harvard.art.museums.features.exhibitions.list.ExhibitionsFragment">
 
 
     <LinearLayout
@@ -28,22 +30,54 @@
             android:paddingTop="4dp"
             android:paddingEnd="10dp"
             android:paddingBottom="4dp"
-            android:text="@string/gallery_text"
+            android:text="@string/physical_descriptions_text"
             android:textColor="#FFFFFF"
             android:textSize="14sp" />
 
 
         <TextView
-            android:id="@+id/galleryText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
-            android:ellipsize="end"
             android:fontFamily="monospace"
             android:paddingStart="10dp"
             android:paddingTop="4dp"
             android:paddingEnd="10dp"
-            android:paddingBottom="4dp"
+            android:text="@string/medium_text"
+            android:textColor="@color/light_gray"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/objectMedium"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:fontFamily="monospace"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:textColor="@color/colorPrimary"
+            android:textSize="14sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:fontFamily="monospace"
+            android:paddingStart="10dp"
+            android:paddingTop="4dp"
+            android:paddingEnd="10dp"
+            android:text="@string/dimensions_text"
+            android:textColor="@color/light_gray"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/objectDimensions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:fontFamily="monospace"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
             android:textColor="@color/colorPrimary"
             android:textSize="14sp" />
 

@@ -7,15 +7,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.harvard.art.museums.R
 import com.harvard.art.museums.base.BaseActivity
-import com.harvard.art.museums.ext.hide
-import com.harvard.art.museums.ext.show
+import com.harvard.art.museums.ext.*
 import com.harvard.art.museums.features.exhibitions.gallery.ImageGalleryAdapter
 import com.harvard.art.museums.features.objects.details.ObjectDetailsPresenter.ObjectDetailsView
+import com.harvard.art.museums.features.objects.details.ObjectDetailsViewState.State.*
 import io.reactivex.Observable
 import kotlinx.android.synthetic.main.object_details_layout.*
 import com.harvard.art.museums.features.objects.details.ObjectDetailsPresenter as Presenter
 import com.harvard.art.museums.features.objects.details.ObjectDetailsViewState as ViewState
-import  com.harvard.art.museums.features.objects.details.ObjectDetailsViewState.State.*
 
 
 class ObjectDetailsActivity : BaseActivity<ObjectDetailsView, Presenter>(), ObjectDetailsView {
@@ -48,7 +47,7 @@ class ObjectDetailsActivity : BaseActivity<ObjectDetailsView, Presenter>(), Obje
 
 
     private fun renderLoadingState() {
-//        progressView.show()
+        progressView.show()
         mainContainer.hide()
     }
 
@@ -62,12 +61,22 @@ class ObjectDetailsActivity : BaseActivity<ObjectDetailsView, Presenter>(), Obje
 
     private fun renderDataState(state: ViewState) {
 
-//        progressView.hide()
+        progressView.hide()
         mainContainer.show()
 
-        objectDetailsDataView.apply {
-            adapter = objectsAdapter
-        }
+        state.objectData!!.images.isNullOrEmpty()
+                .ifTrue { galleryMainView.hide() }
+                .ifFalse {
+
+                    (state.objectData.images.size == 1)
+                            .ifTrue { imageGalleryView.hide() }
+                            .ifFalse { imagesAdapter.updateData(state.objectData.images) }
+
+                    loadPoster(state.objectData.posterUrl!!, state.objectData.posterCaption)
+                }
+
+
+        objectDetailsDataView.adapter = objectsAdapter
         objectsAdapter.updateData(state.objectData!!.objectViewItems)
 
 //        state.galleryObjectData?.apply {
@@ -75,15 +84,6 @@ class ObjectDetailsActivity : BaseActivity<ObjectDetailsView, Presenter>(), Obje
 //            exhDetailsDescription.text = this.description
 //            exhDetailsDescription.movementMethod = LinkMovementMethod.getInstance()
 //
-//            exhDetailsFromTo.text = this.dateFromTo
-//            exhDetailsLocation.text = this.location
-//            exhDetailsTitle.text = this.title
-//            this.poster?.let { p -> loadPoster(p.imageurl!!, p.caption) }
-//
-//
-//            if (this.images.isEmpty() || this.images.size == 1) {
-//                exhGalleryView.hide()
-//            } else {
 //                exhGalleryView.adapter = imagesAdapter
 //                exhGalleryView.layoutManager = LinearLayoutManager(this@ObjectDetailsActivity, LinearLayoutManager.HORIZONTAL, false)
 //                imagesAdapter.updateData(this.images)
@@ -92,13 +92,12 @@ class ObjectDetailsActivity : BaseActivity<ObjectDetailsView, Presenter>(), Obje
 //                        .throttleLatest(200, TimeUnit.MILLISECONDS)
 //                        .subscribe { loadPoster(it.baseimageurl, it.caption) }
 //                        .also { disposable.add(it) }
-//            }
-//
-//        }
     }
 
-    private fun loadPoster(ulr: String, caption: String) {
-        obPosterCaption.text = caption
+    private fun loadPoster(ulr: String, caption: String? = null) {
+
+        obPosterCaption.applyTextAndVisibility(caption)
+
         Glide.with(this).load(ulr)
                 .centerCrop()
                 .placeholder(R.drawable.progress_anim_tint)
@@ -113,6 +112,12 @@ class ObjectDetailsActivity : BaseActivity<ObjectDetailsView, Presenter>(), Obje
             it.layoutManager = LinearLayoutManager(this)
             it.adapter = objectsAdapter
             it.addItemDecoration(DividerItemDecoration(this, RecyclerView.HORIZONTAL))
+        }
+
+
+        imageGalleryView.let {
+            it.adapter = imagesAdapter
+            it.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         }
 
 

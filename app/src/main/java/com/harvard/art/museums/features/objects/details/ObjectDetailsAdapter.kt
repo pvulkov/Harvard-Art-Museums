@@ -11,6 +11,8 @@ import io.reactivex.disposables.CompositeDisposable
 import  com.harvard.art.museums.features.objects.details.ObjectDetailsAdapter.ObjectItemViewHolder.*
 import kotlinx.android.synthetic.main.ob_details_gallery_text_view_item.view.*
 import kotlinx.android.synthetic.main.ob_details_identification_view_item.view.*
+import kotlinx.android.synthetic.main.ob_details_physical_desc_view_item.view.*
+import kotlinx.android.synthetic.main.ob_details_provenance_view_item.view.*
 
 
 class ObjectDetailsAdapter : RecyclerView.Adapter<ObjectDetailsAdapter.ObjectItemViewHolder>() {
@@ -39,8 +41,11 @@ class ObjectDetailsAdapter : RecyclerView.Adapter<ObjectDetailsAdapter.ObjectIte
     override fun onCreateViewHolder(parent: ViewGroup, position: Int): ObjectItemViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         return when (objectViewItems[position]) {
-            is GalleryTextViewItem -> GalleryTextItemViewHolder(inflater.inflate(R.layout.ob_details_gallery_text_view_item, parent, false))
-            is IdentificationViewItem -> IdentificationItemViewHolder(inflater.inflate(R.layout.ob_details_identification_view_item, parent, false))
+            is GalleryTextViewItem -> GalleryTextViewHolder(inflater.inflate(R.layout.ob_details_gallery_text_view_item, parent, false))
+            is IdentificationViewItem -> IdentificationViewHolder(inflater.inflate(R.layout.ob_details_identification_view_item, parent, false))
+            is PhysicalDescriptionsViewItem -> PhysicalDescriptionsViewHolder(inflater.inflate(R.layout.ob_details_physical_desc_view_item, parent, false))
+            is ProvenanceViewItem -> ProvenanceViewHolder(inflater.inflate(R.layout.ob_details_provenance_view_item, parent, false))
+
 
             else -> throw Exception("Unhandled view type holder")
         }
@@ -69,7 +74,7 @@ class ObjectDetailsAdapter : RecyclerView.Adapter<ObjectDetailsAdapter.ObjectIte
         abstract fun setData(item: ObjectViewItem)
 
 
-        class GalleryTextItemViewHolder(view: View) : ObjectItemViewHolder(view) {
+        class GalleryTextViewHolder(view: View) : ObjectItemViewHolder(view) {
             override fun setData(item: ObjectViewItem) {
                 (item as GalleryTextViewItem).apply {
                     itemView.galleryText.text = text
@@ -77,7 +82,7 @@ class ObjectDetailsAdapter : RecyclerView.Adapter<ObjectDetailsAdapter.ObjectIte
             }
         }
 
-        class IdentificationItemViewHolder(view: View) : ObjectItemViewHolder(view) {
+        class IdentificationViewHolder(view: View) : ObjectItemViewHolder(view) {
             override fun setData(item: ObjectViewItem) {
                 (item as IdentificationViewItem).apply {
                     itemView.objectNumber.applyTextAndVisibility(objectNumber)
@@ -93,6 +98,23 @@ class ObjectDetailsAdapter : RecyclerView.Adapter<ObjectDetailsAdapter.ObjectIte
             }
         }
 
+        class PhysicalDescriptionsViewHolder(view: View) : ObjectItemViewHolder(view) {
+            override fun setData(item: ObjectViewItem) {
+                (item as PhysicalDescriptionsViewItem).apply {
+                    itemView.objectMedium.applyTextAndVisibility(medium)
+                    itemView.objectDimensions.applyTextAndVisibility(dimensions)
+                }
+            }
+        }
+
+
+        class ProvenanceViewHolder(view: View) : ObjectItemViewHolder(view) {
+            override fun setData(item: ObjectViewItem) {
+                (item as ProvenanceViewItem).apply {
+                    itemView.provenanceText.applyTextAndVisibility(text)
+                }
+            }
+        }
 
     }
 

@@ -7,6 +7,7 @@
     android:layout_marginTop="5dp"
     android:layout_marginEnd="1dp"
     card_view:cardCornerRadius="2dp"
+    android:paddingBottom="5dp"
     card_view:cardElevation="5dp"
     card_view:cardPreventCornerOverlap="false"
     card_view:cardUseCompatPadding="true">
@@ -28,13 +29,13 @@
             android:paddingTop="4dp"
             android:paddingEnd="10dp"
             android:paddingBottom="4dp"
-            android:text="@string/gallery_text"
+            android:text="@string/provenance_text"
             android:textColor="#FFFFFF"
             android:textSize="14sp" />
 
 
         <TextView
-            android:id="@+id/galleryText"
+            android:id="@+id/provenanceText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
